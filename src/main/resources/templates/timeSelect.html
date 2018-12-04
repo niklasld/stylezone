@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+    <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
+</head>
+<body>
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
+    <h1>Vælg tid</h1>
+
+    <table class="timeSelect">
+        <tbody>
+            <tr  th:each="booking : ${bookings}">
+                <td th:text="${booking.bookingTime}" class="display-4"></td>
+                <td th:if="${booking.bookingName} == ''" class="text-success display-4">&#9679;Ledig</td>
+                <td th:if="${booking.bookingName} != ''" class="text-danger display-4">&#9679;Optaget</td>
+                <td class="display-4"><a class="btn btn-primary btn-lg" th:href="${'/saveBooking/' + booking.bookingTime + '/' + date}" th:if="${booking.bookingName} == ''">Book denne tid</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <footer th:include="fragments/footer :: footer"></footer>
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+</body>
+</html>

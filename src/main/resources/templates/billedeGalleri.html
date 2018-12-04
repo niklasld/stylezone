@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+    <head th:include="fragments/head :: styles">
+    <body>
+        <div class="container">
+            <header th:include="fragments/header :: navbar"></header>
+
+            <h1> Billede Galleri </h1>
+
+            <div class="galleri">
+                <a th:href="@{/image/img1.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img1.jpg}"></a>
+                <!--<a th:href="@{/image/img2.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img2.jpg}"></a>-->
+                <a th:href="@{/image/img3.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img3.jpg}"></a>
+               <!-- <a th:href="@{/image/img4.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img4.jpg}"></a>-->
+                <a th:href="@{/image/img5.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img5.jpg}"></a>
+                <a th:href="@{/image/img6.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img6.jpg}"></a>
+                <a th:href="@{/image/img7.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img7.jpg}"></a>
+                <a th:href="@{/image/img8.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img8.jpg}"></a>
+                <a th:href="@{/image/img9.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img9.jpg}"></a>
+                <a th:href="@{/image/img10.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img10.jpg}"></a>
+                <a th:href="@{/image/img11.jpg}"><img src="../static/image/img1.jpg" th:src="@{/image/img11.jpg}"></a>
+            </div>
+
+            <footer th:include="fragments/footer :: footer"></footer>
+        </div>
+        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    </body>
+</html>

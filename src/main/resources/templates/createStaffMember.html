@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+</head>
+<body>
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
+    <h1>Create staff member</h1>
+
+    <form method="Post" th:action="@{/createStaffMember}" th:object="${staff}">
+
+        <label>Staff Members full name:</label>
+        <input type="text" class="form-control mr-sm-2"  th:name="staffName"/>
+
+
+        <input class="btn btn-light" type="button" value="Cancel" onclick="location.href='/';"/>
+
+        <button class="btn btn-primary" type="submit">Create</button>
+
+    </form>
+</div>
+</body>
+</html>

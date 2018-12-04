@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+    <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
+</head>
+<body>
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
+    <h1>Book tid</h1>
+
+    <form class="form-inline">
+        <label>Gå tll dato: </label>
+        <input type="date" name="date" class="form-control">
+        <button type="submit" class="btn btn-primary">Gå</button>
+    </form>
+    <br>
+
+    <div id="bookingSelector">
+        <div id="weekSelector">
+            <ul>
+                <li class="prev"><a href="#">&#10094;</a></li>
+                <li class="next"><a href="#">&#10095;</a></li>
+                <li>Uge <span th:text="${weekNumber}"></span><br><span style="font-size:18px" th:text="${monday + ' - ' + friday}"></span></li>
+            </ul>
+        </div>
+
+        <ul id="bookingTimes">
+            <li>Mandag<br><span style="font-size:12px" th:text="${monday}"></span>
+                <ul th:each="mondayBooking : ${mondayBookings}">
+                    <li>
+                        <span th:switch="${mondayBooking.bookingGroupFree}">
+                            <a th:case="6" th:href="${'/timeSelect/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="5" th:href="${'/timeSelect/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="4" th:href="${'/timeSelect/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="3" th:href="${'/timeSelect/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="2" th:href="${'/timeSelect/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="1" th:href="${'/timeSelect/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="0" th:href="${'/timeSelect/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-danger btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                        </span>
+                        <br><span style="font-size:10px" th:text="${mondayBooking.bookingGroupFree + ' ledige tider'}"></span>
+                    </li>
+                </ul>
+            </li>
+            <li>Tirsdag<br><span style="font-size:12px" th:text="${tuesday}"></span>
+                <ul>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">10:00 - 11:00</a>
+                        <br><span style="font-size:10px">5 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">11:00 - 12:00</a>
+                        <br><span style="font-size:10px">2 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-danger btn-sm">12:00 - 13:00</a>
+                        <br><span style="font-size:10px">0 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">13:00 - 14:00</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">14:00 - 15:00</a>
+                        <br><span style="font-size:10px">1 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 16:00</a>
+                        <br><span style="font-size:10px">3 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 17:00</a>
+                        <br><span style="font-size:10px">4 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">17:00 - 18:00</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">18:00 - 18:30</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                </ul>
+            </li>
+            <li>Onsdag<br><span style="font-size:12px" th:text="${wednesday}"></span>
+                <ul>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">10:00 - 11:00</a>
+                        <br><span style="font-size:10px">5 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">11:00 - 12:00</a>
+                        <br><span style="font-size:10px">2 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-danger btn-sm">12:00 - 13:00</a>
+                        <br><span style="font-size:10px">0 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">13:00 - 14:00</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">14:00 - 15:00</a>
+                        <br><span style="font-size:10px">1 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 16:00</a>
+                        <br><span style="font-size:10px">3 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 17:00</a>
+                        <br><span style="font-size:10px">4 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">17:00 - 18:00</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">18:00 - 18:30</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                </ul>
+            </li>
+            <li>Torsdag<br><span style="font-size:12px" th:text="${thursday}"></span>
+                <ul>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">10:00 - 11:00</a>
+                        <br><span style="font-size:10px">5 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">11:00 - 12:00</a>
+                        <br><span style="font-size:10px">2 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-danger btn-sm">12:00 - 13:00</a>
+                        <br><span style="font-size:10px">0 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">13:00 - 14:00</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">14:00 - 15:00</a>
+                        <br><span style="font-size:10px">1 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 16:00</a>
+                        <br><span style="font-size:10px">3 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 17:00</a>
+                        <br><span style="font-size:10px">4 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">17:00 - 18:00</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">18:00 - 18:30</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                </ul>
+            </li>
+            <li>Fredag<br><span style="font-size:12px" th:text="${friday}"></span>
+                <ul>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">10:00 - 11:00</a>
+                        <br><span style="font-size:10px">5 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">11:00 - 12:00</a>
+                        <br><span style="font-size:10px">2 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-danger btn-sm">12:00 - 13:00</a>
+                        <br><span style="font-size:10px">0 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">13:00 - 14:00</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">14:00 - 15:00</a>
+                        <br><span style="font-size:10px">1 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 16:00</a>
+                        <br><span style="font-size:10px">3 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 17:00</a>
+                        <br><span style="font-size:10px">4 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">17:00 - 18:00</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">18:00 - 18:30</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                </ul>
+            </li>
+            <li>Lørdag<br><span style="font-size:12px" th:text="${saturday}"></span>
+                <ul>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">10:00 - 11:00</a>
+                        <br><span style="font-size:10px">5 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">11:00 - 12:00</a>
+                        <br><span style="font-size:10px">2 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-danger btn-sm">12:00 - 13:00</a>
+                        <br><span style="font-size:10px">0 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">13:00 - 14:00</a>
+                        <br><span style="font-size:10px">6 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-warning btn-sm">14:00 - 15:00</a>
+                        <br><span style="font-size:10px">1 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 16:00</a>
+                        <br><span style="font-size:10px">3 ledige tider</span>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-success btn-sm">16:00 - 17:00</a>
+                        <br><span style="font-size:10px">4 ledige tider</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <footer th:include="fragments/footer :: footer"></footer>
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+</body>
+</html>
