@@ -3,19 +3,18 @@ package com.stylezone.demo.models;
 public class Opening {
     private int openingId;
     private String openingDay;
-    private int openingTime;
-    private int openingClose;
+    private String openingTime;
+    private String openingClose;
 
     public Opening() {
     }
 
-    public Opening(int openingId, String openingDay, int openingTime, int openingClose) {
+    public Opening(int openingId, String openingDay, String openingTime, String openingClose) {
         this.openingId = openingId;
         this.openingDay = openingDay;
         this.openingTime = openingTime;
         this.openingClose = openingClose;
     }
-
 
     public int getOpeningId() {
         return openingId;
@@ -33,19 +32,19 @@ public class Opening {
         this.openingDay = openingDay;
     }
 
-    public int getOpeningTime() {
+    public String getOpeningTime() {
         return openingTime;
     }
 
-    public void setOpeningTime(int openingTime) {
+    public void setOpeningTime(String openingTime) {
         this.openingTime = openingTime;
     }
 
-    public int getOpeningClose() {
+    public String getOpeningClose() {
         return openingClose;
     }
 
-    public void setOpeningClose(int openingClose) {
+    public void setOpeningClose(String openingClose) {
         this.openingClose = openingClose;
     }
 

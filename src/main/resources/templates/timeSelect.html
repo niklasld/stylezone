@@ -7,15 +7,22 @@
 <div class="container">
     <header th:include="fragments/header :: navbar"></header>
 
-    <h1>Vælg tid</h1>
+    <h1 th:text="${'Book tid for d. ' + #strings.replace(date, '-', '/')}">Vælg tid</h1>
 
-    <table class="timeSelect">
+    <table class="timeSelect table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Tid</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody>
             <tr  th:each="booking : ${bookings}">
-                <td th:text="${booking.bookingTime}" class="display-4"></td>
-                <td th:if="${booking.bookingName} == ''" class="text-success display-4">&#9679;Ledig</td>
-                <td th:if="${booking.bookingName} != ''" class="text-danger display-4">&#9679;Optaget</td>
-                <td class="display-4"><a class="btn btn-primary btn-lg" th:href="${'/saveBooking/' + booking.bookingTime + '/' + date}" th:if="${booking.bookingName} == ''">Book denne tid</a></td>
+                <td th:text="${booking.bookingTime}" class=""></td>
+                <td th:if="${booking.bookingName} == ''" class="text-success">&#9679;Ledig</td>
+                <td th:if="${booking.bookingName} != ''" class="text-danger">&#9679;Optaget</td>
+                <td><a class="btn btn-primary btn-sm" th:href="${'/saveBooking/' + booking.bookingTime + '/' + date}" th:if="${booking.bookingName} == ''">Book denne tid</a></td>
             </tr>
         </tbody>
     </table>
