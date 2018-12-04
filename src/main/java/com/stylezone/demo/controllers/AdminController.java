@@ -2,12 +2,15 @@ package com.stylezone.demo.controllers;
 
 import com.stylezone.demo.models.Admin;
 import com.stylezone.demo.models.Offer;
+import com.stylezone.demo.models.ReCaptchaResponse;
 import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -22,6 +25,9 @@ public class AdminController {
 
     @Autowired
     AdminService adminService;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     private final String ADMINLOGIN = "adminLogin";
     private final String SUCCESS = "success";
@@ -45,7 +51,14 @@ public class AdminController {
     }
 
     @PostMapping("/adminLogin")
-    public String adminLogin(@ModelAttribute Admin admin, HttpSession session) {
+    public String adminLogin(@ModelAttribute Admin admin,
+                             @RequestParam("g-recaptcha-response") String captchaResponse,
+                             HttpSession session) {
+
+        String url = "https://www.google.com/recaptcha/api/siteverify";
+        String params = "?secret=6LeWE30UAAAAAMUpo7seu91Da6DXig-DQxN8YKEQ&response="+captchaResponse;
+
+        ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
         log.info("adminLogin PostMapping called...");
 
         int adminPW = adminService.hashPassword(admin.getAdminPassword());
@@ -53,7 +66,7 @@ public class AdminController {
         admin.setAdminPassword(""+adminPW);
         Admin adminCheck = adminService.searchUser(admin);
 
-        if(adminCheck.getAdminPassword().equals(admin.getAdminPassword()) && adminCheck.getAdminUsername().equals(admin.getAdminUsername())) {
+        if(adminCheck.getAdminPassword().equals(admin.getAdminPassword()) && adminCheck.getAdminUsername().equals(admin.getAdminUsername()) && reCaptchaResponse.isSuccess()) {
             log.info("Login is a success");
             session.setAttribute("loggedin", adminCheck);
             return REDIRECT+STAFF;
