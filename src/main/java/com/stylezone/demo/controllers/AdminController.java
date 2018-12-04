@@ -8,10 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.logging.Logger;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 @Controller
 public class AdminController {
@@ -186,4 +193,43 @@ public class AdminController {
 
         return REDIRECT;
     }
+
+
+    private static String UPLOADED_FOLDER = "src//main//resources//static//image//upload//";
+
+    @GetMapping("/upload")
+    public String upload(Model model){
+
+        return "upload";
+    }
+
+    @PostMapping("/upload")
+
+    public String singleFileUpload(@RequestParam("file")MultipartFile file, RedirectAttributes redirectAttributes){
+
+        if (file.isEmpty()){
+
+            redirectAttributes.addFlashAttribute("message", "vælg et billede som du vil uploade til billede galleri siden");
+            return "redirect: uploadlist";
+        }
+
+        try {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Files.write(path, bytes);
+
+            redirectAttributes.addFlashAttribute("message", "du har uploadet et nyt billede til galleriet "  + file.getOriginalFilename());
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return "redirect:/uploadlist";
+        }
+
+    @GetMapping("/uploadlist")
+    public String uploadlist(){
+
+        return "uploadlist";
+    }
 }
+
