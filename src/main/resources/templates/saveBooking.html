@@ -29,7 +29,7 @@
         <input type="hidden" th:name = "bookingDate" th:value="${date}" required/>
 
 
-        <h3>Vælg Frisør</h3>
+        <label>Vælg Frisør:</label>
         <select th:name = "staffId">
             <span th:each = "staff : ${staffs}">
                 <option th:value="${staff.staffId}" th:text="${staff.staffName}"></option>
@@ -37,7 +37,7 @@
         </select>
         <br>
 
-        <h4>Kommentar</h4>
+        <label>Kommentar:</label>
         <textarea rows ="6" cols = "50" th:name = "bookingComment" placeholder = "Skriv eventuel kommentar her"></textarea>
         <br>
 

@@ -27,14 +27,21 @@ public interface BookingService {
 
     //Opening
     Opening findOpening(int openingId);
-    List<Opening> getOpenings();
+    Opening[] getOpenings();
+
     //Mail
     void sendEmail(Booking booking);
 
     //calender
-    public int getWeekToday();
-    public String getDateToday();
-    public String[] getDatesOfWeek();
+    int getWeekToday();
+    int getWeekFromDate(int day, int month, int year);
+    String getDateToday();
+    String nextWeek();
+    String nextWeekFromDate(int day, int month, int year);
+    String prevWeek();
+    String prevWeekFromDate(int day, int month, int year);
+    String[] getDatesOfWeek();
+    String[] getDatesOfSelectedWeek(int day, int month, int year);
 
     //Staff
     List<Staff> getStaff();

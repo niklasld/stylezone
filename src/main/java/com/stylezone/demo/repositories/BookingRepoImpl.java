@@ -101,7 +101,7 @@ public class BookingRepoImpl implements BookingRepo {
 
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
-        log.info("BookingRepo.getBookingGroups("+date+", "+timeStart+", "+timeEnd+")");
+        //log.info("BookingRepo.getBookingGroups("+date+", "+timeStart+", "+timeEnd+")");
 
         String sql = "SELECT HOUR(bookingTime) AS startTime, COUNT(bookingId) AS booked FROM Booking\n" +
                 "WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y')\n" +
@@ -176,7 +176,7 @@ public class BookingRepoImpl implements BookingRepo {
 
     @Override
     public Opening findOpening(int openingId) {
-        String sql = "SELECT * FROM opening WHERE openingId = ?";
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening WHERE openingId = ?";
         RowMapper<Opening> rowMapper = new BeanPropertyRowMapper<>(Opening.class);
 
         Opening opening = template.queryForObject(sql, rowMapper, openingId);
@@ -186,24 +186,26 @@ public class BookingRepoImpl implements BookingRepo {
     }
 
     @Override
-    public List<Opening> getOpenings() {
-        String sql = "SELECT * FROM opening";
-        return this.template.query(sql, new ResultSetExtractor<List<Opening>>() {
+    public Opening[] getOpenings() {
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening";
+        return this.template.query(sql, new ResultSetExtractor<Opening[]>() {
 
             @Override
-            public List<Opening> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                int openingId, openingTime, openingClose;
-                String openingDay;
-                ArrayList<Opening> openings = new ArrayList<>();
+            public Opening[] extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int openingId;
+                String openingDay, openingTime, openingClose;
+                Opening[] openings = new Opening[7];
+                int i = 0;
 
                 while (rs.next()) {
 
                     openingId = rs.getInt("openingId");
                     openingDay = rs.getString("openingDay");
-                    openingTime = rs.getInt("openingTime");
-                    openingClose = rs.getInt("openingClose");
+                    openingTime = rs.getString("openingTime");
+                    openingClose = rs.getString("openingClose");
 
-                    openings.add(new Opening(openingId, openingDay, openingTime, openingClose));
+                    openings[i] = new Opening(openingId, openingDay, openingTime, openingClose);
+                    i++;
                 }
                 return openings;
             }
