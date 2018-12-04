@@ -25,8 +25,9 @@ public interface BookingService {
     void deleteBooking(int bookingId);
 
     //Holiday
-    Holiday findHoliday(int holidayId);
-
+    Holiday findHolidayById(int holidayId);
+    Holiday findHolidayByDate(String holidayDate);
+    Boolean IsHolidayByDate(String holidayDate);
     List<Holiday> getHolidays();
     /*Holiday createHoliday(Holiday holiday);
     Holiday updateHoliday(Holiday holiday);

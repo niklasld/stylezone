@@ -10,16 +10,16 @@
             <li class="nav-item" th:classappend="${isIndex} ? 'active' : ''">
                 <a class="nav-link" href="/">Forside</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" th:classappend="${isPortfolio} ? 'active' : ''">
                 <a class="nav-link" href="/billedeGalleri">Portfolio</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" th:classappend="${isTilbud} ? 'active' : ''">
                 <a class="nav-link" href="/tilbud">Tilbud</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" th:classappend="${isPriser} ? 'active' : ''">
                 <a class="nav-link" href="/priser">Priser</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" th:classappend="${isAbout} ? 'active' : ''">
                 <a class="nav-link" href="/omOs">Om os</a>
             </li>
         </ul>

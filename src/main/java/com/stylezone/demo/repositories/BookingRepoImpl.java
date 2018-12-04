@@ -144,7 +144,7 @@ public class BookingRepoImpl implements BookingRepo {
     }
 
     @Override
-    public Holiday findHoliday(int holidayId) {
+    public Holiday findHolidayById(int holidayId) {
         String sql = "SELECT * FROM holiday WHERE holidayId = ?";
         RowMapper<Holiday> rowMapper = new BeanPropertyRowMapper<>(Holiday.class);
 
@@ -152,6 +152,37 @@ public class BookingRepoImpl implements BookingRepo {
 
 
         return holiday;
+    }
+
+    @Override
+    public Holiday findHolidayByDate(String holidayDate) {
+        String sql = "SELECT * FROM holiday WHERE holidayDate = STR_TO_DATE(?, '%d-%m-%Y')";
+        RowMapper<Holiday> rowMapper = new BeanPropertyRowMapper<>(Holiday.class);
+
+        Holiday holiday = template.queryForObject(sql, rowMapper, holidayDate);
+
+
+        return holiday;
+    }
+
+    @Override
+    public Boolean IsHolidayByDate(String holidayDate) {
+        String sql = "SELECT COUNT(holidayId) AS holidayId FROM stylezone.Holiday WHERE holidayDate = STR_TO_DATE(?, '%d-%m-%Y')";
+        return this.template.query(sql, new ResultSetExtractor<Boolean>() {
+
+            @Override
+            public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int holidayId;
+
+                holidayId = rs.getInt("holidayId");
+
+                if(holidayId == 0){
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }, holidayDate);
     }
 
     @Override

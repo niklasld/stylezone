@@ -23,6 +23,8 @@ import java.time.format.DateTimeFormatter;
 public class BookingServiceImpl implements BookingService {
     Logger log = Logger.getLogger(BookingRepoImpl.class.getName());
 
+    private final boolean DEVELOPER_MODE = false;
+
 
     @Autowired
     BookingRepo bookingRepo;
@@ -58,11 +60,15 @@ public class BookingServiceImpl implements BookingService {
     }
 
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
-        log.info("BookingService.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
+        if(DEVELOPER_MODE) {
+            log.info("BookingService.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
+        }
 
         List<Booking> temp = bookingRepo.getSelectedBookings(date, timeStart, timeEnd);
 
-        log.info("temp length: " + temp.size());
+        if(DEVELOPER_MODE) {
+            log.info("temp length: " + temp.size());
+        }
 
         int bookingId, bookingPhone, staffId;
         String bookingTime, bookingDate, bookingName, bookingComment;
@@ -78,7 +84,9 @@ public class BookingServiceImpl implements BookingService {
             end = end - 10;
         }
 
-        log.info("start:" + start + ", end:" + end);
+        if(DEVELOPER_MODE) {
+            log.info("start:" + start + ", end:" + end);
+        }
 
         assert start < end;
 
@@ -97,8 +105,10 @@ public class BookingServiceImpl implements BookingService {
                 }
             }
 
-            log.info("start:" + start + ", end:" + end + ", i:" + i);
-            log.info("bookingTime:" + bookingTime + ", bookingName:" + bookingName);
+            if(DEVELOPER_MODE) {
+                log.info("start:" + start + ", end:" + end + ", i:" + i);
+                log.info("bookingTime:" + bookingTime + ", bookingName:" + bookingName);
+            }
 
             bookings.add(new Booking(bookingTime, bookingName));
         }
@@ -108,9 +118,13 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
-        log.info("BookingService.getBookingGroups(" + date + ", " + timeStart + ", " + timeEnd + ")");
+        if(DEVELOPER_MODE) {
+            log.info("BookingService.getBookingGroups(" + date + ", " + timeStart + ", " + timeEnd + ")");
+        }
         List<BookingGroup> temp = bookingRepo.getBookingGroups(date, timeStart, timeEnd);
-        log.info("bookingGroups length" + temp.size());
+        if(DEVELOPER_MODE) {
+            log.info("bookingGroups length" + temp.size());
+        }
 
         int bookingGroupId, boookingGroupBooked, boookingGroupTotal;
         String bookingGroupStart, bookingGroupEnd, bookingGroupDate;
@@ -219,8 +233,20 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Holiday findHoliday(int holidayId) {
-        Holiday holiday = bookingRepo.findHoliday(holidayId);
+    public Holiday findHolidayById(int holidayId) {
+        Holiday holiday = bookingRepo.findHolidayById(holidayId);
+        return holiday;
+    }
+
+    @Override
+    public Holiday findHolidayByDate(String holidayDate) {
+        Holiday holiday = bookingRepo.findHolidayByDate(holidayDate);
+        return holiday;
+    }
+
+    @Override
+    public Boolean IsHolidayByDate(String holidayDate) {
+        boolean holiday = bookingRepo.IsHolidayByDate(holidayDate);
         return holiday;
     }
 

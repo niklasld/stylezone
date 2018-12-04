@@ -38,6 +38,7 @@ public class BookingController {
     private final String OMOS = "omOs";
     private final String ABOUTUS = "aboutUs";
 
+    private final boolean DEVELOPER_MODE = false;
 
     Logger log = Logger.getLogger(BookingController.class.getName());
 
@@ -93,6 +94,7 @@ public class BookingController {
 
     @PostMapping("/goToDate")
     public String goToDate(@RequestParam("date")String date, Model model) {
+        log.info("goToDate called...");
 
         //log.info("Go to date: "+date);
 
@@ -170,8 +172,11 @@ public class BookingController {
     }
 
     @GetMapping("/billedeGalleri")
-    public String billedGalleri() {
+    public String billedGalleri(Model model) {
         log.info("billedeGalleri called...");
+
+        model.addAttribute("pageTitle", "Portfolio");
+        model.addAttribute("isPortfolio", true);
 
         return BILLEDEGALLERI;
     }
@@ -216,6 +221,10 @@ public class BookingController {
 
     @GetMapping("/omOs")
     public String omOs(Model model) {
+        log.info("omOs called...");
+
+        model.addAttribute("pageTitle", "Om os");
+        model.addAttribute("isAbout", true);
 
         return OMOS;
     }
