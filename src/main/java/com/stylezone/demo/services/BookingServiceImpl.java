@@ -397,34 +397,6 @@ public class BookingServiceImpl implements BookingService {
         return dates;
     }
 
-    @Override
-    public List<Offer> getOffers() {
-        List<Offer> offers = bookingRepo.getOffers();
-
-        return offers;
-    }
-
-    @Override
-    public Offer createOffer(Offer offer) {
-        offer = bookingRepo.createOffer(offer);
-        return offer;
-    }
-
-    @Override
-    public Offer updateOffer(Offer offer) {
-        return null;
-    }
-
-    @Override
-    public void deleteOffer(int id) {
-
-    }
-
-    @Override
-    public Offer findOffer(int id) {
-        return null;
-    }
-
     public String[] getDatesOfSelectedWeek(int day, int month, int year) {
         String[] dates = new String[7];
 

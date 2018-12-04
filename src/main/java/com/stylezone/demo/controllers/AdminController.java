@@ -1,6 +1,7 @@
 package com.stylezone.demo.controllers;
 
 import com.stylezone.demo.models.Admin;
+import com.stylezone.demo.models.Offer;
 import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class AdminController {
     private final String STAFF = "staff";
     private final String DELETESTAFF = "deleteStaff";
     private final String CREATESTAFFMEMBER = "createStaffMember";
+    private final String OFFER = "offer";
+    private final String CREATEOFFER = "createOffer";
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
@@ -147,5 +150,40 @@ public class AdminController {
 
         return REDIRECT + STAFF;
 
+    }
+
+
+    @GetMapping("/offer")
+    public String offer(Model model) {
+        log.info("Index called...");
+
+        List<Offer> offers = adminService.getOffers();
+        model.addAttribute("offers", offers);
+        model.addAttribute("pageTitle", "offer");
+
+        return OFFER;
+    }
+
+    @GetMapping("/createOffer")
+    public String createOffer(Model model) {
+        log.info("createOffer getmapping is been called...");
+
+        model.addAttribute("offer", new Offer());
+        model.addAttribute("pageTitle", "Create offer");
+
+        return CREATEOFFER;
+    }
+
+    @PostMapping("/createOffer")
+    public String createOffer(@ModelAttribute Offer offer, Model model){
+        log.info("create Offer postmapping is called");
+
+        log.info("offerName: " + offer.getOfferName() + " offerContent: " + offer.getOfferContent() + " offerStart: " + offer.getOfferStart() + " offerEnd: " + offer.getOfferEnd());
+
+        adminService.createOffer(offer);
+        model.addAttribute("Offers", adminService.getOffers());
+        model.addAttribute("pageTitle", "Create offer");
+
+        return REDIRECT;
     }
 }

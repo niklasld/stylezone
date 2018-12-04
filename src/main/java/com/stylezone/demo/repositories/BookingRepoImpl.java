@@ -235,57 +235,7 @@ public class BookingRepoImpl implements BookingRepo {
         return booking;
 
     }
-    @Override
-    public Offer createOffer(Offer offer) {
-        Logger log = Logger.getLogger(BookingServiceImpl.class.getName());
 
-        String sql = "INSERT INTO stylezone.Offer VALUE(default, ?, ?, ?, ?)";
-        String offerName = offer.getOfferName();
-        String offerContent = offer.getOfferContent();
-        String offerStart = offer.getOfferStart();
-        String offerEnd = offer.getOfferEnd();
-
-        log.info("create offer" + offerName + offerContent + offerStart + offerEnd );
-        this.template.update(sql, offerName, offerContent, offerStart, offerEnd );
-
-        return offer;
-    }
-
-    @Override
-    public Offer updateOffer(Offer offer) {
-        return null;
-    }
-
-    @Override
-    public Offer findOffer(int offerId) {
-        return null;
-    }
-
-    @Override
-    public List<Offer> getOffers() {
-         String sql = "SELECT * FROM Offer";
-
-            // Fra sql til list.
-            // Manuelt i stedet.
-            return this.template.query(sql, new ResultSetExtractor<List<Offer>>() {
-                @Override
-                public List<Offer> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                    String offerName, offerContent, offerStart, offerEnd;
-                    ArrayList<Offer> offers = new ArrayList<>();
-
-                    while (rs.next()) {
-                        offerName = rs.getString("offerName");
-                        offerContent = rs.getString("offerContent");
-                        offerStart = rs.getString("offerStart");
-                        offerEnd = rs.getString("offerEnd");
-
-                        offers.add(new Offer(offerName, offerContent, offerStart, offerEnd));
-                    }
-                    return offers;
-                }
-            });
-
-    }
 
     @Override
     public Staff getStaffMember(int staffId){

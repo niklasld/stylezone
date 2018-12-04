@@ -1,6 +1,7 @@
 package com.stylezone.demo.services;
 
 import com.stylezone.demo.models.Admin;
+import com.stylezone.demo.models.Offer;
 import com.stylezone.demo.models.Staff;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +19,12 @@ public interface AdminService {
     Staff updateStaff(Staff staff);
     void deleteStaffMember(int staffId);
     Staff createStaffMember(Staff staff);
+
+    //Offers
+    List<Offer> getOffers();
+    Offer createOffer(Offer offer);
+    Offer updateOffer(Offer offer);
+    void deleteOffer(int id);
+    Offer findOffer(int id);
 
 }

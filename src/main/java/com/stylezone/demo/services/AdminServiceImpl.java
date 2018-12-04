@@ -1,6 +1,7 @@
 package com.stylezone.demo.services;
 
 import com.stylezone.demo.models.Admin;
+import com.stylezone.demo.models.Offer;
 import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.repositories.AdminRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +73,33 @@ public class AdminServiceImpl implements AdminService {
         staff = adminRepo.updateStaff(staff);
 
         return staff;
+    }
+
+    @Override
+    public List<Offer> getOffers() {
+        List<Offer> offers = adminRepo.getOffers();
+
+        return offers;
+    }
+
+    @Override
+    public Offer createOffer(Offer offer) {
+        offer = adminRepo.createOffer(offer);
+        return offer;
+    }
+
+    @Override
+    public Offer updateOffer(Offer offer) {
+        return null;
+    }
+
+    @Override
+    public void deleteOffer(int id) {
+
+    }
+
+    @Override
+    public Offer findOffer(int id) {
+        return null;
     }
 }

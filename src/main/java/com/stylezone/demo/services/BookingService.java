@@ -51,13 +51,6 @@ public interface BookingService {
     String[] getDatesOfWeek();
     String[] getDatesOfSelectedWeek(int day, int month, int year);
 
-    //Offers
-    List<Offer> getOffers();
-    Offer createOffer(Offer offer);
-    Offer updateOffer(Offer offer);
-    void deleteOffer(int id);
-    Offer findOffer(int id);
-
     //Staff
     List<Staff> getStaff();
     Staff getStaffMember(int staffId);
