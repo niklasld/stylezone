@@ -31,9 +31,9 @@
 
         <h3>Vælg Frisør</h3>
         <select th:name = "staffId">
-            <span th:each = "staff : ${staffs}">
-                <option th:value="${staff.staffId}" th:text="${staff.staffName}"></option>
-            </span>
+            <option th:value="1">Første ledige</option>
+            <option th:value="2">John</option>
+            <option th:value="3">kollegaer</option>
         </select>
         <br>
 

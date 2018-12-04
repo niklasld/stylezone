@@ -36,10 +36,10 @@ public interface BookingService {
     public String getDateToday();
     public String[] getDatesOfWeek();
 
-    //Staff
-    List<Staff> getStaff();
-    Staff getStaffMember(int staffId);
-    Staff updateStaff(Staff staff);
-    void deleteStaffMember(int staffId);
-    Staff createStaffMember(Staff staff);
+    //Offers
+    List<Offer> getOffers();
+    Offer createOffer(Offer offer);
+    Offer updateOffer(Offer offer);
+    void deleteOffer(int id);
+    Offer findOffer(int id);
 }

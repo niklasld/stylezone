@@ -28,11 +28,10 @@ public interface BookingRepo {
     Opening findOpening(int openingId);
     List<Opening> getOpenings();
 
-    //Staff
-    List<Staff> getStaff();
-    Staff getStaffMember(int staffId);
-    Staff updateStaff(Staff staff);
-    void deleteStaffMember(int staffId);
-    Staff createStaffMember(Staff staff);
+    //Offers
+    Offer findOffer(int offerId);
+    List<Offer> getOffers();
+    Offer createOffer(Offer offer);
+    Offer updateOffer(Offer offer);
 
 }

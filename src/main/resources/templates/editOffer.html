@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+<body>
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
+    <h1>Edit Offer</h1>
+
+    <form method="Post" th:action="@{/editOffer}" th:object="${offer}">
+
+        <label>Tilbud Name:</label>
+        <input type="text" class="form-control mr-sm-2"  th:name="offerName" placeholder="jule offer"/>
+
+        <label>Tilbud Beskrivelse:</label>
+        <br>
+        <textarea rows ="3" cols = "60" th:name = "offerContent" placeholder = "Skriv din aktuelle offer her"></textarea>
+
+        <br>
+        <label>Starts Dato:</label>
+        <br>
+        <input type="date" rows ="2" cols = "30" th:name = "offerStart" placeholder = "Skriv din aktuelle offer her">
+
+        <br>
+        <label>Sluts Dato:</label>
+        <br>
+        <input type="date" rows ="2" cols = "30" th:name = "offerEnd" placeholder = "Skriv din aktuelle offer her">
+
+        <br>
+
+        <input class="btn btn-light" type="button" value="Anullere" onclick="location.href='/';"/>
+
+        <button class="btn btn-primary" type="submit" value="Edit Offer">Edit</button>
+
+    </form>
+</div>
+</body>
+</html>

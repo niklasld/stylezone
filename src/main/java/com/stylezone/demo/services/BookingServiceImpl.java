@@ -29,6 +29,7 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     BookingRepo bookingRepo;
 
+
     @Override
     public Booking findBooking(int bookingId) {
         Booking booking = bookingRepo.findBooking(bookingId);
@@ -59,20 +60,20 @@ public class BookingServiceImpl implements BookingService {
     }
 
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
-        log.info("BookingService.getSelectedBookings("+date+", "+timeStart+", "+timeEnd+")");
+        log.info("BookingService.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
 
         List<Booking> temp = bookingRepo.getSelectedBookings(date, timeStart, timeEnd);
 
-        log.info("temp length: "+temp.size());
+        log.info("temp length: " + temp.size());
 
         int bookingId, bookingPhone, staffId;
         String bookingTime, bookingDate, bookingName, bookingComment;
         List<Booking> bookings = new ArrayList<>();
 
-        int hour = Integer.parseInt(timeStart.substring(0,2));
-        int start = Integer.parseInt(timeStart.substring(3,5));
+        int hour = Integer.parseInt(timeStart.substring(0, 2));
+        int start = Integer.parseInt(timeStart.substring(3, 5));
         int end;
-        if(Integer.parseInt(timeEnd.substring(3,5)) < 10) {
+        if (Integer.parseInt(timeEnd.substring(3, 5)) < 10) {
             end = 50;
         } else {
             end = Integer.parseInt(timeEnd.substring(3, 5));
@@ -83,7 +84,7 @@ public class BookingServiceImpl implements BookingService {
 
         assert start < end;
 
-        for (int i = start; i <= end; i = i+10){
+        for (int i = start; i <= end; i = i + 10) {
 
             bookingTime = hour + ":" + i;
             if (i < 1) {
@@ -92,8 +93,8 @@ public class BookingServiceImpl implements BookingService {
 
             bookingName = "";
 
-            for (Booking t: temp) {
-                if(i == Integer.parseInt(t.getBookingTime().substring(3,5))){
+            for (Booking t : temp) {
+                if (i == Integer.parseInt(t.getBookingTime().substring(3, 5))) {
                     bookingName = t.getBookingName();
                 }
             }
@@ -109,27 +110,27 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
-        log.info("BookingService.getBookingGroups("+date+", "+timeStart+", "+timeEnd+")");
+        log.info("BookingService.getBookingGroups(" + date + ", " + timeStart + ", " + timeEnd + ")");
         List<BookingGroup> temp = bookingRepo.getBookingGroups(date, timeStart, timeEnd);
-        log.info("bookingGroups length"+temp.size());
+        log.info("bookingGroups length" + temp.size());
 
         int bookingGroupId, boookingGroupBooked, boookingGroupTotal;
-        String bookingGroupStart,  bookingGroupEnd, bookingGroupDate;
+        String bookingGroupStart, bookingGroupEnd, bookingGroupDate;
         List<BookingGroup> bookingGroups = new ArrayList<>();
 
-        for (int i = Integer.parseInt(timeStart.substring(0,2)); i <= Integer.parseInt(timeEnd.substring(0,2)); i++){
+        for (int i = Integer.parseInt(timeStart.substring(0, 2)); i <= Integer.parseInt(timeEnd.substring(0, 2)); i++) {
 
             boookingGroupTotal = 6;
 
             bookingGroupDate = date;
 
             bookingGroupStart = "" + i + ":00";
-            bookingGroupEnd = "" + (i+1) + ":00";
+            bookingGroupEnd = "" + (i + 1) + ":00";
 
 
-            if(i == Integer.parseInt(timeStart.substring(0,2))){
-                int param = Integer.parseInt(timeStart.substring(3,5));
-                switch (param){
+            if (i == Integer.parseInt(timeStart.substring(0, 2))) {
+                int param = Integer.parseInt(timeStart.substring(3, 5));
+                switch (param) {
                     case 00:
                         boookingGroupTotal = 6;
                         break;
@@ -156,9 +157,9 @@ public class BookingServiceImpl implements BookingService {
                 }
             }
 
-            if(i == Integer.parseInt(timeEnd.substring(0,2))){
-                int param = Integer.parseInt(timeEnd.substring(3,5));
-                switch (param){
+            if (i == Integer.parseInt(timeEnd.substring(0, 2))) {
+                int param = Integer.parseInt(timeEnd.substring(3, 5));
+                switch (param) {
                     case 00:
                         boookingGroupTotal = 0;
                         break;
@@ -189,8 +190,8 @@ public class BookingServiceImpl implements BookingService {
 
             boookingGroupBooked = 0;
 
-            for (BookingGroup t: temp) {
-                if(i == Integer.parseInt(t.getBookingGroupStart().substring(0,2))){
+            for (BookingGroup t : temp) {
+                if (i == Integer.parseInt(t.getBookingGroupStart().substring(0, 2))) {
                     boookingGroupBooked = t.getBoookingGroupBooked();
                 }
             }
@@ -260,24 +261,24 @@ public class BookingServiceImpl implements BookingService {
             //Creating a Message object to set the email content
             MimeMessage msg = new MimeMessage(session);
             //Storing the comma seperated values to email addresses
-            String to = "stylezone.bestilling@gmail.com, "+booking.getBookingEmail();
+            String to = "stylezone.bestilling@gmail.com, " + booking.getBookingEmail();
             /*Parsing the String with defualt delimiter as a comma by marking the boolean as true and storing the email
             addresses in an array of InternetAddress objects*/
             InternetAddress[] address = InternetAddress.parse(to, true);
             //Setting the recepients from the address variable
             msg.setRecipients(Message.RecipientType.TO, address);
-            msg.setSubject("Din tidsbestilling hos StyleZone den " + booking.getBookingDate()+" kl. "+booking.getBookingTime());
+            msg.setSubject("Din tidsbestilling hos StyleZone den " + booking.getBookingDate() + " kl. " + booking.getBookingTime());
             msg.setSentDate(new Date());
 
             String mailText;
 
-            mailText = "Hej "+booking.getBookingName()+"\n\n";
+            mailText = "Hej " + booking.getBookingName() + "\n\n";
             mailText += "Tak for din tidsbestilling hos StyleZone.\n\n";
             mailText += "Vi har registreret nedenstående information om din bestilling\n\n";
-            mailText += "Tid: "+booking.getBookingTime()+"\n";
-            mailText += "Dato: "+booking.getBookingDate()+"\n";
-            mailText += "Dit tlf nr: +45"+booking.getBookingPhone()+"\n";
-            mailText += "Kommentar: "+booking.getBookingComment()+"\n\n";
+            mailText += "Tid: " + booking.getBookingTime() + "\n";
+            mailText += "Dato: " + booking.getBookingDate() + "\n";
+            mailText += "Dit tlf nr: +45" + booking.getBookingPhone() + "\n";
+            mailText += "Kommentar: " + booking.getBookingComment() + "\n\n";
             mailText += "Er nogle af informationerne ændres eller bestillingen skal aflyses, kan StyleZone kontaktes på telefon nummer: +45 2989 7596.\n\n";
             mailText += "Med venlig hilsen.\n";
             mailText += "StyleZone";
@@ -291,6 +292,7 @@ public class BookingServiceImpl implements BookingService {
             log.info("Unable to send an email" + mex);
         }
     }
+
     public int getWeekToday() {
         return Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     }
@@ -319,7 +321,7 @@ public class BookingServiceImpl implements BookingService {
         date = monday;
         dates[0] = formatter.format(date);
 
-        for (int i = 1; i<7; i++){
+        for (int i = 1; i < 7; i++) {
             date = date.plusDays(1);
             dates[i] = formatter.format(date);
         }
@@ -328,34 +330,30 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Staff> getStaff() {
-        List<Staff> staffs = bookingRepo.getStaff();
-        return staffs;
+    public List<Offer> getOffers() {
+        List<Offer> offers = bookingRepo.getOffers();
+
+        return offers;
     }
 
     @Override
-    public Staff getStaffMember(int staffId) {
-        Staff staffs = bookingRepo.getStaffMember(staffId);
-        return staffs;
+    public Offer createOffer(Offer offer) {
+        offer = bookingRepo.createOffer(offer);
+        return offer;
     }
 
     @Override
-    public Staff updateStaff(Staff staff){
-
-        staff = bookingRepo.updateStaff(staff);
-
-        return staff;
-    }
-    @Override
-    public void deleteStaffMember(int staffId){
-        bookingRepo.deleteStaffMember(staffId);
+    public Offer updateOffer(Offer offer) {
+        return null;
     }
 
     @Override
-    public Staff createStaffMember(Staff staff){
-        staff = bookingRepo.createStaffMember(staff);
+    public void deleteOffer(int id) {
 
-        return staff;
+    }
 
+    @Override
+    public Offer findOffer(int id) {
+        return null;
     }
 }

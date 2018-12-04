@@ -1,9 +1,9 @@
 package com.stylezone.demo.controllers;
 
 import com.stylezone.demo.models.Booking;
+import com.stylezone.demo.models.Offer;
 import com.stylezone.demo.models.ReCaptchaResponse;
 import com.stylezone.demo.models.BookingGroup;
-import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 @Controller
 public class BookingController {
+
 
     public BookingController() {
     }
@@ -33,11 +34,12 @@ public class BookingController {
     private final String TIMESELECT = "timeSelect";
     private final String BILLEDEGALLERI = "billedeGalleri";
     private final String INDEX = "index";
-    private final String ABOUTUS = "aboutUs";
-    private final String EDITSTAFF = "editStaff";
-    private final String STAFF = "staff";
-    private final String DELETESTAFF = "deleteStaff";
-    private final String CREATESTAFFMEMBER = "createStaffMember";
+    private final String OMOS = "omOs";
+    private final String OFFER = "offer";
+    private final String CREATEOFFER = "createOffer";
+
+
+
 
     Logger log = Logger.getLogger(BookingController.class.getName());
 
@@ -90,7 +92,6 @@ public class BookingController {
         log.info("billedeGalleri called...");
 
         return BILLEDEGALLERI;
-
     }
 
 
@@ -99,10 +100,8 @@ public class BookingController {
 
         log.info("saveBooking getmapping called...");
 
-        List<Staff> staffs = bookingService.getStaff();
-
-        model.addAttribute("staffs", staffs);
         model.addAttribute("booking", new Booking());
+
         model.addAttribute("time", bookingTime);
         model.addAttribute("date", bookingDate);
 
@@ -133,103 +132,66 @@ public class BookingController {
 
     }
 
-    @GetMapping("/aboutUs")
-    public String aboutUs(Model model) {
+    @GetMapping("/omOs")
+    public String omOs(Model model) {
 
-        return ABOUTUS;
-
+        return OMOS;
     }
 
-    @GetMapping("/editStaff/{staffId}")
-    public String editStaff(@PathVariable("staffId")int staffId, Model model){
-        log.info("editStaff GetMapping called...");
 
-        Staff staff = bookingService.getStaffMember(staffId);
 
-        model.addAttribute("staff",staff );
+    @GetMapping("/offer")
+    public String offer(Model model) {
+        log.info("Index called...");
 
-        return EDITSTAFF;
+        List<Offer> offers = bookingService.getOffers();
+        model.addAttribute("offers", offers);
+        model.addAttribute("pageTitle", "offer");
 
+        return OFFER;
     }
 
-    @PutMapping("/editStaff")
-    public String editStaff(@ModelAttribute Staff staff, Model model){
 
-        bookingService.updateStaff(staff);
-        log.info("editStaff called..." + staff.getStaffId());
-        model.addAttribute("", bookingService.getStaff());
 
-        return REDIRECT + STAFF;
+        /*
+
+    @GetMapping("/offer")
+    public String offer() {
+        log.info("offer siden called...");
+
+        return OFFER;
+    }
+    /*@GetMapping("/opretTilbud")
+      public String opretTilbud() {
+          log.info("opretTilbud siden called...");
+
+          return OPRETTILBUD;
+      }  */
+
+    @GetMapping("/createOffer")
+    public String createOffer(Model model) {
+        log.info("createOffer getmapping is been called...");
+
+        model.addAttribute("offer", new Offer());
+        model.addAttribute("pageTitle", "Create offer");
+
+        return CREATEOFFER;
     }
 
-    @GetMapping("/staff")
-    public String staff(Model model){
-        log.info("staff called...");
+    @PostMapping("/createOffer")
+    public String createOffer(@ModelAttribute Offer offer, Model model){
+        log.info("create Offer postmapping is called");
 
-        List<Staff> staffs = bookingService.getStaff();
-        model.addAttribute("staffs", staffs);
+        log.info("offerName: " + offer.getOfferName() + " offerContent: " + offer.getOfferContent() + " offerStart: " + offer.getOfferStart() + " offerEnd: " + offer.getOfferEnd());
 
-        return STAFF;
+        bookingService.createOffer(offer);
+        model.addAttribute("Offers", bookingService.getOffers());
+        model.addAttribute("pageTitle", "Create offer");
 
-    }
-    @PostMapping("/staff")
-    public String staff(@ModelAttribute Staff staff, Model model){
-        log.info("Staff called...");
-
-        model.addAttribute("staffs", bookingService.getStaff());
-
-        return STAFF;
+        return REDIRECT;
     }
 
-    @GetMapping("/deleteStaff/{staffId}")
-    public String deleteStaff(@PathVariable("staffId") int staffId, Model model){
-        log.info("deleteStaff with called with id :" + staffId );
 
-        model.addAttribute("staff",bookingService.getStaffMember(staffId));
-        String staffName = bookingService.getStaffMember(staffId).getStaffName();
-        model.addAttribute("pageTitle", "Delete staff ("+ staffName + ")");
-
-        return DELETESTAFF;
-
-    }
-    @PutMapping("/deleteStaff")
-    public String deleteStaff(@ModelAttribute Staff staff, Model model){
-        log.info("delete confirmed deleting staffmember with Id" + staff.getStaffId());
-        int id = staff.getStaffId();
-
-        bookingService.deleteStaffMember(id);
-
-        model.addAttribute("staffs", bookingService.getStaff() );
-        model.addAttribute("pageTitle", "Delete staffMember" );
-
-        return REDIRECT + STAFF;
-
-    }
-
-    @GetMapping("/createStaffMember")
-    public String createStaffMember(Model model){
-        log.info("CreateStaffMember alled..");
-
-            model.addAttribute("staff", new Staff());
-            model.addAttribute("pageTitle", "Create new Staff Member");
-
-            return CREATESTAFFMEMBER;
-    }
-
-    @PostMapping("/createStaffMember")
-    public String createStaffMember(@ModelAttribute Staff staff, Model model){
-        log.info("createStaffMember postmapping called..");
-
-        bookingService.createStaffMember(staff);
-
-        model.addAttribute("staff", bookingService.getStaff());
-        model.addAttribute("pageTitle", "Create staff" );
-
-        return REDIRECT + STAFF;
-
-    }
 }
-
-
 
 

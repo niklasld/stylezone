@@ -1,6 +1,7 @@
 package com.stylezone.demo.repositories;
 
 import com.stylezone.demo.models.*;
+import com.stylezone.demo.services.BookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.logging.Logger;
+import java.util.*;
 
 
 import java.sql.ResultSet;
@@ -59,15 +61,16 @@ public class BookingRepoImpl implements BookingRepo {
                     bookingEmail = rs.getString("bookingEmail");
                     bookingComment = rs.getString("bookingComment");
 
-                    bookings.add(new Booking(bookingId, bookingTime, bookingDate, bookingName,bookingEmail, bookingPhone, bookingComment, staffId));
+                    bookings.add(new Booking(bookingId, bookingTime, bookingDate, bookingName, bookingEmail, bookingPhone, bookingComment, staffId));
                 }
                 return bookings;
             }
         });
     }
+
     @Override
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
-        log.info("BookingRepo.getSelectedBookings("+date+", "+timeStart+", "+timeEnd+")");
+        log.info("BookingRepo.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
 
         String sql = "SELECT * FROM Booking\n" +
                 "WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y')\n" +
@@ -101,7 +104,7 @@ public class BookingRepoImpl implements BookingRepo {
 
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
-        log.info("BookingRepo.getBookingGroups("+date+", "+timeStart+", "+timeEnd+")");
+        log.info("BookingRepo.getBookingGroups(" + date + ", " + timeStart + ", " + timeEnd + ")");
 
         String sql = "SELECT HOUR(bookingTime) AS startTime, COUNT(bookingId) AS booked FROM Booking\n" +
                 "WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y')\n" +
@@ -114,7 +117,7 @@ public class BookingRepoImpl implements BookingRepo {
             @Override
             public List<BookingGroup> extractData(ResultSet rs) throws SQLException, DataAccessException {
                 int bookingGroupId, boookingGroupBooked, boookingGroupTotal;
-                String bookingGroupStart,  bookingGroupEnd, bookingGroupDate;
+                String bookingGroupStart, bookingGroupEnd, bookingGroupDate;
                 List<BookingGroup> bookingGroups = new ArrayList<>();
 
                 while (rs.next()) {
@@ -209,8 +212,9 @@ public class BookingRepoImpl implements BookingRepo {
             }
         });
     }
+
     @Override
-    public Booking saveBooking(Booking booking){
+    public Booking saveBooking(Booking booking) {
 
 
         String sql = "INSERT INTO stylezone.Booking VALUES(default,?,STR_TO_DATE(?,'%d-%m-%Y'),?,?,?,?,?)";
@@ -228,72 +232,59 @@ public class BookingRepoImpl implements BookingRepo {
         return booking;
 
     }
+    @Override
+    public Offer createOffer(Offer offer) {
+        Logger log = Logger.getLogger(BookingServiceImpl.class.getName());
+
+        String sql = "INSERT INTO stylezone.Offer VALUE(default, ?, ?, ?, ?)";
+        String offerName = offer.getOfferName();
+        String offerContent = offer.getOfferContent();
+        String offerStart = offer.getOfferStart();
+        String offerEnd = offer.getOfferEnd();
+
+        log.info("create offer" + offerName + offerContent + offerStart + offerEnd );
+        this.template.update(sql, offerName, offerContent, offerStart, offerEnd );
+
+        return offer;
+    }
 
     @Override
-    public List<Staff> getStaff(){
+    public Offer updateOffer(Offer offer) {
+        return null;
+    }
 
-            String sql = "SELECT * FROM Staff";
-            return this.template.query(sql, new ResultSetExtractor<List<Staff>>() {
+    @Override
+    public Offer findOffer(int offerId) {
+        return null;
+    }
 
+    @Override
+    public List<Offer> getOffers() {
+         String sql = "SELECT * FROM Offer";
+
+            // Fra sql til list.
+            // Manuelt i stedet.
+            return this.template.query(sql, new ResultSetExtractor<List<Offer>>() {
                 @Override
-                public List<Staff> extractData(ResultSet rs) throws SQLException, DataAccessException{
+                public List<Offer> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                    String offerName, offerContent, offerStart, offerEnd;
+                    ArrayList<Offer> offers = new ArrayList<>();
 
-                int staffId;
-                String staffName;
-                ArrayList<Staff> staffs = new ArrayList<>();
+                    while (rs.next()) {
+                        offerName = rs.getString("offerName");
+                        offerContent = rs.getString("offerContent");
+                        offerStart = rs.getString("offerStart");
+                        offerEnd = rs.getString("offerEnd");
 
-                while (rs.next()){
-
-                    staffId = rs.getInt("staffId");
-                    staffName = rs.getString("staffName");
-
-                    staffs.add(new Staff(staffId, staffName));
-
+                        offers.add(new Offer(offerName, offerContent, offerStart, offerEnd));
+                    }
+                    return offers;
                 }
-                return staffs;
-            }
+            });
 
-        });
-    }
-    @Override
-    public Staff getStaffMember(int staffId){
-        String sql = "SELECT * FROM Staff WHERE staffId = ?";
-        RowMapper<Staff> rowMapper = new BeanPropertyRowMapper<>(Staff.class);
-
-        Staff staff = template.queryForObject(sql,rowMapper, staffId );
-
-        return staff;
+        }
     }
 
-    @Override
-    public Staff updateStaff(Staff staff){
-
-        String sql = "UPDATE Staff SET staffName =? WHERE staffId = ?";
-        String staffName = staff.getStaffName();
-
-        int staffId = staff.getStaffId();
-        this.template.update(sql, staffName, staffId);
-
-        return staff;
-
-    }
-    @Override
-    public void deleteStaffMember(int staffId){
-        String sql = "DELETE FROM stylezone.Staff WHERE staffId = ?";
-        this.template.update(sql, staffId );
-    }
-
-    public Staff createStaffMember(Staff staff){
-        String sql = "INSERT INTO Staff VALUE(default, ?)";
-
-        String staffName = staff.getStaffName();
-
-        log.info("createStaffMember called" + staffName);
-        this.template.update(sql, staffName);
-
-        return staff;
 
 
-    }
-}
 
