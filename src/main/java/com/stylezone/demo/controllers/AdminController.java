@@ -55,11 +55,12 @@ public class AdminController {
                              @RequestParam("g-recaptcha-response") String captchaResponse,
                              HttpSession session) {
 
+        log.info("adminLogin PostMapping called...");
+
         String url = "https://www.google.com/recaptcha/api/siteverify";
         String params = "?secret=6LeWE30UAAAAAMUpo7seu91Da6DXig-DQxN8YKEQ&response="+captchaResponse;
 
         ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
-        log.info("adminLogin PostMapping called...");
 
         int adminPW = adminService.hashPassword(admin.getAdminPassword());
 
