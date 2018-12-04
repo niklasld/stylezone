@@ -9,6 +9,11 @@ public class Opening {
     public Opening() {
     }
 
+    public Opening(String openingTime, String openingClose) {
+        this.openingTime = openingTime;
+        this.openingClose = openingClose;
+    }
+
     public Opening(int openingId, String openingDay, String openingTime, String openingClose) {
         this.openingId = openingId;
         this.openingDay = openingDay;

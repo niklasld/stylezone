@@ -2,6 +2,7 @@ package com.stylezone.demo.repositories;
 
 import com.stylezone.demo.models.Admin;
 import com.stylezone.demo.models.Offer;
+import com.stylezone.demo.models.Opening;
 import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.services.AdminServiceImpl;
 import com.stylezone.demo.services.BookingServiceImpl;
@@ -191,5 +192,43 @@ public class AdminRepoImpl implements AdminRepo {
             }
         });
 
+    }
+
+    @Override
+    public Opening findOpening(int openingId) {
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening WHERE openingId = ?";
+        RowMapper<Opening> rowMapper = new BeanPropertyRowMapper<>(Opening.class);
+
+        Opening opening = template.queryForObject(sql, rowMapper, openingId);
+
+
+        return opening;
+    }
+
+    @Override
+    public Opening[] getOpenings() {
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening";
+        return this.template.query(sql, new ResultSetExtractor<Opening[]>() {
+
+            @Override
+            public Opening[] extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int openingId;
+                String openingDay, openingTime, openingClose;
+                Opening[] openings = new Opening[7];
+                int i = 0;
+
+                while (rs.next()) {
+
+                    openingId = rs.getInt("openingId");
+                    openingDay = rs.getString("openingDay");
+                    openingTime = rs.getString("openingTime");
+                    openingClose = rs.getString("openingClose");
+
+                    openings[i] = new Opening(openingId, openingDay, openingTime, openingClose);
+                    i++;
+                }
+                return openings;
+            }
+        });
     }
 }

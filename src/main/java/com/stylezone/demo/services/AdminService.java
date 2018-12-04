@@ -2,9 +2,11 @@ package com.stylezone.demo.services;
 
 import com.stylezone.demo.models.Admin;
 import com.stylezone.demo.models.Offer;
+import com.stylezone.demo.models.Opening;
 import com.stylezone.demo.models.Staff;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,5 +28,10 @@ public interface AdminService {
     Offer updateOffer(Offer offer);
     void deleteOffer(int id);
     Offer findOffer(int id);
+
+    //Opening
+    Opening findOpening(int openingId);
+    Opening[] getOpenings();
+    ArrayList<Opening> getTimes();
 
 }

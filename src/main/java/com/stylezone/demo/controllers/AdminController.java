@@ -1,9 +1,6 @@
 package com.stylezone.demo.controllers;
 
-import com.stylezone.demo.models.Admin;
-import com.stylezone.demo.models.Offer;
-import com.stylezone.demo.models.ReCaptchaResponse;
-import com.stylezone.demo.models.Staff;
+import com.stylezone.demo.models.*;
 import com.stylezone.demo.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,6 +36,7 @@ public class AdminController {
     private final String CREATESTAFFMEMBER = "createStaffMember";
     private final String OFFER = "offer";
     private final String CREATEOFFER = "createOffer";
+    private final String EDITOPENINGHOURS = "editOpeningHours";
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
@@ -199,5 +198,20 @@ public class AdminController {
         model.addAttribute("pageTitle", "Create offer");
 
         return REDIRECT;
+    }
+
+    @GetMapping("/editOpeningHours")
+    public String editOpeningHours(Model model) {
+        log.info("Edit opening hours called...");
+
+        Opening openingHours[] = adminService.getOpenings();
+        ArrayList<Opening> times = adminService.getTimes();
+
+        log.info(""+times);
+
+        model.addAttribute("openingHours", openingHours);
+        model.addAttribute("times",times);
+
+        return EDITOPENINGHOURS;
     }
 }

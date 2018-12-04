@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+    <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
+</head>
+<body>
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
+    <h1>Åbnings tider:</h1>
+
+    <br>
+
+    <table class="table table-striped table-bordered table-hover">
+        <tbody>
+        <tr>
+            <th>Dag: </th>
+        </tr>
+        <tr class = "active" th:each="openingDay : ${openingHours}">
+            <td th:text="${openingDay}"></td>
+
+            <td>
+
+                <label>Vælg Åbningstid:</label>
+                <select class="active" th:each = "openingTime : ${times}">
+                    <option th:value="${openingTime}"><span th:value="${openingTime}"></span></option>
+
+                </select>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <a href="/createStaffMember" class="btn btn-success">
+        <span class="fas fa-plus"></span> Create new Staff Member
+    </a>
+
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+</body>
+</html>

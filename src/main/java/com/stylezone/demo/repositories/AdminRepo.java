@@ -2,6 +2,7 @@ package com.stylezone.demo.repositories;
 
 import com.stylezone.demo.models.Admin;
 import com.stylezone.demo.models.Offer;
+import com.stylezone.demo.models.Opening;
 import com.stylezone.demo.models.Staff;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +26,8 @@ public interface AdminRepo {
     List<Offer> getOffers();
     Offer createOffer(Offer offer);
     Offer updateOffer(Offer offer);
+
+    //Opening
+    Opening findOpening(int openingId);
+    Opening[] getOpenings();
 }
