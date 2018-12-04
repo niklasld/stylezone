@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+<body>
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
+
+    <h1><span class=""></span> Offer</h1>
+
+    <br>
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>offerName</th>
+            <th>offerContent</th>
+            <th>offerStart</th>
+            <th>offerEnd</th>
+            <th>Settings</th>
+
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="active" th:each="offer : ${offers}">
+            <td th:text="${offer.offerName}" ></td>
+            <td th:text="${offer.offerContent}" ></td>
+            <td th:text="${offer.offerStart}"></td>
+            <td th:text="${offer.offerEnd}" /></span>
+            <td>
+                <a th:href="${'display/' + offer.offerId}" class="btn btn-light btn-sm">
+                    <span class="far fa-eye"></span> Details
+                </a>
+                <a th:href="${'editMovie/' + offer.offerId}" class="btn btn-light btn-sm">
+                    <span class="fas fa-pen"></span> Edit
+                </a>
+                <a th:href="${'deleteMovie/' + offer.offerId}" class="btn btn-danger btn-sm">
+                    <span class="fas fa-trash-alt"></span> Delete
+                </a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+    <a href="/createOffer">
+        <button class="btn btn-success"><span class="fas fa-plus"></span> Create new Offer</button>
+    </a>
+
+    <footer th:include="fragments/footer :: footer"></footer>
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+</body>
+</html>
