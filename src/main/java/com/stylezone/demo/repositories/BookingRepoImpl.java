@@ -104,6 +104,7 @@ public class BookingRepoImpl implements BookingRepo {
 
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
+
         log.info("BookingRepo.getBookingGroups(" + date + ", " + timeStart + ", " + timeEnd + ")");
 
         String sql = "SELECT HOUR(bookingTime) AS startTime, COUNT(bookingId) AS booked FROM Booking\n" +
@@ -179,7 +180,7 @@ public class BookingRepoImpl implements BookingRepo {
 
     @Override
     public Opening findOpening(int openingId) {
-        String sql = "SELECT * FROM opening WHERE openingId = ?";
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening WHERE openingId = ?";
         RowMapper<Opening> rowMapper = new BeanPropertyRowMapper<>(Opening.class);
 
         Opening opening = template.queryForObject(sql, rowMapper, openingId);
@@ -189,24 +190,26 @@ public class BookingRepoImpl implements BookingRepo {
     }
 
     @Override
-    public List<Opening> getOpenings() {
-        String sql = "SELECT * FROM opening";
-        return this.template.query(sql, new ResultSetExtractor<List<Opening>>() {
+    public Opening[] getOpenings() {
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening";
+        return this.template.query(sql, new ResultSetExtractor<Opening[]>() {
 
             @Override
-            public List<Opening> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                int openingId, openingTime, openingClose;
-                String openingDay;
-                ArrayList<Opening> openings = new ArrayList<>();
+            public Opening[] extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int openingId;
+                String openingDay, openingTime, openingClose;
+                Opening[] openings = new Opening[7];
+                int i = 0;
 
                 while (rs.next()) {
 
                     openingId = rs.getInt("openingId");
                     openingDay = rs.getString("openingDay");
-                    openingTime = rs.getInt("openingTime");
-                    openingClose = rs.getInt("openingClose");
+                    openingTime = rs.getString("openingTime");
+                    openingClose = rs.getString("openingClose");
 
-                    openings.add(new Opening(openingId, openingDay, openingTime, openingClose));
+                    openings[i] = new Opening(openingId, openingDay, openingTime, openingClose);
+                    i++;
                 }
                 return openings;
             }
@@ -282,9 +285,43 @@ public class BookingRepoImpl implements BookingRepo {
                 }
             });
 
-        }
     }
 
+    @Override
+    public Staff getStaffMember(int staffId){
+        String sql = "SELECT * FROM Staff WHERE staffId = ?";
+        RowMapper<Staff> rowMapper = new BeanPropertyRowMapper<>(Staff.class);
 
+        Staff staff = template.queryForObject(sql,rowMapper, staffId );
 
+        return staff;
+    }
+
+    @Override
+    public List<Staff> getStaff(){
+
+        String sql = "SELECT * FROM Staff";
+        return this.template.query(sql, new ResultSetExtractor<List<Staff>>() {
+
+            @Override
+            public List<Staff> extractData(ResultSet rs) throws SQLException, DataAccessException{
+
+                int staffId;
+                String staffName;
+                ArrayList<Staff> staffs = new ArrayList<>();
+
+                while (rs.next()){
+
+                    staffId = rs.getInt("staffId");
+                    staffName = rs.getString("staffName");
+
+                    staffs.add(new Staff(staffId, staffName));
+
+                }
+                return staffs;
+            }
+
+        });
+    }
+}
 

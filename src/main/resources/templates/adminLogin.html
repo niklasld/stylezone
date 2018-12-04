@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+    <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
+</head>
+<body>
+    <div class="container">
+
+        <div class="container">
+            </head>
+
+            <header th:include="fragments/header :: navbar"></header>
+
+            <h1>Login</h1>
+
+            <div class="alert alert-danger alert-dismissible" th:classappend="${loginError} ? '' : 'd-none'">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Login Error!</strong> Wrong username or password, you little bitch...
+            </div>
+
+            <form method="Post" th:action="@{/adminLogin}">
+
+                <label>Username:</label>
+                <input type="text" class="form-control mr-sm-2" th:name="adminUsername"/>
+
+                <label>Password:</label>
+                <input type="password" class="form-control mr-sm-2" th:name="adminPassword"/>
+
+                <br>
+
+                <input class="btn btn-light" type="reset" value="Reset">
+
+                <button class="btn btn-primary" type="submit">Login</button>
+
+            </form>
+        </div>
+        <footer th:include="fragments/footer :: footer"></footer>
+    </div>
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+</body>
+</html>

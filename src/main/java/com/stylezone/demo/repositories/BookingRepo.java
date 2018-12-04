@@ -26,12 +26,16 @@ public interface BookingRepo {
 
     //Opening
     Opening findOpening(int openingId);
-    List<Opening> getOpenings();
+    Opening[] getOpenings();
 
     //Offers
     Offer findOffer(int offerId);
     List<Offer> getOffers();
     Offer createOffer(Offer offer);
     Offer updateOffer(Offer offer);
+
+    //Staff
+    List<Staff> getStaff();
+    Staff getStaffMember(int staffId);
 
 }
