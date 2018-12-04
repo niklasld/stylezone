@@ -11,15 +11,22 @@ import java.util.List;
 public interface BookingService {
     //Booking
     Booking findBooking(int bookingId);
+
     List<Booking> getBookings();
+
     Booking saveBooking(Booking booking);
+
     List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd);
+
     List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd);
+
     Booking updateBooking(Booking booking);
+
     void deleteBooking(int bookingId);
 
     //Holiday
     Holiday findHoliday(int holidayId);
+
     List<Holiday> getHolidays();
     /*Holiday createHoliday(Holiday holiday);
     Holiday updateHoliday(Holiday holiday);
@@ -27,6 +34,7 @@ public interface BookingService {
 
     //Opening
     Opening findOpening(int openingId);
+
     Opening[] getOpenings();
 
     //Mail
@@ -34,19 +42,27 @@ public interface BookingService {
 
     //calender
     int getWeekToday();
+
     int getWeekFromDate(int day, int month, int year);
+
     String getDateToday();
+
     String nextWeek();
+
     String nextWeekFromDate(int day, int month, int year);
+
     String prevWeek();
+
     String prevWeekFromDate(int day, int month, int year);
+
     String[] getDatesOfWeek();
+
     String[] getDatesOfSelectedWeek(int day, int month, int year);
 
     //Staff
     List<Staff> getStaff();
+
     Staff getStaffMember(int staffId);
-    Staff updateStaff(Staff staff);
-    void deleteStaffMember(int staffId);
-    Staff createStaffMember(Staff staff);
+
 }
+

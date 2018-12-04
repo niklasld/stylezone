@@ -257,6 +257,7 @@ public class BookingRepoImpl implements BookingRepo {
 
         });
     }
+
     @Override
     public Staff getStaffMember(int staffId){
         String sql = "SELECT * FROM Staff WHERE staffId = ?";
@@ -265,37 +266,6 @@ public class BookingRepoImpl implements BookingRepo {
         Staff staff = template.queryForObject(sql,rowMapper, staffId );
 
         return staff;
-    }
-
-    @Override
-    public Staff updateStaff(Staff staff){
-
-        String sql = "UPDATE Staff SET staffName =? WHERE staffId = ?";
-        String staffName = staff.getStaffName();
-
-        int staffId = staff.getStaffId();
-        this.template.update(sql, staffName, staffId);
-
-        return staff;
-
-    }
-    @Override
-    public void deleteStaffMember(int staffId){
-        String sql = "DELETE FROM stylezone.Staff WHERE staffId = ?";
-        this.template.update(sql, staffId );
-    }
-
-    public Staff createStaffMember(Staff staff){
-        String sql = "INSERT INTO Staff VALUE(default, ?)";
-
-        String staffName = staff.getStaffName();
-
-        log.info("createStaffMember called" + staffName);
-        this.template.update(sql, staffName);
-
-        return staff;
-
-
     }
 }
 

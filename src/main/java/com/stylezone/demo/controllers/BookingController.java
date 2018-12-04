@@ -35,10 +35,6 @@ public class BookingController {
     private final String BILLEDEGALLERI = "billedeGalleri";
     private final String INDEX = "index";
     private final String ABOUTUS = "aboutUs";
-    private final String EDITSTAFF = "editStaff";
-    private final String STAFF = "staff";
-    private final String DELETESTAFF = "deleteStaff";
-    private final String CREATESTAFFMEMBER = "createStaffMember";
 
     Logger log = Logger.getLogger(BookingController.class.getName());
 
@@ -225,94 +221,7 @@ public class BookingController {
 
     }
 
-    @GetMapping("/editStaff/{staffId}")
-    public String editStaff(@PathVariable("staffId")int staffId, Model model){
-        log.info("editStaff GetMapping called...");
 
-        Staff staff = bookingService.getStaffMember(staffId);
-
-        model.addAttribute("staff",staff );
-
-        return EDITSTAFF;
-
-    }
-
-    @PutMapping("/editStaff")
-    public String editStaff(@ModelAttribute Staff staff, Model model){
-
-        bookingService.updateStaff(staff);
-        log.info("editStaff called..." + staff.getStaffId());
-        model.addAttribute("", bookingService.getStaff());
-
-        return REDIRECT + STAFF;
-    }
-
-    @GetMapping("/staff")
-    public String staff(Model model){
-        log.info("staff called...");
-
-        List<Staff> staffs = bookingService.getStaff();
-        model.addAttribute("staffs", staffs);
-
-        return STAFF;
-
-    }
-    @PostMapping("/staff")
-    public String staff(@ModelAttribute Staff staff, Model model){
-        log.info("Staff called...");
-
-        model.addAttribute("staffs", bookingService.getStaff());
-
-        return STAFF;
-    }
-
-    @GetMapping("/deleteStaff/{staffId}")
-    public String deleteStaff(@PathVariable("staffId") int staffId, Model model){
-        log.info("deleteStaff with called with id :" + staffId );
-
-        model.addAttribute("staff",bookingService.getStaffMember(staffId));
-        String staffName = bookingService.getStaffMember(staffId).getStaffName();
-        model.addAttribute("pageTitle", "Delete staff ("+ staffName + ")");
-
-        return DELETESTAFF;
-
-    }
-    @PutMapping("/deleteStaff")
-    public String deleteStaff(@ModelAttribute Staff staff, Model model){
-        log.info("delete confirmed deleting staffmember with Id" + staff.getStaffId());
-        int id = staff.getStaffId();
-
-        bookingService.deleteStaffMember(id);
-
-        model.addAttribute("staffs", bookingService.getStaff() );
-        model.addAttribute("pageTitle", "Delete staffMember" );
-
-        return REDIRECT + STAFF;
-
-    }
-
-    @GetMapping("/createStaffMember")
-    public String createStaffMember(Model model){
-        log.info("CreateStaffMember alled..");
-
-            model.addAttribute("staff", new Staff());
-            model.addAttribute("pageTitle", "Create new Staff Member");
-
-            return CREATESTAFFMEMBER;
-    }
-
-    @PostMapping("/createStaffMember")
-    public String createStaffMember(@ModelAttribute Staff staff, Model model){
-        log.info("createStaffMember postmapping called..");
-
-        bookingService.createStaffMember(staff);
-
-        model.addAttribute("staff", bookingService.getStaff());
-        model.addAttribute("pageTitle", "Create staff" );
-
-        return REDIRECT + STAFF;
-
-    }
 }
 
 

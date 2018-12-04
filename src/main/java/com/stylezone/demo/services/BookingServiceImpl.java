@@ -407,14 +407,6 @@ public class BookingServiceImpl implements BookingService {
         return staffs;
     }
 
-    @Override
-    public Staff updateStaff(Staff staff){
-
-        staff = bookingRepo.updateStaff(staff);
-
-        return staff;
-    }
-
     public String[] getDatesOfSelectedWeek(int day, int month, int year) {
         String[] dates = new String[7];
 
@@ -441,16 +433,5 @@ public class BookingServiceImpl implements BookingService {
         return dates;
     }
 
-    @Override
-    public void deleteStaffMember(int staffId){
-        bookingRepo.deleteStaffMember(staffId);
-    }
 
-    @Override
-    public Staff createStaffMember(Staff staff){
-        staff = bookingRepo.createStaffMember(staff);
-
-        return staff;
-
-    }
 }
