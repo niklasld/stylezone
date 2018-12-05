@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles"></head>
 
-<h1>Spring Boot - Upload List</h1>
+<body>
+<header th:include="fragments/header :: navbar"></header>
+
+<h3>Spring Boot - Upload List</h3>
 
 <div th:if="${message}">
     <h2 th:text="${message}"/>
 </div>
+<footer th:include="fragments/footer :: footer"></footer>
 
 </body>
 </html>

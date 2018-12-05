@@ -2,9 +2,12 @@ package com.stylezone.demo.services;
 
 import com.stylezone.demo.models.Admin;
 import com.stylezone.demo.models.Offer;
+import com.stylezone.demo.models.Picture;
 import com.stylezone.demo.models.Staff;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import java.util.List;
 
 @Service
@@ -26,5 +29,12 @@ public interface AdminService {
     Offer updateOffer(Offer offer);
     void deleteOffer(int id);
     Offer findOffer(int id);
+
+    //Pictures
+
+    List<Picture> getPictures();
+    String insertPicture(String picture);
+    String fileUpload(MultipartFile file);
+
 
 }

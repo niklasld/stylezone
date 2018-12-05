@@ -33,10 +33,9 @@ public class BookingController {
     private final String SAVEBOOKING = "saveBooking";
     private final String BOOKING = "booking";
     private final String TIMESELECT = "timeSelect";
-    private final String BILLEDEGALLERI = "billedeGalleri";
     private final String INDEX = "index";
     private final String OMOS = "omOs";
-    private final String ABOUTUS = "aboutUs";
+
 
 
     Logger log = Logger.getLogger(BookingController.class.getName());
@@ -169,12 +168,11 @@ public class BookingController {
         return TIMESELECT;
     }
 
-    @GetMapping("/billedeGalleri")
-    public String billedGalleri() {
-        log.info("billedeGalleri called...");
 
-        return BILLEDEGALLERI;
-    }
+
+
+
+
 
 
     @GetMapping("/saveBooking/{bookingTime}/{bookingDate}")

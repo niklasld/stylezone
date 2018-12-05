@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles"></head>
 <body>
+<header th:include="fragments/header :: navbar"></header>
 
-<h1>Spring Boot file upload example</h1>
+    <meta charset="UTF-8">
+    <title>upload billede</title>
+
 
 <form method="POST" action="/upload" enctype="multipart/form-data">
     <input type="file" name="file" /><br/><br/>
     <input type="submit" value="Submit" />
 </form>
+
+<footer th:include="fragments/footer :: footer"></footer>
 
 </body>
 </html>

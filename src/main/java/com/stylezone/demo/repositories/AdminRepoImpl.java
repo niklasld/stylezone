@@ -2,6 +2,7 @@ package com.stylezone.demo.repositories;
 
 import com.stylezone.demo.models.Admin;
 import com.stylezone.demo.models.Offer;
+import com.stylezone.demo.models.Picture;
 import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.services.AdminServiceImpl;
 import com.stylezone.demo.services.BookingServiceImpl;
@@ -190,6 +191,46 @@ public class AdminRepoImpl implements AdminRepo {
                 return offers;
             }
         });
+    }
 
+    @Override
+    public List<Picture> getPictures(){
+
+        String sql = "SELECT * FROM stylezone.Pictures";
+
+            return this.template.query(sql, new ResultSetExtractor<List<Picture>>() {
+                @Override
+                public List<Picture> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                    String pictureName;
+                    int idPictures;
+                    List<Picture> pictures = new ArrayList<>();
+
+                    while (rs.next()) {
+                        pictureName = rs.getString("pictureName");
+                        idPictures = rs.getInt("idPictures");
+                        pictures.add(new Picture(idPictures, pictureName));
+                        log.info("idPicture: " + idPictures + ", pictureName: " + pictureName);
+                    }
+                    return pictures;
+                }
+            });
+
+
+
+        }
+
+
+    @Override
+    public String insertPicture(String picture) {
+        Logger log = Logger.getLogger(BookingServiceImpl.class.getName());
+
+        String sql = "INSERT INTO stylezone.Pictures VALUE(default, ?)";
+        String pictureName = picture;
+
+
+        log.info("insertPicture called.. " + pictureName);
+        this.template.update(sql, pictureName);
+
+        return picture;
     }
 }

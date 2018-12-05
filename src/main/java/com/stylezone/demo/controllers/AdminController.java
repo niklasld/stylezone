@@ -2,6 +2,7 @@ package com.stylezone.demo.controllers;
 
 import com.stylezone.demo.models.Admin;
 import com.stylezone.demo.models.Offer;
+import com.stylezone.demo.models.Picture;
 import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -39,6 +41,9 @@ public class AdminController {
     private final String CREATESTAFFMEMBER = "createStaffMember";
     private final String OFFER = "offer";
     private final String CREATEOFFER = "createOffer";
+    private final String BILLEDEGALLERI = "billedeGalleri";
+    private final String UPLOADLIST = "uploadlist";
+    private final String UPLOAD = "upload";
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
@@ -195,41 +200,47 @@ public class AdminController {
     }
 
 
-    private static String UPLOADED_FOLDER = "src//main//resources//static//image//upload//";
+
 
     @GetMapping("/upload")
     public String upload(Model model){
 
-        return "upload";
+        return UPLOAD;
     }
 
     @PostMapping("/upload")
 
-    public String singleFileUpload(@RequestParam("file")MultipartFile file, RedirectAttributes redirectAttributes){
+    public String singleFileUpload(@RequestParam("file")MultipartFile file, RedirectAttributes redirectAttributes, Model model, Picture picture){
 
-        if (file.isEmpty()){
+        if (file.isEmpty()) {
 
             redirectAttributes.addFlashAttribute("message", "vælg et billede som du vil uploade til billede galleri siden");
             return "redirect: uploadlist";
         }
 
-        try {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Files.write(path, bytes);
+        adminService.fileUpload(file);
 
-            redirectAttributes.addFlashAttribute("message", "du har uploadet et nyt billede til galleriet "  + file.getOriginalFilename());
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        redirectAttributes.addFlashAttribute("message", "du har uploadet et nyt billede til galleriet "  + file.getOriginalFilename());
 
-        return "redirect:/uploadlist";
+        return REDIRECT + UPLOADLIST;
         }
 
     @GetMapping("/uploadlist")
     public String uploadlist(){
 
-        return "uploadlist";
+        return UPLOADLIST;
     }
+
+    // Skal vise et galleri af billeder hentet fra databasen
+    @GetMapping("/billedeGalleri")
+    public String billedGalleri(Model model) {
+        List<Picture> test = adminService.getPictures();
+        log.info("billedeGalleri called...");
+        log.info(""+test.get(0).getPictureName());
+        model.addAttribute("pictures", adminService.getPictures());
+
+        return BILLEDEGALLERI;
+    }
+
 }
 
