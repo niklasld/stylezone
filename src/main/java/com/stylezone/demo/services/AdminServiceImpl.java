@@ -110,12 +110,74 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public ArrayList<Integer> getHours() {
+        ArrayList<Integer> hours = new ArrayList<>();
+
+        for(int i = 0; i<24; i++) {
+            hours.add(i);
+        }
+
+
+        return hours;
+    }
+
+    @Override
+    public ArrayList<Integer> getMin() {
+        ArrayList<Integer> min = new ArrayList<>();
+
+        for(int i = 0; i<=50; i=i+10) {
+            min.add(i);
+        }
+
+        return min;
+    }
+
+    @Override
+    public ArrayList<String> getDays() {
+        ArrayList<String> days = new ArrayList<>();
+
+        days.add("mandag");
+        days.add("tirsdag");
+        days.add("onsdag");
+        days.add("torsdag");
+        days.add("fredag");
+        days.add("lørdag");
+
+        return days;
+    }
+
+    @Override
+    public Opening[] convertOpenings() {
+        Opening[] fullOpening = getOpenings();
+        String chopThis;
+        String[] parts;
+
+        for (Opening time : fullOpening) {
+
+                chopThis = time.getOpeningTime();
+                parts = chopThis.split(":");
+
+                time.setOpeningHour(parts[0]);
+                time.setOpeningMin(parts[1]);
+
+                chopThis = time.getOpeningClose();
+                parts = chopThis.split(":");
+
+                time.setClosingHour(parts[0]);
+                time.setClosingMin(parts[1]);
+
+        }
+
+        return fullOpening;
+    }
+
+    /*@Override
     public ArrayList<Opening> getTimes() {
         ArrayList<Opening> times = new ArrayList();
 
         int hour, min;
         String time;
-        for(hour = 0; hour<=24; hour++) {
+        for(hour = 5; hour<=21; hour++) {
             for (min = 0; min<=50; min=min+10) {
                 if(hour < 10 && min == 0) {
                     time = "0" + hour + ":0" + min + ":00";
@@ -132,5 +194,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return times;
-    }
+    }*/
+
+
 }

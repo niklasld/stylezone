@@ -13,28 +13,62 @@
 
     <table class="table table-striped table-bordered table-hover">
         <tbody>
-        <tr>
-            <th>Dag: </th>
-        </tr>
-        <tr class = "active" th:each="openingDay : ${openingHours}">
-            <td th:text="${openingDay}"></td>
+            <tr>
+            <tr th:each="day : ${opening}">
+                <form method="Post" th:action="@{/editOpeningHoursw}" th:object ="${openingDay}">
+                    <td th:text="${day.openingDay}">
+                        <input type="hidden" name="openingId" th:field="${day.openingId}"/>
+                    </td>
+                    <td>
 
-            <td>
+                        <label>Vælg Åbningstid: </label>
+                        <td>
+                            <select class="form-control form-control-sm" size="1">
+                                <span th:each = "hour : ${hours}">
+                                    <option th:if="${day.openingHour} == ${hour}" th:text="${day.openingHour}" selected="selected" th:value="${day.openingHour}"></option>
+                                    <option th:if="${day.openingHour} != ${hour}" th:text="${hour}" th:value="${hour}"></option>
+                                </span>
+                            </select>
+                        </td>
 
-                <label>Vælg Åbningstid:</label>
-                <select class="active" th:each = "openingTime : ${times}">
-                    <option th:value="${openingTime}"><span th:value="${openingTime}"></span></option>
+                        <td>
+                            <select class="form-control form-control-sm" size="1">
+                                <span th:each = "min : ${min}">
+                                    <option th:if="${day.openingMin} == ${min}" th:text="${day.openingMin}" selected="selected" th:value="${day.openingMin}"></option>
+                                    <option th:if="${day.openingMin} != ${min}" th:text="${min}" th:value="${min}"></option>
+                                </span></option>
+                            </select>
+                        </td>
+                    </td>
+                    <td>
+                        <label>Vælg Lukketid: </label>
+                        <td>
+                            <select class="form-control form-control-sm" size="1">
+                                <span th:each = "hour : ${hours}">
+                                    <option th:if="${day.closingHour} == ${hour}" th:text="${day.closingHour}" selected="selected" th:value="${day.closingHour}"></option>
+                                    <option th:if="${day.closingHour} != ${hour}" th:text="${hour}" th:value="${hour}"></option>
+                                </span>
+                            </select>
+                        </td>
 
-                </select>
-            </td>
-        </tr>
+                         <td>
+                             <select class="form-control form-control-sm" size="1">
+                                <span th:each = "min : ${min}">
+                                    <option th:if="${day.closingMin} == ${min}" th:text="${day.closingMin}" selected="selected" th:value="${day.closingMin}"></option>
+                                    <option th:if="${day.closingMin} != ${min}" th:text="${min}" th:value="${min}"></option>
+                                </span></option>
+                            </select>
+                        </td>
+                    </td>
+                    <td>
+                        <button class = "btn btn-primary btn-sm" type ="submit">Gem tid</button>
+                    </td>
+                </form>
+
+            </tr>
 
         </tbody>
     </table>
-
-    <a href="/createStaffMember" class="btn btn-success">
-        <span class="fas fa-plus"></span> Create new Staff Member
-    </a>
 
 </div>
 <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>

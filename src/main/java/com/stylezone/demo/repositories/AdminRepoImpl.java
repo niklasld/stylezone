@@ -214,7 +214,7 @@ public class AdminRepoImpl implements AdminRepo {
             public Opening[] extractData(ResultSet rs) throws SQLException, DataAccessException {
                 int openingId;
                 String openingDay, openingTime, openingClose;
-                Opening[] openings = new Opening[7];
+                Opening[] openings = new Opening[6];
                 int i = 0;
 
                 while (rs.next()) {

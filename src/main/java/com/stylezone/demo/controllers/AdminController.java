@@ -204,13 +204,14 @@ public class AdminController {
     public String editOpeningHours(Model model) {
         log.info("Edit opening hours called...");
 
-        Opening openingHours[] = adminService.getOpenings();
-        ArrayList<Opening> times = adminService.getTimes();
+        Opening[] opening = adminService.convertOpenings();
+        ArrayList<Integer> hours = adminService.getHours();
+        ArrayList<Integer> min = adminService.getMin();
 
-        log.info(""+times);
-
-        model.addAttribute("openingHours", openingHours);
-        model.addAttribute("times",times);
+        log.info(""+opening[5].getOpeningHour());
+        model.addAttribute("opening", opening);
+        model.addAttribute("hours",hours);
+        model.addAttribute("min", min);
 
         return EDITOPENINGHOURS;
     }
