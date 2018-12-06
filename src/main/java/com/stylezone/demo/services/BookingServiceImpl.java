@@ -37,6 +37,22 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public Booking findBookingByDateTime(String bookingDate, String bookingTime){
+        Booking booking = bookingRepo.findBookingByDateTime(bookingDate, bookingTime);
+        return booking;
+    }
+
+    @Override
+    public Boolean isBooked(String bookingDate, String bookingTime) {
+        Booking booking = bookingRepo.isBooked(bookingDate, bookingTime);
+        if(booking.getBookingId() == 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public List<Booking> getBookings() {
         List<Booking> bookings = bookingRepo.getBookings();
         return bookings;
@@ -245,9 +261,13 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Boolean IsHolidayByDate(String holidayDate) {
-        boolean holiday = bookingRepo.IsHolidayByDate(holidayDate);
-        return holiday;
+    public Boolean isHolidayByDate(String holidayDate) {
+        Holiday holiday = bookingRepo.isHolidayByDate(holidayDate);
+        if(holiday.getHolidayId() == 1){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

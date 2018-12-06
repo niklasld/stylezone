@@ -14,6 +14,10 @@ public class Booking {
     public Booking() {
     }
 
+    public Booking(int bookingId) {
+        this.bookingId = bookingId;
+    }
+
     public Booking(String bookingTime, String bookingName) {
         this.bookingTime = bookingTime;
         this.bookingName = bookingName;
