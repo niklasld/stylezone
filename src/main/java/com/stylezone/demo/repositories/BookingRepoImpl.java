@@ -194,26 +194,6 @@ public class BookingRepoImpl implements BookingRepo {
         return holiday;
     }
 
-    /*@Override
-    public Boolean isHolidayByDate(String holidayDate) {
-        String sql = "SELECT COUNT(holidayId) AS holidayId FROM stylezone.Holiday WHERE holidayDate = STR_TO_DATE(?, '%d-%m-%Y')";
-        return this.template.query(sql, new ResultSetExtractor<Boolean>() {
-
-            @Override
-            public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
-                int holidayId;
-
-                holidayId = rs.getInt("holidayId");
-
-                if(holidayId == 0){
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        }, holidayDate);
-    }*/
-
     @Override
     public List<Holiday> getHolidays() {
         String sql = "SELECT * FROM Holiday";

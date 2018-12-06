@@ -1,8 +1,6 @@
 package com.stylezone.demo.repositories;
 
-import com.stylezone.demo.models.Admin;
-import com.stylezone.demo.models.Offer;
-import com.stylezone.demo.models.Staff;
+import com.stylezone.demo.models.*;
 import com.stylezone.demo.services.AdminServiceImpl;
 import com.stylezone.demo.services.BookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,165 @@ public class AdminRepoImpl implements AdminRepo {
     JdbcTemplate template;
 
     Logger log = Logger.getLogger(AdminRepoImpl.class.getName());
+
+    @Override
+    public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
+        log.info("BookingRepo.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
+
+        String sql = "SELECT * FROM Booking\n" +
+                "WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y')\n" +
+                "AND bookingTime >= ?\n" +
+                "AND bookingTime < ?\n" +
+                "ORDER BY bookingTime ASC";
+        return this.template.query(sql, new ResultSetExtractor<List<Booking>>() {
+
+            @Override
+            public List<Booking> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int bookingId, bookingPhone, staffId;
+                String bookingTime, bookingDate, bookingName, bookingEmail, bookingComment;
+                ArrayList<Booking> bookings = new ArrayList<>();
+
+                while (rs.next()) {
+                    bookingId = rs.getInt("bookingId");
+                    bookingPhone = rs.getInt("bookingPhone");
+                    staffId = rs.getInt("fk_staffId");
+                    bookingTime = rs.getString("bookingTime");
+                    bookingDate = rs.getString("bookingDate");
+                    bookingName = rs.getString("bookingName");
+                    bookingEmail = rs.getString("bookingEmail");
+                    bookingComment = rs.getString("bookingComment");
+
+                    bookings.add(new Booking(bookingId, bookingTime, bookingDate, bookingName, bookingEmail, bookingPhone, bookingComment, staffId));
+                }
+                return bookings;
+            }
+        }, date, timeStart, timeEnd);
+    }
+
+    @Override
+    public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
+
+        log.info("BookingRepo.getBookingGroups(" + date + ", " + timeStart + ", " + timeEnd + ")");
+
+        String sql = "SELECT HOUR(bookingTime) AS startTime, COUNT(bookingId) AS booked FROM Booking\n" +
+                "WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y')\n" +
+                "AND bookingTime > ?\n" +
+                "AND bookingTime < ?\n" +
+                "GROUP BY HOUR(bookingTime)";
+
+        return this.template.query(sql, new ResultSetExtractor<List<BookingGroup>>() {
+
+            @Override
+            public List<BookingGroup> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int bookingGroupId, boookingGroupBooked, boookingGroupTotal;
+                String bookingGroupStart, bookingGroupEnd, bookingGroupDate;
+                List<BookingGroup> bookingGroups = new ArrayList<>();
+
+                while (rs.next()) {
+                    bookingGroupStart = rs.getString("startTime");
+                    bookingGroupStart = bookingGroupStart + ":00";
+                    boookingGroupBooked = rs.getInt("booked");
+
+                    bookingGroups.add(new BookingGroup(bookingGroupStart, boookingGroupBooked));
+                }
+                return bookingGroups;
+            }
+        }, date, timeStart, timeEnd);
+    }
+
+    @Override
+    public Holiday findHolidayById(int holidayId) {
+        String sql = "SELECT * FROM stylezone.Holiday WHERE holidayId = ?";
+        RowMapper<Holiday> rowMapper = new BeanPropertyRowMapper<>(Holiday.class);
+
+        Holiday holiday = template.queryForObject(sql, rowMapper, holidayId);
+
+
+        return holiday;
+    }
+
+    @Override
+    public Holiday findHolidayByDate(String holidayDate) {
+        String sql = "SELECT * FROM stylezone.Holiday WHERE holidayDate = STR_TO_DATE(?, '%d-%m-%Y')";
+        RowMapper<Holiday> rowMapper = new BeanPropertyRowMapper<>(Holiday.class);
+
+        Holiday holiday = template.queryForObject(sql, rowMapper, holidayDate);
+
+
+        return holiday;
+    }
+
+    @Override
+    public Holiday isHolidayByDate(String holidayDate) {
+        String sql = "SELECT COUNT(holidayId) AS holidayId FROM stylezone.Holiday WHERE holidayDate = STR_TO_DATE(?, '%d-%m-%Y')";
+        RowMapper<Holiday> rowMapper = new BeanPropertyRowMapper<>(Holiday.class);
+
+        Holiday holiday = template.queryForObject(sql, rowMapper, holidayDate);
+
+        return holiday;
+    }
+
+    @Override
+    public List<Holiday> getHolidays() {
+        String sql = "SELECT * FROM Holiday";
+        return this.template.query(sql, new ResultSetExtractor<List<Holiday>>() {
+
+            @Override
+            public List<Holiday> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int holidayId;
+                String holidayDate, holidayName;
+                ArrayList<Holiday> holidays = new ArrayList<>();
+
+                while (rs.next()) {
+                    holidayId = rs.getInt("holidayId");
+                    holidayDate = rs.getString("holidayDate");
+                    holidayName = rs.getString("holidayName");
+
+
+                    holidays.add(new Holiday(holidayId, holidayDate, holidayName));
+                }
+                return holidays;
+            }
+        });
+    }
+
+    @Override
+    public Opening findOpening(int openingId) {
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening WHERE openingId = ?";
+        RowMapper<Opening> rowMapper = new BeanPropertyRowMapper<>(Opening.class);
+
+        Opening opening = template.queryForObject(sql, rowMapper, openingId);
+
+
+        return opening;
+    }
+
+    @Override
+    public Opening[] getOpenings() {
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening";
+        return this.template.query(sql, new ResultSetExtractor<Opening[]>() {
+
+            @Override
+            public Opening[] extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int openingId;
+                String openingDay, openingTime, openingClose;
+                Opening[] openings = new Opening[7];
+                int i = 0;
+
+                while (rs.next()) {
+
+                    openingId = rs.getInt("openingId");
+                    openingDay = rs.getString("openingDay");
+                    openingTime = rs.getString("openingTime");
+                    openingClose = rs.getString("openingClose");
+
+                    openings[i] = new Opening(openingId, openingDay, openingTime, openingClose);
+                    i++;
+                }
+                return openings;
+            }
+        });
+    }
 
     @Override
     public Admin checkPassword(Admin admin) {

@@ -4,7 +4,7 @@
 </head>
 <body>
 <div class="container">
-    <header th:include="fragments/header :: navbar"></header>
+    <header th:include="fragments/header :: adminNavbar"></header>
     <h1 class="text-danger"><span class="fas fa-exclamation-triangle"></span>Warning</h1>
 
     <form th:method="Put" th:action="@{/deleteStaff}" th:object="${staff}">

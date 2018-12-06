@@ -75,6 +75,7 @@ public class BookingServiceImpl implements BookingService {
         return null;
     }
 
+    @Override
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
         if(DEVELOPER_MODE) {
             log.info("BookingService.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");

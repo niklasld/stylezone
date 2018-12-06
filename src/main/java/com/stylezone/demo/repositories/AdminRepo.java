@@ -1,14 +1,22 @@
 package com.stylezone.demo.repositories;
 
-import com.stylezone.demo.models.Admin;
-import com.stylezone.demo.models.Offer;
-import com.stylezone.demo.models.Staff;
+import com.stylezone.demo.models.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface AdminRepo {
+    //Booking
+    List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd);
+    List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd);
+
+    //Holiday
+    Holiday findHolidayById(int holidayId);
+    Holiday findHolidayByDate(String holidayDate);
+    Holiday isHolidayByDate(String holidayDate);
+    List<Holiday> getHolidays();
+
     //Admin
     Admin checkPassword(Admin admin);
     Admin searchUser(Admin admin);
@@ -19,6 +27,10 @@ public interface AdminRepo {
     Staff updateStaff(Staff staff);
     void deleteStaffMember(int staffId);
     Staff createStaffMember(Staff staff);
+
+    //Opening
+    Opening findOpening(int openingId);
+    Opening[] getOpenings();
 
     //Offers
     Offer findOffer(int offerId);
