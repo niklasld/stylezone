@@ -35,6 +35,7 @@ public class BookingController {
     private final String TIMESELECT = "timeSelect";
     private final String INDEX = "index";
     private final String OMOS = "omOs";
+    private final String PRISER = "priser";
 
 
 
@@ -213,9 +214,16 @@ public class BookingController {
     }
 
     @GetMapping("/omOs")
-    public String omOs(Model model) {
+    public String omOs() {
 
         return OMOS;
+    }
+
+    @GetMapping("/priser")
+    public String priser(){
+
+
+        return PRISER;
     }
 
 }
