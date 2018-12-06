@@ -24,6 +24,7 @@ public interface AdminRepo {
     //Offers
     Offer findOffer(int offerId);
     List<Offer> getOffers();
+    List<Offer> showOffers();
     Offer createOffer(Offer offer);
     Offer updateOffer(Offer offer);
 

@@ -254,7 +254,7 @@ public class AdminController {
     @GetMapping("/offerPage")
     public String offerPage (Model model){
         log.info("offerPage is called");
-        model.addAttribute("offers", adminService.getOffers());
+        model.addAttribute("offers", adminService.showOffers());
 
         return OFFERPAGE;
     }

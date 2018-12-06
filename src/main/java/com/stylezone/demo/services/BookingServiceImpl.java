@@ -326,6 +326,7 @@ public class BookingServiceImpl implements BookingService {
         return today;
     }
 
+
     @Override
     public String nextWeek() {
         LocalDate date = LocalDate.now();
