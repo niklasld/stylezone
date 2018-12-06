@@ -44,6 +44,7 @@ public class AdminController {
     private final String BILLEDEGALLERI = "billedeGalleri";
     private final String UPLOADLIST = "uploadlist";
     private final String UPLOAD = "upload";
+    private final String ADMINDASHBOARD = "adminDashBoard";
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
@@ -242,5 +243,10 @@ public class AdminController {
         return BILLEDEGALLERI;
     }
 
+    @GetMapping("adminDashBoard")
+    public String adminDashBoard(){
+
+        return ADMINDASHBOARD;
+    }
 }
 
