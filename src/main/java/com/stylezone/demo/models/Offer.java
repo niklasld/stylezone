@@ -12,6 +12,11 @@ public class Offer {
     public Offer() {
     }
 
+    public Offer(String offerName, String offerContent) {
+        this.offerName = offerName;
+        this.offerContent = offerContent;
+    }
+
     public Offer(String offerName, String offerContent, String offerStart, String offerEnd) {
         this.offerName = offerName;
         this.offerContent = offerContent;

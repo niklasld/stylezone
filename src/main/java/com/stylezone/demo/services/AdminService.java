@@ -27,6 +27,7 @@ public interface AdminService {
 
     //Offers
     List<Offer> getOffers();
+    List<Offer> showOffers();
     Offer createOffer(Offer offer);
     Offer updateOffer(Offer offer);
     void deleteOffer(int id);

@@ -314,10 +314,10 @@ public class AdminController {
             return REDIRECT + OFFER;
         }
 
-        @GetMapping("/offerPage")
-        public String offerPage (Model model){
-            log.info("offerPage is called");
-            model.addAttribute("offers", adminService.getOffers());
+    @GetMapping("/offerPage")
+    public String offerPage (Model model){
+        log.info("offerPage is called");
+        model.addAttribute("offers", adminService.showOffers());
 
             return OFFERPAGE;
         }

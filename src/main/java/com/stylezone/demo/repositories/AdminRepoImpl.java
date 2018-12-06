@@ -256,6 +256,27 @@ public class AdminRepoImpl implements AdminRepo {
 
         return picture;
     }
+    @Override
+    public List<Offer> showOffers() {
+        String sql = "SELECT * FROM stylezone.Offer  WHERE offerStart <= now() AND offerEnd >= now()";
+
+        return this.template.query(sql, new ResultSetExtractor<List<Offer>>() {
+            @Override
+            public List<Offer> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                String offerName, offerContent;
+                ArrayList<Offer> offers = new ArrayList<>();
+
+                while (rs.next()) {
+                    offerName = rs.getString("offerName");
+                    offerContent = rs.getString("offerContent");
+                    offers.add(new Offer(offerName, offerContent));
+                }
+                return offers;
+            }
+        });
+
+    }
+
 
     @Override
     public Opening findOpening(int openingId) {

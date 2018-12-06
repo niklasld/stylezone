@@ -16,6 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -81,6 +83,17 @@ public class AdminServiceImpl implements AdminService {
 
         return staff;
     }
+
+
+    @Override
+    public List<Offer> showOffers() {
+        List<Offer> offers = adminRepo.showOffers();
+
+        return offers;
+
+    }
+
+
 
     @Override
     public List<Offer> getOffers() {
@@ -289,6 +302,7 @@ public class AdminServiceImpl implements AdminService {
 
         return times;
     }*/
+
 
 
 }
