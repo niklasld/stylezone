@@ -208,19 +208,19 @@ public class AdminController {
         ArrayList<Integer> hours = adminService.getHours();
         ArrayList<Integer> min = adminService.getMin();
 
-        log.info(""+opening[5].getOpeningHour());
-        model.addAttribute("opening", opening);
+        model.addAttribute("openings", opening);
         model.addAttribute("hours",hours);
         model.addAttribute("min", min);
 
         return EDITOPENINGHOURS;
     }
 
-    @PostMapping("/editOpeningHours")
+    @PutMapping("/editOpeningHours")
     public String editOpeningHours(@ModelAttribute Opening opening) {
-        log.info("Edit opening hours postmapping called...");
+        log.info("Edit opening hours putmapping called... openingId="+opening.getOpeningId());
 
+        adminService.saveOpeningHours(opening);
 
-        return EDITOPENINGHOURS;
+        return REDIRECT+EDITOPENINGHOURS;
     }
 }
