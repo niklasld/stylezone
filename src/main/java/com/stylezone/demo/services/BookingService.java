@@ -34,7 +34,6 @@ public interface BookingService {
 
     //Opening
     Opening findOpening(int openingId);
-
     Opening[] getOpenings();
 
     //Mail

@@ -1,15 +1,16 @@
 package com.stylezone.demo.controllers;
 
-import com.stylezone.demo.models.Admin;
-import com.stylezone.demo.models.Offer;
-import com.stylezone.demo.models.Staff;
+import com.stylezone.demo.models.*;
 import com.stylezone.demo.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -23,6 +24,9 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
+    @Autowired
+    RestTemplate restTemplate;
+
     private final String ADMINLOGIN = "adminLogin";
     private final String SUCCESS = "success";
     private final String REDIRECT = "redirect:/";
@@ -35,6 +39,7 @@ public class AdminController {
     private final String EDITOFFER ="editOffer";
     private final String DELETEOFFER = "deleteOffer";
     private final String OFFERPAGE = "offerPage";
+    private final String EDITOPENINGHOURS = "editOpeningHours";
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
@@ -48,15 +53,23 @@ public class AdminController {
     }
 
     @PostMapping("/adminLogin")
-    public String adminLogin(@ModelAttribute Admin admin, HttpSession session) {
+    public String adminLogin(@ModelAttribute Admin admin,
+                             @RequestParam("g-recaptcha-response") String captchaResponse,
+                             HttpSession session) {
+
         log.info("adminLogin PostMapping called...");
+
+        String url = "https://www.google.com/recaptcha/api/siteverify";
+        String params = "?secret=6LeWE30UAAAAAMUpo7seu91Da6DXig-DQxN8YKEQ&response="+captchaResponse;
+
+        ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
 
         int adminPW = adminService.hashPassword(admin.getAdminPassword());
 
         admin.setAdminPassword(""+adminPW);
         Admin adminCheck = adminService.searchUser(admin);
 
-        if(adminCheck.getAdminPassword().equals(admin.getAdminPassword()) && adminCheck.getAdminUsername().equals(admin.getAdminUsername())) {
+        if(adminCheck.getAdminPassword().equals(admin.getAdminPassword()) && adminCheck.getAdminUsername().equals(admin.getAdminUsername()) && reCaptchaResponse.isSuccess()) {
             log.info("Login is a success");
             session.setAttribute("loggedin", adminCheck);
             return REDIRECT+STAFF;
@@ -189,6 +202,7 @@ public class AdminController {
 
         return REDIRECT;
     }
+
     @GetMapping("/editOffer/{id}")
     public String editOffer (@PathVariable("id") int id,Model model){
         log.info("Edit Offer is been  called..." + id);
@@ -245,4 +259,28 @@ public class AdminController {
         return OFFERPAGE;
     }
 
+
+    @GetMapping("/editOpeningHours")
+    public String editOpeningHours(Model model) {
+        log.info("Edit opening hours getmapping called...");
+
+        Opening[] opening = adminService.convertOpenings();
+        ArrayList<Integer> hours = adminService.getHours();
+        ArrayList<Integer> min = adminService.getMin();
+
+        model.addAttribute("openings", opening);
+        model.addAttribute("hours",hours);
+        model.addAttribute("min", min);
+
+        return EDITOPENINGHOURS;
+    }
+
+    @PutMapping("/editOpeningHours")
+    public String editOpeningHours(@ModelAttribute Opening opening) {
+        log.info("Edit opening hours putmapping called... openingId="+opening.getOpeningId());
+
+        adminService.saveOpeningHours(opening);
+
+        return REDIRECT+EDITOPENINGHOURS;
+    }
 }
