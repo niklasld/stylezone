@@ -28,7 +28,8 @@
 
                 <br>
 
-                <input class="btn btn-light" type="reset" value="Reset">
+                <!-- reCaptcha html><-->
+                <div class="g-recaptcha" data-sitekey="6LeWE30UAAAAAL8uXaRigoZ4ZSzufWzm0QnpgGLg"></div>
 
                 <button class="btn btn-primary" type="submit">Login</button>
 
@@ -37,5 +38,6 @@
         <footer th:include="fragments/footer :: footer"></footer>
     </div>
     <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </body>
 </html>

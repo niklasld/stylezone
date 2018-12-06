@@ -3,11 +3,13 @@ package com.stylezone.demo.services;
 import com.stylezone.demo.models.Admin;
 import com.stylezone.demo.models.Offer;
 import com.stylezone.demo.models.Picture;
+import com.stylezone.demo.models.Opening;
 import com.stylezone.demo.models.Staff;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.Multipart;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,5 +38,16 @@ public interface AdminService {
     String insertPicture(String picture);
     String fileUpload(MultipartFile file);
 
+    //Opening
+    Opening findOpening(int openingId);
+    Opening[] getOpenings();
+    Opening saveOpeningHours(Opening opening);
+    Opening returnConvertedOpenings(Opening opening);
+
+    //ArrayList<Opening> getTimes();
+    ArrayList<Integer> getHours();
+    ArrayList<Integer> getMin();
+    ArrayList<String> getDays();
+    Opening[] convertOpenings();
 
 }

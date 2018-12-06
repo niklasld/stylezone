@@ -3,6 +3,7 @@ package com.stylezone.demo.repositories;
 import com.stylezone.demo.models.Admin;
 import com.stylezone.demo.models.Offer;
 import com.stylezone.demo.models.Picture;
+import com.stylezone.demo.models.Opening;
 import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.services.AdminServiceImpl;
 import com.stylezone.demo.services.BookingServiceImpl;
@@ -158,14 +159,34 @@ public class AdminRepoImpl implements AdminRepo {
         return offer;
     }
 
-    @Override
-    public Offer updateOffer(Offer offer) {
-        return null;
-    }
 
     @Override
-    public Offer findOffer(int offerId) {
-        return null;
+    public Offer updateOffer(Offer offer) {
+
+        String sql = "UPDATE Offer SET offerName = ?, offerContent = ?, offerStart = ?, offerEnd = ?  WHERE offerId = ?";
+        String offerName = offer.getOfferName();
+        String offerContent = offer.getOfferContent();
+        String offerStart = offer.getOfferStart();
+        String offerEnd = offer.getOfferEnd();
+        int offerId = offer.getOfferId();
+
+        this.template.update(sql, offerName, offerContent, offerStart, offerEnd, offerId);
+        return offer;
+    }
+
+
+
+    @Override
+    public Offer findOffer(int id) {
+        String sql = "SELECT * FROM Offer WHERE offerId = ?";
+
+        RowMapper<Offer> rowMapper = new BeanPropertyRowMapper<>(Offer.class);
+
+        Offer offer = template.queryForObject(sql, rowMapper, id);
+
+        return offer;
+
+
     }
 
     @Override
@@ -178,15 +199,17 @@ public class AdminRepoImpl implements AdminRepo {
             @Override
             public List<Offer> extractData(ResultSet rs) throws SQLException, DataAccessException {
                 String offerName, offerContent, offerStart, offerEnd;
+                int offerId;
                 ArrayList<Offer> offers = new ArrayList<>();
 
                 while (rs.next()) {
+                    offerId = rs.getInt("offerId");
                     offerName = rs.getString("offerName");
                     offerContent = rs.getString("offerContent");
                     offerStart = rs.getString("offerStart");
                     offerEnd = rs.getString("offerEnd");
 
-                    offers.add(new Offer(offerName, offerContent, offerStart, offerEnd));
+                    offers.add(new Offer(offerId,offerName, offerContent, offerStart, offerEnd));
                 }
                 return offers;
             }
@@ -232,5 +255,59 @@ public class AdminRepoImpl implements AdminRepo {
         this.template.update(sql, pictureName);
 
         return picture;
+    }
+
+    @Override
+    public Opening findOpening(int openingId) {
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening WHERE openingId = ?";
+        RowMapper<Opening> rowMapper = new BeanPropertyRowMapper<>(Opening.class);
+
+        Opening opening = template.queryForObject(sql, rowMapper, openingId);
+
+
+        return opening;
+    }
+
+    @Override
+    public Opening[] getOpenings() {
+        String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening";
+        return this.template.query(sql, new ResultSetExtractor<Opening[]>() {
+
+            @Override
+            public Opening[] extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int openingId;
+                String openingDay, openingTime, openingClose;
+                Opening[] openings = new Opening[6];
+                int i = 0;
+
+                while (rs.next()) {
+
+                    openingId = rs.getInt("openingId");
+                    openingDay = rs.getString("openingDay");
+                    openingTime = rs.getString("openingTime");
+                    openingClose = rs.getString("openingClose");
+
+                    openings[i] = new Opening(openingId, openingDay, openingTime, openingClose);
+                    i++;
+                }
+                return openings;
+            }
+        });
+    }
+
+    @Override
+    public Opening saveOpeningHours(Opening opening){
+
+        String sql = "UPDATE Opening SET openingTime=?, openingClose=? WHERE openingId = ?";
+
+        String openingTime = opening.getOpeningTime();
+        String openingClose = opening.getOpeningClose();
+
+        int openingId = opening.getOpeningId();
+
+        this.template.update(sql, openingTime, openingClose, openingId);
+
+        return opening;
+
     }
 }
