@@ -211,7 +211,7 @@ public class AdminController {
     }
 
     @GetMapping("/bookingAdmin")
-    public String booking(Model model) {
+    public String bookingAdmin(Model model) {
         log.info("booking called...");
 
         String date = adminService.getDateToday();
@@ -241,15 +241,16 @@ public class AdminController {
         model.addAttribute("nextWeek", adminService.nextWeek());
         model.addAttribute("prevWeek", adminService.prevWeek());
         model.addAttribute("weekNumber", weekNumber);
-        model.addAttribute("pageTitle", "Book tid");
+        model.addAttribute("pageTitle", "Booking administration");
+        model.addAttribute("isBookingAdmin", true);
 
         //log.info(bookingService.getDateToday());
 
         return BOOKINGADMIN;
     }
 
-    @PostMapping("/goToDate")
-    public String goToDate(@RequestParam("date")String date, Model model) {
+    @PostMapping("/goToDateAdmin")
+    public String goToDateAdmin(@RequestParam("date")String date, Model model) {
         log.info("goToDate called...");
 
         //log.info("Go to date: "+date);
@@ -267,7 +268,7 @@ public class AdminController {
 
 
     @GetMapping("/bookingAdmin/{day}-{month}-{year}")
-    public String bookingDate(@PathVariable("day") int day, @PathVariable("month") int month, @PathVariable("year") int year, Model model) {
+    public String bookingAdminDate(@PathVariable("day") int day, @PathVariable("month") int month, @PathVariable("year") int year, Model model) {
         log.info("booking called...");
 
         String date = day + "-" + month + "-" + year;
@@ -297,7 +298,8 @@ public class AdminController {
         model.addAttribute("nextWeek",adminService.nextWeekFromDate(day, month, year));
         model.addAttribute("prevWeek",adminService.prevWeekFromDate(day, month, year));
         model.addAttribute("weekNumber",weekNumber);
-        model.addAttribute("pageTitle", "Book tid");
+        model.addAttribute("pageTitle", "Booking administration");
+        model.addAttribute("isBookingAdmin", true);
 
         //log.info(bookingService.getDateToday());
 
