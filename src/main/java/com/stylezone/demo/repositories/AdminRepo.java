@@ -30,4 +30,5 @@ public interface AdminRepo {
     //Opening
     Opening findOpening(int openingId);
     Opening[] getOpenings();
+    Opening saveOpeningHours(Opening opening);
 }

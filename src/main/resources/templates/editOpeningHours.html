@@ -15,15 +15,18 @@
         <tbody>
             <tr>
             <tr th:each="day : ${opening}">
-                <form method="Post" th:action="@{/editOpeningHoursw}" th:object ="${openingDay}">
+                <form method="Post" th:action="@{/editOpeningHours}" th:object ="${opening}">
                     <td th:text="${day.openingDay}">
                         <input type="hidden" name="openingId" th:field="${day.openingId}"/>
+                        <input type="hidden" name="openingDay" th:field="${day.openingDay}"/>
+                        <input type="hidden" name="openingTime" th:field="${day.openingTime}"/>
+                        <input type="hidden" name="openingClose" th:field="${day.openingClose}"/>
                     </td>
                     <td>
 
                         <label>Vælg Åbningstid: </label>
                         <td>
-                            <select class="form-control form-control-sm" size="1">
+                            <select name="openingHour" class="form-control form-control-sm" size="1">
                                 <span th:each = "hour : ${hours}">
                                     <option th:if="${day.openingHour} == ${hour}" th:text="${day.openingHour}" selected="selected" th:value="${day.openingHour}"></option>
                                     <option th:if="${day.openingHour} != ${hour}" th:text="${hour}" th:value="${hour}"></option>
@@ -32,7 +35,7 @@
                         </td>
 
                         <td>
-                            <select class="form-control form-control-sm" size="1">
+                            <select name="openingMin" class="form-control form-control-sm" size="1">
                                 <span th:each = "min : ${min}">
                                     <option th:if="${day.openingMin} == ${min}" th:text="${day.openingMin}" selected="selected" th:value="${day.openingMin}"></option>
                                     <option th:if="${day.openingMin} != ${min}" th:text="${min}" th:value="${min}"></option>
@@ -43,7 +46,7 @@
                     <td>
                         <label>Vælg Lukketid: </label>
                         <td>
-                            <select class="form-control form-control-sm" size="1">
+                            <select name="closingHour" class="form-control form-control-sm" size="1">
                                 <span th:each = "hour : ${hours}">
                                     <option th:if="${day.closingHour} == ${hour}" th:text="${day.closingHour}" selected="selected" th:value="${day.closingHour}"></option>
                                     <option th:if="${day.closingHour} != ${hour}" th:text="${hour}" th:value="${hour}"></option>
@@ -52,7 +55,7 @@
                         </td>
 
                          <td>
-                             <select class="form-control form-control-sm" size="1">
+                             <select name="closingMin" class="form-control form-control-sm" size="1">
                                 <span th:each = "min : ${min}">
                                     <option th:if="${day.closingMin} == ${min}" th:text="${day.closingMin}" selected="selected" th:value="${day.closingMin}"></option>
                                     <option th:if="${day.closingMin} != ${min}" th:text="${min}" th:value="${min}"></option>

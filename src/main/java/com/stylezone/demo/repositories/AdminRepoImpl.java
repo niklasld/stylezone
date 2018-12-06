@@ -231,4 +231,20 @@ public class AdminRepoImpl implements AdminRepo {
             }
         });
     }
+
+    @Override
+    public Opening saveOpeningHours(Opening opening){
+
+        String sql = "UPDATE opening SET openingTime=?, openingClose=? WHERE openingId = ?";
+
+        String openingTime = opening.getOpeningTime();
+        String openingClose = opening.getOpeningClose();
+
+        int openingId = opening.getOpeningId();
+
+        this.template.update(sql, openingTime, openingClose, openingId);
+
+        return opening;
+
+    }
 }

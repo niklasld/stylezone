@@ -32,6 +32,9 @@ public interface AdminService {
     //Opening
     Opening findOpening(int openingId);
     Opening[] getOpenings();
+    Opening saveOpeningHours(Opening opening);
+    Opening returnConvertedOpenings(Opening opening);
+
     //ArrayList<Opening> getTimes();
     ArrayList<Integer> getHours();
     ArrayList<Integer> getMin();

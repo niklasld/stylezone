@@ -110,6 +110,53 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Opening saveOpeningHours(Opening opening) {
+
+        opening = returnConvertedOpenings(opening);
+
+        opening = adminRepo.saveOpeningHours(opening);
+
+        return opening;
+    }
+
+    @Override
+    public Opening returnConvertedOpenings(Opening opening) {
+        String fullTime="";
+
+        if(Integer.parseInt(opening.getOpeningHour())<10) {
+            fullTime = "0"+opening.getOpeningHour();
+        }
+        else if(Integer.parseInt(opening.getOpeningHour())>=10) {
+            fullTime = ""+opening.getOpeningHour();
+        }
+        if(Integer.parseInt(opening.getOpeningMin())<10){
+            fullTime = fullTime+":0"+opening.getOpeningMin()+":00";
+        }
+        else if(Integer.parseInt(opening.getOpeningMin())>=10) {
+            fullTime = fullTime+":"+opening.getOpeningMin()+":00";
+        }
+
+        opening.setOpeningTime(fullTime);
+        fullTime = "";
+        if(Integer.parseInt(opening.getClosingHour())<10) {
+            fullTime = "0"+opening.getClosingHour();
+        }
+        else if(Integer.parseInt(opening.getClosingHour())>=10) {
+            fullTime = ""+opening.getClosingHour();
+        }
+        if(Integer.parseInt(opening.getClosingMin())<10){
+            fullTime = fullTime+":0"+opening.getClosingMin()+":00";
+        }
+        else if(Integer.parseInt(opening.getClosingMin())>=10) {
+            fullTime = fullTime+":"+opening.getClosingMin()+":00";
+        }
+
+        opening.setOpeningClose(fullTime);
+
+        return opening;
+    }
+
+    @Override
     public ArrayList<Integer> getHours() {
         ArrayList<Integer> hours = new ArrayList<>();
 
