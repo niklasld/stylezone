@@ -157,14 +157,34 @@ public class AdminRepoImpl implements AdminRepo {
         return offer;
     }
 
-    @Override
-    public Offer updateOffer(Offer offer) {
-        return null;
-    }
 
     @Override
-    public Offer findOffer(int offerId) {
-        return null;
+    public Offer updateOffer(Offer offer) {
+
+        String sql = "UPDATE Offer SET offerName = ?, offerContent = ?, offerStart = ?, offerEnd = ?  WHERE offerId = ?";
+        String offerName = offer.getOfferName();
+        String offerContent = offer.getOfferContent();
+        String offerStart = offer.getOfferStart();
+        String offerEnd = offer.getOfferEnd();
+        int offerId = offer.getOfferId();
+
+        this.template.update(sql, offerName, offerContent, offerStart, offerEnd, offerId);
+        return offer;
+    }
+
+
+
+    @Override
+    public Offer findOffer(int id) {
+        String sql = "SELECT * FROM Offer WHERE offerId = ?";
+
+        RowMapper<Offer> rowMapper = new BeanPropertyRowMapper<>(Offer.class);
+
+        Offer offer = template.queryForObject(sql, rowMapper, id);
+
+        return offer;
+
+
     }
 
     @Override
@@ -177,15 +197,17 @@ public class AdminRepoImpl implements AdminRepo {
             @Override
             public List<Offer> extractData(ResultSet rs) throws SQLException, DataAccessException {
                 String offerName, offerContent, offerStart, offerEnd;
+                int offerId;
                 ArrayList<Offer> offers = new ArrayList<>();
 
                 while (rs.next()) {
+                    offerId = rs.getInt("offerId");
                     offerName = rs.getString("offerName");
                     offerContent = rs.getString("offerContent");
                     offerStart = rs.getString("offerStart");
                     offerEnd = rs.getString("offerEnd");
 
-                    offers.add(new Offer(offerName, offerContent, offerStart, offerEnd));
+                    offers.add(new Offer(offerId,offerName, offerContent, offerStart, offerEnd));
                 }
                 return offers;
             }

@@ -5,34 +5,43 @@
 <div class="container">
     <header th:include="fragments/header :: navbar"></header>
 
-    <h1>Edit Offer</h1>
+    <h1 th:text="${'Edit offer (' + offerName + ')'}"></h1>
 
-    <form method="Post" th:action="@{/editOffer}" th:object="${offer}">
+    <form th:method="put" th:action="@{/editOffer}" th:object="${offer}">
 
-        <label>Tilbud Name:</label>
-        <input type="text" class="form-control mr-sm-2"  th:name="offerName" placeholder="jule offer"/>
+        <input type="hidden" th:field="${offer.offerId}">
 
-        <label>Tilbud Beskrivelse:</label>
-        <br>
-        <textarea rows ="3" cols = "60" th:name = "offerContent" placeholder = "Skriv din aktuelle offer her"></textarea>
-
-        <br>
-        <label>Starts Dato:</label>
-        <br>
-        <input type="date" rows ="2" cols = "30" th:name = "offerStart" placeholder = "Skriv din aktuelle offer her">
-
-        <br>
-        <label>Sluts Dato:</label>
-        <br>
-        <input type="date" rows ="2" cols = "30" th:name = "offerEnd" placeholder = "Skriv din aktuelle offer her">
+        <label>Tilbud Navn:</label>
+        <input type="text" class="form-control mr-sm-2"  th:field="${offer.offerName}">
 
         <br>
 
-        <input class="btn btn-light" type="button" value="Anullere" onclick="location.href='/';"/>
+        <label>Informationer om tilbuddet:</label>
 
-        <button class="btn btn-primary" type="submit" value="Edit Offer">Edit</button>
+        <textarea rows ="3" cols = "60" th:name = "offerContent" placeholder = "Skriv din aktuelle offer her" th:field="${offer.offerContent}" class="form-control mr-sm-2"></textarea>
+        <br>
+
+        <label>Starts dato:</label>
+        <input type="date" class="form-control mr-sm-2"  th:field="${offer.offerStart}"/>
+        <br>
+
+        <label>Sluts dato:</label>
+        <input type="date" class="form-control mr-sm-2"  th:field="${offer.offerEnd}"/>
+
+
+        <br>
+
+        <input class="btn btn-light" type="button" value="Cancel" onclick="location.href='/';"/>
+
+        <button class="btn btn-primary" type="submit">Save</button>
 
     </form>
+
+    <br>
+
+    </div>
+<footer th:include="fragments/footer :: footer"></footer>
 </div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
 </body>
 </html>

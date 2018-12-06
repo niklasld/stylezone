@@ -32,6 +32,9 @@ public class AdminController {
     private final String CREATESTAFFMEMBER = "createStaffMember";
     private final String OFFER = "offer";
     private final String CREATEOFFER = "createOffer";
+    private final String EDITOFFER ="editOffer";
+    private final String DELETEOFFER = "deleteOffer";
+    private final String OFFERPAGE = "offerPage";
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
@@ -155,7 +158,7 @@ public class AdminController {
 
     @GetMapping("/offer")
     public String offer(Model model) {
-        log.info("Index called...");
+        log.info("offer is called... med en liste af alle offer");
 
         List<Offer> offers = adminService.getOffers();
         model.addAttribute("offers", offers);
@@ -186,4 +189,60 @@ public class AdminController {
 
         return REDIRECT;
     }
+    @GetMapping("/editOffer/{id}")
+    public String editOffer (@PathVariable("id") int id,Model model){
+        log.info("Edit Offer is been  called..." + id);
+
+        model.addAttribute("offer", adminService.findOffer(id));
+
+        String offerName = adminService.findOffer(id).getOfferName();
+        model.addAttribute("pageTitle", "Edit offer (" + offerName + ")");
+        model.addAttribute("offerName", offerName);
+
+        return EDITOFFER;
+    }
+    @PutMapping("/editOffer")
+    public String editOffer (@ModelAttribute Offer offer, Model model){
+        log.info("Edit Offer  putmapping is been  called..." );
+
+        adminService.updateOffer(offer);
+
+        model.addAttribute("offers", adminService.getOffers());
+        model.addAttribute("pageTitle", "Edit offer");
+
+        return REDIRECT + OFFER;
+    }
+
+    @GetMapping("/deleteOffer/{id}")
+    public String deleteOffer (@PathVariable Integer id, Model model){
+        log.info("Delete offer med  id: " + id + "?");
+
+        model.addAttribute("offer", adminService.findOffer(id));
+        String offerName = adminService.findOffer(id).getOfferName();
+        model.addAttribute("pageTitle", "Delete offer (" + offerName + ")");
+
+        return DELETEOFFER;
+    }
+
+    @PutMapping("/deleteOffer")
+    public String deleteOffer (@ModelAttribute Offer offer, Model model){
+        log.info("delete confirmed deleting offer " + offer.getOfferId());
+        int id = offer.getOfferId();
+
+        adminService.deleteOffer(id);
+
+        model.addAttribute("offers", adminService.getOffers());
+        model.addAttribute("pageTitle", "Delete offer");
+
+        return REDIRECT + OFFER;
+    }
+
+    @GetMapping("/offerPage")
+    public String offerPage (Model model){
+        log.info("offerPage is called");
+        model.addAttribute("offers", adminService.getOffers());
+
+        return OFFERPAGE;
+    }
+
 }

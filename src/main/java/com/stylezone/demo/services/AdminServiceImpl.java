@@ -5,6 +5,7 @@ import com.stylezone.demo.models.Offer;
 import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.repositories.AdminRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     AdminRepo adminRepo;
+    @Autowired
+    JdbcTemplate template;
+
 
     Logger log = Logger.getLogger(AdminServiceImpl.class.getName());
 
@@ -26,14 +30,6 @@ public class AdminServiceImpl implements AdminService {
 
         return passwordHash;
     }
-
-    /*@Override
-    public Admin checkPassword(Admin admin) {
-
-        Admin adminFound = adminRepo.checkPassword(admin);
-
-        return adminFound;
-    }*/
 
     @Override
     public Admin searchUser(Admin admin) {
@@ -90,16 +86,21 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Offer updateOffer(Offer offer) {
-        return null;
+        offer = adminRepo.updateOffer(offer);
+        return offer;
     }
+
 
     @Override
     public void deleteOffer(int id) {
-
+        String sql = "DELETE FROM Offer WHERE offerId = ?";
+        this.template.update(sql, id);
     }
+
 
     @Override
     public Offer findOffer(int id) {
-        return null;
+       Offer offer = adminRepo.findOffer(id);
+        return offer;
     }
 }

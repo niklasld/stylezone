@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
 <body>
+<div class="container">
+    <header th:include="fragments/header :: navbar"></header>
 
+            <h1> Tilbud </h1>
+
+                <div class="offer">
+
+
+                    <span th:each="offer : ${offers}">
+                        <h3 th:text="${offer.offerName}"></h3>
+
+                        <p th:text="${ offer.offerContent}"></p>
+                        <br>
+                    </span>
+
+                </div>
+
+    <footer th:include="fragments/footer :: footer"></footer>
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
 </body>
 </html>
