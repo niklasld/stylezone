@@ -186,6 +186,7 @@ public class AdminController {
         List<Offer> offers = adminService.getOffers();
         model.addAttribute("offers", offers);
         model.addAttribute("pageTitle", "offer");
+        model.addAttribute("isOffer", true);
 
         return OFFER;
     }

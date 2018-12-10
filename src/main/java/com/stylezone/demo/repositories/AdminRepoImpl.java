@@ -356,7 +356,7 @@ public class AdminRepoImpl implements AdminRepo {
 
     @Override
     public List<Offer> getOffers() {
-        String sql = "SELECT * FROM Offer";
+        String sql = "SELECT offerId, offerName, offerContent, DATE_FORMAT(offerStart, '%d-%m-%Y') AS offerStart, DATE_FORMAT(offerEnd, '%d-%m-%Y') AS offerEnd FROM Offer";
 
         // Fra sql til list.
         // Manuelt i stedet.
