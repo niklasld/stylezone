@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+
+</head>
+<body>
+<div class="container">
+    <header th:include="fragments/header :: adminNavbar"></header>
+
+    <h1>Opret ny bookning</h1>
+    <h2>Udfyld venligst dine informationer</h2>
+    <br>
+    <form method="Post" th:action="@{/createBooking}" th:object ="${booking}">
+
+        <label>Fulde navn:</label>
+        <input type = "text" class ="form-control mr-sm-2" th:name="bookingName" placeholder="obligatorisk" required/>
+
+        <label>Telefon nummer:</label>
+        <input type = "number" class="form-control mr-sm-2" th:name="bookingPhone" placeholder ="obligatorisk" required/>
+
+        <label>Email Adresse:</label>
+        <input type = "email" class = "form-control mr-sm-2" th:name = "bookingEmail" placeholder = "obligatorisk" required/>
+
+        <input type="hidden" th:name = "bookingTime" th:value="${time}" required/>
+        <input type="hidden" th:name = "bookingDate" th:value="${date}" required/>
+
+
+        <label>Vælg Frisør:</label>
+        <select th:name = "staffId" class="form-control">
+            <option th:each="staff : ${staffs}" th:value="${staff.staffId}" th:text="${staff.staffName}"></option>
+        </select>
+
+        <label>Kommentar til frisør:</label>
+        <textarea class="form-control" rows ="6" cols = "50" th:name = "bookingComment" placeholder = "Valgfri"></textarea>
+
+        <label>Besked til kunde:</label>
+        <textarea class="form-control" rows ="6" cols = "50" th:name = "bookingMessage" placeholder = "Valgfri"></textarea>
+        <br>
+
+
+        <!-- reCaptcha html><-->
+        <div class="g-recaptcha" data-sitekey="6LeWE30UAAAAAL8uXaRigoZ4ZSzufWzm0QnpgGLg"></div>
+
+        <button class = "btn btn-primary" type ="submit">Book tid</button>
+
+        <footer th:include="fragments/footer :: footer"></footer>
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+</body>
+</html>

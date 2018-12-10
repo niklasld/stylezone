@@ -5,14 +5,15 @@ import com.stylezone.demo.repositories.AdminRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Repository
@@ -186,6 +187,44 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return bookingGroups;
+    }
+
+    @Override
+    public Booking createBooking(Booking booking) {
+
+        if (booking.getStaffId() > 0 ||
+                !booking.getBookingEmail().equals("") ||
+                !booking.getBookingTime().equals("00:00:00") ||
+                !booking.getBookingDate().equals("00-00-0000") ||
+                booking.getBookingPhone() > 0 ||
+                !booking.getBookingName().equals("")) {
+
+            booking = adminRepo.createBooking(booking);
+
+            return booking;
+        }
+        return null;
+    }
+
+    @Override
+    public Boolean isBooked(String bookingDate, String bookingTime) {
+        Booking booking = adminRepo.isBooked(bookingDate, bookingTime);
+        if(booking.getBookingId() == 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String generateRandomString(){
+        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+
+        StringBuilder sb = new StringBuilder( 20 );
+        for( int i = 0; i < 20; i++ )
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        return sb.toString();
     }
 
     @Override
@@ -441,5 +480,66 @@ public class AdminServiceImpl implements AdminService {
 
         return dates;
 
+    }
+
+    @Override
+    public void createBookingMail(Booking booking){
+
+        String subject = "Vi har reserveret en tid hos StyleZone den " + booking.getBookingDate() + " kl. " + booking.getBookingTime() + " for dig.";
+        String mailTo = booking.getBookingEmail();
+        String mailText;
+
+        mailText = "Hej " + booking.getBookingName() + "\n\n";
+        mailText += "Vi har reserveret en tid hos StyleZone for dig.\n\n";
+        mailText += "Vi har reserveret din tid nedenstående\n\n";
+        mailText += "Tid: " + booking.getBookingTime() + "\n";
+        mailText += "Dato: " + booking.getBookingDate() + "\n";
+        mailText += "Dit tlf nr: +45" + booking.getBookingPhone() + "\n";
+        mailText += "Kommentar til frisøren:\n" + booking.getBookingComment() + "\n\n";
+        mailText += "Besked til dig:\n" + booking.getBookingMassage() + "\n\n";
+        mailText += "Er der nogle af informationerne der skal ændres eller skal bestillingen skal aflyses, kan StyleZone kontaktes på telefon nummer: +45 2989 7596.\n\n";
+        mailText += "Med venlig hilsen.\n";
+        mailText += "StyleZone";
+
+        sendEmail(mailText, subject, mailTo);
+    }
+
+    @Override
+    public void sendEmail(String mailText, String subject, String mailTo) {
+        //Setting up configurations for the email connection to the Google SMTP server using TLS
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+
+        //Establishing a session with required user details
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("stylezone.bestilling@gmail.com", "springboot");
+            }
+        });
+        try {
+            //Creating a Message object to set the email content
+            MimeMessage msg = new MimeMessage(session);
+            //Storing the comma seperated values to email addresses
+            String to = "stylezone.bestilling@gmail.com, " + mailTo;
+            /*Parsing the String with defualt delimiter as a comma by marking the boolean as true and storing the email
+            addresses in an array of InternetAddress objects*/
+            InternetAddress[] address = InternetAddress.parse(to, true);
+            //Setting the recepients from the address variable
+            msg.setRecipients(Message.RecipientType.TO, address);
+            msg.setSubject(subject);
+            msg.setSentDate(new Date());
+
+            msg.setText(mailText);
+
+            msg.setHeader("XPriority", "1");
+            Transport.send(msg);
+            log.info("Mail has been sent successfully");
+        } catch (MessagingException mex) {
+            log.info("Unable to send an email" + mex);
+        }
     }
 }

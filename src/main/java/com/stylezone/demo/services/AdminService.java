@@ -10,6 +10,10 @@ public interface AdminService {
     //Booking
     List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd);
     List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd);
+    Booking createBooking(Booking booking);
+    Boolean isBooked(String bookingDate, String bookingTime);
+
+    String generateRandomString();
 
     //Holiday
     Holiday findHolidayById(int holidayId);
@@ -49,5 +53,9 @@ public interface AdminService {
     String prevWeekFromDate(int day, int month, int year);
     String[] getDatesOfWeek();
     String[] getDatesOfSelectedWeek(int day, int month, int year);
+
+    //Mail
+    void createBookingMail(Booking booking);
+    void sendEmail(String mailText, String subject, String mailTo);
 
 }

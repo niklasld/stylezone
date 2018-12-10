@@ -10,6 +10,8 @@ public interface AdminRepo {
     //Booking
     List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd);
     List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd);
+    Booking createBooking(Booking booking);
+    Booking isBooked(String bookingDate, String bookingTime);
 
     //Holiday
     Holiday findHolidayById(int holidayId);

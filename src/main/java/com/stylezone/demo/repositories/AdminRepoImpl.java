@@ -90,6 +90,36 @@ public class AdminRepoImpl implements AdminRepo {
     }
 
     @Override
+    public Booking createBooking(Booking booking) {
+
+
+        String sql = "INSERT INTO stylezone.Booking VALUES(default,?,STR_TO_DATE(?,'%d-%m-%Y'),?,?,?,?,?,?)";
+        String bookingTime = booking.getBookingTime();
+        String bookingDate = booking.getBookingDate();
+        String bookingName = booking.getBookingName();
+        String bookingEmail = booking.getBookingEmail();
+        String bookingComment = booking.getBookingComment();
+        String bookingToken = booking.getBookingToken();
+        int bookingPhone = booking.getBookingPhone();
+        int fk_staffId = booking.getStaffId();
+
+        this.template.update(sql, bookingTime, bookingDate, bookingName, bookingEmail, bookingPhone, bookingComment, bookingToken, fk_staffId);
+
+        return booking;
+
+    }
+
+    @Override
+    public Booking isBooked(String bookingDate, String bookingTime) {
+        String sql = "SELECT COUNT(bookingId) AS bookingId FROM stylezone.Booking WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y') AND bookingTime = ?";
+        RowMapper<Booking> rowMapper = new BeanPropertyRowMapper<>(Booking.class);
+
+        Booking booking = template.queryForObject(sql, rowMapper, bookingDate, bookingTime);
+
+        return booking;
+    }
+
+    @Override
     public Holiday findHolidayById(int holidayId) {
         String sql = "SELECT * FROM stylezone.Holiday WHERE holidayId = ?";
         RowMapper<Holiday> rowMapper = new BeanPropertyRowMapper<>(Holiday.class);

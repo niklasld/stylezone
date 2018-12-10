@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles"></head>
+<body>
+<div class="container">
+    <header th:include="fragments/header :: adminNavbar"></header>
+
+    <h1 th:text="${'Book tid for d. ' + #strings.replace(date, '-', '/')}">Vælg tid</h1>
+
+    <table class="timeSelect table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Tid</th>
+                <th>Navn</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr  th:each="booking : ${bookings}">
+                <td th:text="${booking.bookingTime}" class=""></td>
+                <td th:text="${booking.bookingName}" class=""></td>
+
+                <td th:if="${booking.bookingName} == ''" class="text-success">&#9679;Ledig</td>
+                <td th:if="${booking.bookingName} != ''" class="text-danger">&#9679;Optaget</td>
+
+                <td th:if="${booking.bookingName} == ''"><a class="btn btn-success btn-sm" th:href="${'/createBooking/' + booking.bookingTime + '/' + date}"><span class="fas fa-plus"></span> Opret booking</a></td>
+                <td th:if="${booking.bookingName} != ''">
+                    <a class="btn btn-outline-dark btn-sm" th:href="${'/saveBooking/' + booking.bookingTime + '/' + date}"><i class="fas fa-info-circle"></i> Vis info</a><!--See booking-->
+                    <a class="btn btn-outline-dark btn-sm" th:href="${'/saveBooking/' + booking.bookingTime + '/' + date}"><span class="fas fa-pen"></span> Rediger</a><!--Edit booking-->
+                    <a class="btn btn-outline-primary btn-sm" th:href="${'/saveBooking/' + booking.bookingTime + '/' + date}"><i class="fas fa-comment-alt"></i> Send besked</a><!--Send message-->
+                    <a class="btn btn-danger btn-sm" th:href="${'/saveBooking/' + booking.bookingTime + '/' + date}"><span class="fas fa-trash-alt"></span> Slet</a><!--Delete booking-->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <footer th:include="fragments/footer :: footer"></footer>
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+</body>
+</html>

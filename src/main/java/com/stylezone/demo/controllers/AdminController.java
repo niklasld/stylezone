@@ -37,6 +37,9 @@ public class AdminController {
     private final String OFFER = "offer";
     private final String CREATEOFFER = "createOffer";
     private final String BOOKINGADMIN = "bookingAdmin";
+    private final String TIMESELECTADMIN = "timeSelectAdmin";
+    private final String CREATEBOOKING = "createBooking";
+    private final String TIMENOTAVAILABLE = "timeNotAvailable";
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
@@ -304,5 +307,77 @@ public class AdminController {
         //log.info(bookingService.getDateToday());
 
         return BOOKINGADMIN;
+    }
+
+    @GetMapping("/timeSelectAdmin/{date}/{start}/{end}")
+    public String timeSelect(@PathVariable String date, @PathVariable String start, @PathVariable String end, Model model) {
+        log.info("timeSelect called...");
+
+        if(start.length() == 4){
+            start = "0" + start;
+        }
+
+        if(end.length() == 4){
+            end = "0" + end;
+        }
+
+        List<Booking> bookings = adminService.getSelectedBookings(date, start, end);
+        model.addAttribute("bookings", bookings);
+        model.addAttribute("date", date);
+        model.addAttribute("pageTitle", "Tider for " + date + ", mellem kl." + start + " - " + end);
+
+        return TIMESELECTADMIN;
+    }
+
+    @GetMapping("/createBooking/{bookingTime}/{bookingDate}")
+    public String createBooking(@PathVariable("bookingTime") String bookingTime, @PathVariable("bookingDate") String bookingDate, Model model){
+
+        log.info("createBooking getmapping called...");
+
+        if(adminService.isHolidayByDate(bookingDate) == true || adminService.isBooked(bookingDate, bookingTime) == true ) {
+            model.addAttribute("pageTitle", "Denne tid ikke tilgængelig");
+
+            return TIMENOTAVAILABLE;
+        } else if (bookingDate.length() < 10 || bookingTime.length() < 5) {
+            model.addAttribute("pageTitle", "Denne tid ikke tilgængelig");
+
+            return TIMENOTAVAILABLE;
+        } else {
+            model.addAttribute("staffs", adminService.getStaff());
+            model.addAttribute("booking", new Booking());
+            model.addAttribute("pageTitle", "Opret ny bookning");
+
+            model.addAttribute("time", bookingTime);
+            model.addAttribute("date", bookingDate);
+
+            return CREATEBOOKING;
+        }
+    }
+
+    @PostMapping("/createBooking")
+    public String createBooking(@ModelAttribute Booking booking,
+                              @RequestParam("g-recaptcha-response") String captchaResponse){
+
+        log.info("createBooking postmapping called...");
+
+        String url = "https://www.google.com/recaptcha/api/siteverify";
+        String params = "?secret=6LeWE30UAAAAAMUpo7seu91Da6DXig-DQxN8YKEQ&response="+captchaResponse;
+
+        ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
+
+        if(reCaptchaResponse.isSuccess()) {
+
+            booking.setBookingToken(adminService.generateRandomString());
+            log.info("Token: " + booking.getBookingToken());
+            adminService.createBookingMail(booking);
+            booking.clearBookingMassage();
+            adminService.createBooking(booking);
+            return REDIRECT+BOOKINGADMIN;
+        } else {
+
+            log.info("Save booking failed!");
+            return REDIRECT + CREATEBOOKING + "/" + booking.getBookingTime() + "/" + booking.getBookingDate();
+        }
+
     }
 }
