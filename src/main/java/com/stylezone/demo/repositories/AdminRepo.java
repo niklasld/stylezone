@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 public interface AdminRepo {
     //Admin
-    Admin checkPassword(Admin admin);
     Admin searchUser(Admin admin);
 
     //Staff

@@ -28,27 +28,7 @@ public class AdminRepoImpl implements AdminRepo {
 
     Logger log = Logger.getLogger(AdminRepoImpl.class.getName());
 
-    @Override
-    public Admin checkPassword(Admin admin) {
-        String sql = "SELECT * FROM Admin WHERE adminUsername = ? AND adminPassword = ?";
-
-
-        RowMapper<Admin> rowMapper = new BeanPropertyRowMapper<>(Admin.class);
-
-        Admin adminFound = new Admin();
-
-        try {
-            adminFound = template.queryForObject(sql, rowMapper, admin.getAdminUsername(), admin.getAdminPassword());
-        }
-        catch (Exception e) {
-
-            adminFound.setAdminUsername("ErrorAdminNotFound");
-            adminFound.setAdminPassword("ErrorPasswordNotFound");
-        }
-
-        return adminFound;
-    }
-
+    //Niklas
     @Override
     public Admin searchUser(Admin admin) {
         String sql = "SELECT * FROM Admin WHERE adminUsername=? AND adminPassword=?";
@@ -77,6 +57,7 @@ public class AdminRepoImpl implements AdminRepo {
         }, admin.getAdminUsername(),admin.getAdminPassword());
     }
 
+    //Gustav
     @Override
     public Staff getStaffMember(int staffId){
         String sql = "SELECT * FROM Staff WHERE staffId = ?";
@@ -87,6 +68,7 @@ public class AdminRepoImpl implements AdminRepo {
         return staff;
     }
 
+    //Gustav
     @Override
     public Staff updateStaff(Staff staff){
 
@@ -99,12 +81,15 @@ public class AdminRepoImpl implements AdminRepo {
         return staff;
 
     }
+
+    //Gustav
     @Override
     public void deleteStaffMember(int staffId){
         String sql = "DELETE FROM stylezone.Staff WHERE staffId = ?";
         this.template.update(sql, staffId );
     }
 
+    //Gustav
     public Staff createStaffMember(Staff staff){
         String sql = "INSERT INTO Staff VALUE(default, ?)";
 
@@ -116,6 +101,7 @@ public class AdminRepoImpl implements AdminRepo {
         return staff;
     }
 
+    //Gustav
     @Override
     public List<Staff> getStaff(){
 
@@ -143,6 +129,7 @@ public class AdminRepoImpl implements AdminRepo {
         });
     }
 
+    //Hasan
     @Override
     public Offer createOffer(Offer offer) {
         Logger log = Logger.getLogger(BookingServiceImpl.class.getName());
@@ -159,7 +146,7 @@ public class AdminRepoImpl implements AdminRepo {
         return offer;
     }
 
-
+    //Hasan
     @Override
     public Offer updateOffer(Offer offer) {
 
@@ -174,8 +161,7 @@ public class AdminRepoImpl implements AdminRepo {
         return offer;
     }
 
-
-
+    //Hasan
     @Override
     public Offer findOffer(int id) {
         String sql = "SELECT * FROM Offer WHERE offerId = ?";
@@ -189,6 +175,7 @@ public class AdminRepoImpl implements AdminRepo {
 
     }
 
+    //Hasan
     @Override
     public List<Offer> getOffers() {
         String sql = "SELECT * FROM Offer";
@@ -216,6 +203,7 @@ public class AdminRepoImpl implements AdminRepo {
         });
     }
 
+    //Gustav
     @Override
     public List<Picture> getPictures(){
 
@@ -242,7 +230,7 @@ public class AdminRepoImpl implements AdminRepo {
 
         }
 
-
+    //Gustav
     @Override
     public String insertPicture(String picture) {
         Logger log = Logger.getLogger(BookingServiceImpl.class.getName());
@@ -256,6 +244,8 @@ public class AdminRepoImpl implements AdminRepo {
 
         return picture;
     }
+
+    //Hasan
     @Override
     public List<Offer> showOffers() {
         String sql = "SELECT * FROM stylezone.Offer  WHERE offerStart <= now() AND offerEnd >= now()";
@@ -277,7 +267,7 @@ public class AdminRepoImpl implements AdminRepo {
 
     }
 
-
+    //Felix
     @Override
     public Opening findOpening(int openingId) {
         String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening WHERE openingId = ?";
@@ -289,6 +279,7 @@ public class AdminRepoImpl implements AdminRepo {
         return opening;
     }
 
+    //Felix
     @Override
     public Opening[] getOpenings() {
         String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening";
@@ -316,6 +307,7 @@ public class AdminRepoImpl implements AdminRepo {
         });
     }
 
+    //Niklas
     @Override
     public Opening saveOpeningHours(Opening opening){
 

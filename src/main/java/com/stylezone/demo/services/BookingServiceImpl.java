@@ -27,19 +27,21 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     BookingRepo bookingRepo;
 
-
+    //Felix
     @Override
     public Booking findBooking(int bookingId) {
         Booking booking = bookingRepo.findBooking(bookingId);
         return booking;
     }
 
+    //Felix
     @Override
     public List<Booking> getBookings() {
         List<Booking> bookings = bookingRepo.getBookings();
         return bookings;
     }
 
+    //Gustav
     @Override
     public Booking saveBooking(Booking booking) {
 
@@ -57,6 +59,7 @@ public class BookingServiceImpl implements BookingService {
         return null;
     }
 
+    //Felix
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
         log.info("BookingService.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
 
@@ -106,6 +109,7 @@ public class BookingServiceImpl implements BookingService {
         return bookings;
     }
 
+    //Felix
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
         log.info("BookingService.getBookingGroups(" + date + ", " + timeStart + ", " + timeEnd + ")");
@@ -207,41 +211,48 @@ public class BookingServiceImpl implements BookingService {
         return bookingGroups;
     }
 
+    //Felix
     @Override
     public Booking updateBooking(Booking booking) {
         booking = bookingRepo.updateBooking(booking);
         return booking;
     }
 
+    //Niklas??
     @Override
     public void deleteBooking(int bookingId) {
         bookingRepo.deleteBooking(bookingId);
     }
 
+    //Felix
     @Override
     public Holiday findHoliday(int holidayId) {
         Holiday holiday = bookingRepo.findHoliday(holidayId);
         return holiday;
     }
 
+    //Felix
     @Override
     public List<Holiday> getHolidays() {
         List<Holiday> holidays = bookingRepo.getHolidays();
         return holidays;
     }
 
+    //Felix
     @Override
     public Opening findOpening(int openingId) {
         Opening opening = bookingRepo.findOpening(openingId);
         return opening;
     }
 
+    //Felix
     @Override
     public Opening[] getOpenings() {
         Opening[] openings = bookingRepo.getOpenings();
         return openings;
     }
 
+    //Niklas
     @Override
     public void sendEmail(Booking booking) {
         //Setting up configurations for the email connection to the Google SMTP server using TLS
@@ -294,6 +305,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    //Felix
     public int getWeekToday() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar calendar = new GregorianCalendar();
@@ -303,6 +315,7 @@ public class BookingServiceImpl implements BookingService {
         return weekOfYear;
     }
 
+    //Felix
     @Override
     public int getWeekFromDate(int day, int month, int year) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -317,6 +330,7 @@ public class BookingServiceImpl implements BookingService {
         return weekOfYear;
     }
 
+    //Felix
     @Override
     public String getDateToday() {
         LocalDate date = LocalDate.now();
@@ -326,7 +340,7 @@ public class BookingServiceImpl implements BookingService {
         return today;
     }
 
-
+    //Felix
     @Override
     public String nextWeek() {
         LocalDate date = LocalDate.now();
@@ -339,6 +353,7 @@ public class BookingServiceImpl implements BookingService {
         return next;
     }
 
+    //Felix
     @Override
     public String nextWeekFromDate(int day, int month, int year) {
         LocalDate date = LocalDate.of(year, month, day);
@@ -351,6 +366,7 @@ public class BookingServiceImpl implements BookingService {
         return next;
     }
 
+    //Felix
     @Override
     public String prevWeek() {
         LocalDate date = LocalDate.now();
@@ -363,6 +379,7 @@ public class BookingServiceImpl implements BookingService {
         return prev;
     }
 
+    //Felix
     @Override
     public String prevWeekFromDate(int day, int month, int year) {
         LocalDate date = LocalDate.of(year, month, day);
@@ -375,6 +392,7 @@ public class BookingServiceImpl implements BookingService {
         return prev;
     }
 
+    //Felix
     @Override
     public String[] getDatesOfWeek() {
         String[] dates = new String[7];
@@ -398,6 +416,7 @@ public class BookingServiceImpl implements BookingService {
         return dates;
     }
 
+    //Felix
     public String[] getDatesOfSelectedWeek(int day, int month, int year) {
         String[] dates = new String[7];
 
@@ -425,12 +444,14 @@ public class BookingServiceImpl implements BookingService {
 
     }
 
+    //Gustav
     @Override
     public List<Staff> getStaff() {
         List<Staff> staffs = bookingRepo.getStaff();
         return staffs;
     }
 
+    //Gustav
     @Override
     public Staff getStaffMember(int staffId) {
         Staff staffs = bookingRepo.getStaffMember(staffId);

@@ -39,7 +39,6 @@ public class AdminController {
     RestTemplate restTemplate;
 
     private final String ADMINLOGIN = "adminLogin";
-    private final String SUCCESS = "success";
     private final String REDIRECT = "redirect:/";
     private final String EDITSTAFF = "editStaff";
     private final String STAFF = "staff";
@@ -58,6 +57,7 @@ public class AdminController {
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
+    //Niklas
     @GetMapping("/adminLogin")
     public String adminLogin(Model model) {
         log.info("adminLogin GetMapping called...");
@@ -67,6 +67,7 @@ public class AdminController {
         return ADMINLOGIN;
     }
 
+    //Niklas
     @PostMapping("/adminLogin")
     public String adminLogin(@ModelAttribute Admin admin,
                              @RequestParam("g-recaptcha-response") String captchaResponse,
@@ -94,6 +95,7 @@ public class AdminController {
         return REDIRECT;
     }
 
+    //Gustav
     @GetMapping("/editStaff/{staffId}")
     public String editStaff(@PathVariable("staffId") int staffId, Model model) {
         log.info("editStaff GetMapping called...");
@@ -106,6 +108,7 @@ public class AdminController {
 
     }
 
+    //Gustav
     @PutMapping("/editStaff")
     public String editStaff(@ModelAttribute Staff staff, Model model) {
 
@@ -116,6 +119,7 @@ public class AdminController {
         return REDIRECT + STAFF;
     }
 
+    //Gustav
     @GetMapping("/staff")
     public String staff(Model model) {
         log.info("staff called...");
@@ -127,6 +131,7 @@ public class AdminController {
 
     }
 
+    //Gustav
     @PostMapping("/staff")
     public String staff(@ModelAttribute Staff staff, Model model) {
         log.info("Staff called...");
@@ -136,6 +141,7 @@ public class AdminController {
         return STAFF;
     }
 
+    //Gustav
     @GetMapping("/deleteStaff/{staffId}")
     public String deleteStaff(@PathVariable("staffId") int staffId, Model model) {
         log.info("deleteStaff with called with id :" + staffId);
@@ -148,6 +154,7 @@ public class AdminController {
 
     }
 
+    //Gustav
     @PutMapping("/deleteStaff")
     public String deleteStaff(@ModelAttribute Staff staff, Model model) {
         log.info("delete confirmed deleting staffmember with Id" + staff.getStaffId());
@@ -162,6 +169,7 @@ public class AdminController {
 
     }
 
+    //Gustav
     @GetMapping("/createStaffMember")
     public String createStaffMember(Model model) {
         log.info("CreateStaffMember alled..");
@@ -172,6 +180,7 @@ public class AdminController {
         return CREATESTAFFMEMBER;
     }
 
+    //Gustav
     @PostMapping("/createStaffMember")
     public String createStaffMember(@ModelAttribute Staff staff, Model model) {
         log.info("createStaffMember postmapping called..");
@@ -185,7 +194,7 @@ public class AdminController {
 
     }
 
-
+    //Hasan
     @GetMapping("/offer")
     public String offer(Model model) {
         log.info("offer is called... med en liste af alle offer");
@@ -197,6 +206,7 @@ public class AdminController {
         return OFFER;
     }
 
+    //Hasan
     @GetMapping("/createOffer")
     public String createOffer(Model model) {
         log.info("createOffer getmapping is been called...");
@@ -207,6 +217,7 @@ public class AdminController {
         return CREATEOFFER;
     }
 
+    //Hasan
     @PostMapping("/createOffer")
     public String createOffer(@ModelAttribute Offer offer, Model model) {
         log.info("create Offer postmapping is called");
@@ -220,17 +231,17 @@ public class AdminController {
         return REDIRECT;
     }
 
-
+    //Gustav
     @GetMapping("/upload")
     public String upload(Model model) {
-
+        log.info("upload getmapping is called...");
         return UPLOAD;
     }
 
+    //Gustav
     @PostMapping("/upload")
-
     public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Model model, Picture picture) {
-
+        log.info("upload postmapping is called...");
         if (file.isEmpty()) {
 
             redirectAttributes.addFlashAttribute("message", "vælg et billede som du vil uploade til billede galleri siden");
@@ -244,15 +255,17 @@ public class AdminController {
         return REDIRECT + UPLOADLIST;
     }
 
+    //Gustav
     @GetMapping("/uploadlist")
     public String uploadlist() {
-
+        log.info("uploadlist getmapping is called...");
         return UPLOADLIST;
     }
 
-    // Skal vise et galleri af billeder hentet fra databasen
+    // Gustav & Hasan
     @GetMapping("/billedeGalleri")
     public String billedGalleri(Model model) {
+        log.info("billedegalleri getmapping is called...");
         List<Picture> test = adminService.getPictures();
         log.info("billedeGalleri called...");
         log.info("" + test.get(0).getPictureName());
@@ -261,90 +274,99 @@ public class AdminController {
         return BILLEDEGALLERI;
     }
 
+    //Gustav
     @GetMapping("adminDashBoard")
     public String adminDashBoard() {
-
+        log.info("adminDashboard getmapping is called...");
         return ADMINDASHBOARD;
     }
-        @GetMapping("/editOffer/{id}")
-        public String editOffer ( @PathVariable("id") int id, Model model){
-            log.info("Edit Offer is been  called..." + id);
 
-            model.addAttribute("offer", adminService.findOffer(id));
+    //Hasan
+    @GetMapping("/editOffer/{id}")
+    public String editOffer ( @PathVariable("id") int id, Model model){
+        log.info("Edit Offer is been  called..." + id);
 
-            String offerName = adminService.findOffer(id).getOfferName();
-            model.addAttribute("pageTitle", "Edit offer (" + offerName + ")");
-            model.addAttribute("offerName", offerName);
+        model.addAttribute("offer", adminService.findOffer(id));
 
-            return EDITOFFER;
-        }
-        @PutMapping("/editOffer")
-        public String editOffer (@ModelAttribute Offer offer, Model model){
-            log.info("Edit Offer  putmapping is been  called...");
+        String offerName = adminService.findOffer(id).getOfferName();
+        model.addAttribute("pageTitle", "Edit offer (" + offerName + ")");
+        model.addAttribute("offerName", offerName);
 
-            adminService.updateOffer(offer);
+        return EDITOFFER;
+    }
 
-            model.addAttribute("offers", adminService.getOffers());
-            model.addAttribute("pageTitle", "Edit offer");
+    //Hasan
+    @PutMapping("/editOffer")
+    public String editOffer (@ModelAttribute Offer offer, Model model){
+        log.info("Edit Offer  putmapping is been  called...");
 
-            return REDIRECT + OFFER;
-        }
+        adminService.updateOffer(offer);
 
-        @GetMapping("/deleteOffer/{id}")
-        public String deleteOffer (@PathVariable Integer id, Model model){
-            log.info("Delete offer med  id: " + id + "?");
+        model.addAttribute("offers", adminService.getOffers());
+        model.addAttribute("pageTitle", "Edit offer");
 
-            model.addAttribute("offer", adminService.findOffer(id));
-            String offerName = adminService.findOffer(id).getOfferName();
-            model.addAttribute("pageTitle", "Delete offer (" + offerName + ")");
+        return REDIRECT + OFFER;
+    }
 
-            return DELETEOFFER;
-        }
+    //Hasan
+    @GetMapping("/deleteOffer/{id}")
+    public String deleteOffer (@PathVariable Integer id, Model model){
+        log.info("Delete offer med  id: " + id + "?");
 
-        @PutMapping("/deleteOffer")
-        public String deleteOffer (@ModelAttribute Offer offer, Model model){
-            log.info("delete confirmed deleting offer " + offer.getOfferId());
-            int id = offer.getOfferId();
+        model.addAttribute("offer", adminService.findOffer(id));
+        String offerName = adminService.findOffer(id).getOfferName();
+        model.addAttribute("pageTitle", "Delete offer (" + offerName + ")");
 
-            adminService.deleteOffer(id);
+        return DELETEOFFER;
+    }
 
-            model.addAttribute("offers", adminService.getOffers());
-            model.addAttribute("pageTitle", "Delete offer");
+    //Hasan
+    @PutMapping("/deleteOffer")
+    public String deleteOffer (@ModelAttribute Offer offer, Model model){
+        log.info("delete confirmed deleting offer " + offer.getOfferId());
+        int id = offer.getOfferId();
 
-            return REDIRECT + OFFER;
-        }
+        adminService.deleteOffer(id);
 
+        model.addAttribute("offers", adminService.getOffers());
+        model.addAttribute("pageTitle", "Delete offer");
+
+        return REDIRECT + OFFER;
+    }
+
+    //Hasan
     @GetMapping("/offerPage")
     public String offerPage (Model model){
         log.info("offerPage is called");
         model.addAttribute("offers", adminService.showOffers());
 
-            return OFFERPAGE;
-        }
-
-
-        @GetMapping("/editOpeningHours")
-        public String editOpeningHours (Model model){
-            log.info("Edit opening hours getmapping called...");
-
-            Opening[] opening = adminService.convertOpenings();
-            ArrayList<Integer> hours = adminService.getHours();
-            ArrayList<Integer> min = adminService.getMin();
-
-            model.addAttribute("openings", opening);
-            model.addAttribute("hours", hours);
-            model.addAttribute("min", min);
-
-            return EDITOPENINGHOURS;
-        }
-
-        @PutMapping("/editOpeningHours")
-        public String editOpeningHours (@ModelAttribute Opening opening){
-            log.info("Edit opening hours putmapping called... openingId=" + opening.getOpeningId());
-
-            adminService.saveOpeningHours(opening);
-
-            return REDIRECT + EDITOPENINGHOURS;
-        }
+        return OFFERPAGE;
     }
+
+    //Niklas
+    @GetMapping("/editOpeningHours")
+    public String editOpeningHours (Model model){
+        log.info("Edit opening hours getmapping called...");
+
+        Opening[] opening = adminService.convertOpenings();
+        ArrayList<Integer> hours = adminService.getHours();
+        ArrayList<Integer> min = adminService.getMin();
+
+        model.addAttribute("openings", opening);
+        model.addAttribute("hours", hours);
+        model.addAttribute("min", min);
+
+        return EDITOPENINGHOURS;
+    }
+
+    //Niklas
+    @PutMapping("/editOpeningHours")
+    public String editOpeningHours (@ModelAttribute Opening opening){
+        log.info("Edit opening hours putmapping called... openingId=" + opening.getOpeningId());
+
+        adminService.saveOpeningHours(opening);
+
+        return REDIRECT + EDITOPENINGHOURS;
+    }
+}
 

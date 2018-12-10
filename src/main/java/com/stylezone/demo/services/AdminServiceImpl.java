@@ -35,6 +35,7 @@ public class AdminServiceImpl implements AdminService {
 
     private static String UPLOADED_FOLDER = "src//main//resources//static//image//upload//";
 
+    //Niklas
     @Override
     public int hashPassword(String password) {
         int passwordHash = password.hashCode();
@@ -44,6 +45,7 @@ public class AdminServiceImpl implements AdminService {
         return passwordHash;
     }
 
+    //Niklas
     @Override
     public Admin searchUser(Admin admin) {
 
@@ -52,11 +54,13 @@ public class AdminServiceImpl implements AdminService {
         return adminFound;
     }
 
+    //Gustav
     @Override
     public void deleteStaffMember(int staffId){
         adminRepo.deleteStaffMember(staffId);
     }
 
+    //Gustav
     @Override
     public Staff createStaffMember(Staff staff){
         staff = adminRepo.createStaffMember(staff);
@@ -64,18 +68,22 @@ public class AdminServiceImpl implements AdminService {
         return staff;
 
     }
+
+    //Gustav
     @Override
     public List<Staff> getStaff() {
         List<Staff> staffs = adminRepo.getStaff();
         return staffs;
     }
 
+    //Gustav
     @Override
     public Staff getStaffMember(int staffId) {
         Staff staffs = adminRepo.getStaffMember(staffId);
         return staffs;
     }
 
+    //Gustav
     @Override
     public Staff updateStaff(Staff staff){
 
@@ -84,7 +92,7 @@ public class AdminServiceImpl implements AdminService {
         return staff;
     }
 
-
+    //Hasan
     @Override
     public List<Offer> showOffers() {
         List<Offer> offers = adminRepo.showOffers();
@@ -94,7 +102,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
 
-
+    //Hasan
     @Override
     public List<Offer> getOffers() {
         List<Offer> offers = adminRepo.getOffers();
@@ -102,12 +110,14 @@ public class AdminServiceImpl implements AdminService {
         return offers;
     }
 
+    //Hasan
     @Override
     public Offer createOffer(Offer offer) {
         offer = adminRepo.createOffer(offer);
         return offer;
     }
 
+    //Hasan
     @Override
     public Offer updateOffer(Offer offer) {
         offer = adminRepo.updateOffer(offer);
@@ -115,31 +125,35 @@ public class AdminServiceImpl implements AdminService {
     }
 
 
+    //Hasan
     @Override
     public void deleteOffer(int id) {
         String sql = "DELETE FROM Offer WHERE offerId = ?";
         this.template.update(sql, id);
     }
 
-
+    //Hasan
     @Override
     public Offer findOffer(int id) {
        Offer offer = adminRepo.findOffer(id);
         return offer;
     }
 
+    //Felix
     @Override
     public Opening findOpening(int openingId) {
         Opening opening = adminRepo.findOpening(openingId);
         return opening;
     }
 
+    //Felix
     @Override
     public Opening[] getOpenings() {
         Opening[] openings = adminRepo.getOpenings();
         return openings;
     }
 
+    //Niklas
     @Override
     public Opening saveOpeningHours(Opening opening) {
 
@@ -150,6 +164,7 @@ public class AdminServiceImpl implements AdminService {
         return opening;
     }
 
+    //Niklas
     @Override
     public Opening returnConvertedOpenings(Opening opening) {
         String fullTime="";
@@ -187,6 +202,7 @@ public class AdminServiceImpl implements AdminService {
         return opening;
     }
 
+    //Niklas
     @Override
     public ArrayList<Integer> getHours() {
         ArrayList<Integer> hours = new ArrayList<>();
@@ -199,18 +215,21 @@ public class AdminServiceImpl implements AdminService {
         return hours;
     }
 
+    //Gustav & Hasan
     @Override
     public List<Picture> getPictures() {
         List<Picture> pictures = adminRepo.getPictures();
         return pictures;
     }
 
+    //Gustav
     @Override
     public String insertPicture(String picture) {
         picture = adminRepo.insertPicture(picture);
         return picture;
     }
 
+    //Gustav
     public String fileUpload(MultipartFile file) {
 
 
@@ -229,6 +248,8 @@ public class AdminServiceImpl implements AdminService {
             return "Error uploading file";
         }
     }
+
+    //Niklas
     public ArrayList<Integer> getMin() {
         ArrayList<Integer> min = new ArrayList<>();
 
@@ -239,6 +260,7 @@ public class AdminServiceImpl implements AdminService {
         return min;
     }
 
+    //Niklas
     @Override
     public ArrayList<String> getDays() {
         ArrayList<String> days = new ArrayList<>();
@@ -253,6 +275,7 @@ public class AdminServiceImpl implements AdminService {
         return days;
     }
 
+    //Niklas
     @Override
     public Opening[] convertOpenings() {
         Opening[] fullOpening = getOpenings();
@@ -277,32 +300,5 @@ public class AdminServiceImpl implements AdminService {
 
         return fullOpening;
     }
-
-    /*@Override
-    public ArrayList<Opening> getTimes() {
-        ArrayList<Opening> times = new ArrayList();
-
-        int hour, min;
-        String time;
-        for(hour = 5; hour<=21; hour++) {
-            for (min = 0; min<=50; min=min+10) {
-                if(hour < 10 && min == 0) {
-                    time = "0" + hour + ":0" + min + ":00";
-                }
-                else if(hour < 10 && min != 0) {
-                    time = "0"+ hour + ":" + min + ":00";
-                }
-                else {
-                    time = "" + hour + ":" + min + ":00";
-                }
-
-                times.add(new Opening(time, time));
-            }
-        }
-
-        return times;
-    }*/
-
-
 
 }

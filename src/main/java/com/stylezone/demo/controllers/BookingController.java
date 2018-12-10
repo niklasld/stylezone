@@ -36,8 +36,6 @@ public class BookingController {
     private final String INDEX = "index";
     private final String OMOS = "omOs";
 
-
-
     Logger log = Logger.getLogger(BookingController.class.getName());
 
     @GetMapping("/")
@@ -50,6 +48,7 @@ public class BookingController {
         return INDEX;
     }
 
+    //Felix
     @GetMapping("/booking")
     public String booking(Model model) {
         log.info("booking called...");
@@ -90,6 +89,7 @@ public class BookingController {
         return BOOKING;
     }
 
+    //Felix
     @PostMapping("/goToDate")
     public String goToDate(@RequestParam("date")String date, Model model) {
 
@@ -106,7 +106,7 @@ public class BookingController {
         return REDIRECT + BOOKING + "/" + date;
     }
 
-
+    //Felix
     @GetMapping("/booking/{day}-{month}-{year}")
     public String bookingDate(@PathVariable("day") int day, @PathVariable("month") int month, @PathVariable("year") int year, Model model) {
         log.info("booking called...");
@@ -148,6 +148,7 @@ public class BookingController {
         return BOOKING;
     }
 
+    //Felix
     @GetMapping("/timeSelect/{date}/{start}/{end}")
     public String timeSelect(@PathVariable String date, @PathVariable String start, @PathVariable String end, Model model) {
         log.info("timeSelect called...");
@@ -168,13 +169,7 @@ public class BookingController {
         return TIMESELECT;
     }
 
-
-
-
-
-
-
-
+    //Gustav
     @GetMapping("/saveBooking/{bookingTime}/{bookingDate}")
     public String saveBooking(@PathVariable("bookingTime") String bookingTime, @PathVariable("bookingDate") String bookingDate, Model model){
 
@@ -189,6 +184,7 @@ public class BookingController {
         return SAVEBOOKING;
     }
 
+    //Gustav
     @PostMapping("/saveBooking")
     public String saveBooking(@ModelAttribute Booking booking,
                               @RequestParam("g-recaptcha-response") String captchaResponse){
@@ -212,6 +208,7 @@ public class BookingController {
 
     }
 
+    //Gustav
     @GetMapping("/omOs")
     public String omOs(Model model) {
 

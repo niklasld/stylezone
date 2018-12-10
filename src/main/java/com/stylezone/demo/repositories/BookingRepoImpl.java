@@ -28,6 +28,7 @@ public class BookingRepoImpl implements BookingRepo {
     @Autowired
     JdbcTemplate template;
 
+    //Felix
     @Override
     public Booking findBooking(int bookingId) {
         String sql = "SELECT * FROM booking WHERE BookingId = ?";
@@ -39,7 +40,7 @@ public class BookingRepoImpl implements BookingRepo {
         return booking;
     }
 
-
+    //Felix
     @Override
     public List<Booking> getBookings() {
         String sql = "SELECT * FROM Booking";
@@ -68,6 +69,7 @@ public class BookingRepoImpl implements BookingRepo {
         });
     }
 
+    //Felix
     @Override
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
         log.info("BookingRepo.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
@@ -102,6 +104,7 @@ public class BookingRepoImpl implements BookingRepo {
         }, date, timeStart, timeEnd);
     }
 
+    //Felix
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
 
@@ -133,16 +136,19 @@ public class BookingRepoImpl implements BookingRepo {
         }, date, timeStart, timeEnd);
     }
 
+    //Felix
     @Override
     public Booking updateBooking(Booking booking) {
         return null;
     }
 
+    //Felix
     @Override
     public void deleteBooking(int bookingId) {
 
     }
 
+    //Felix
     @Override
     public Holiday findHoliday(int holidayId) {
         String sql = "SELECT * FROM holiday WHERE holidayId = ?";
@@ -154,6 +160,7 @@ public class BookingRepoImpl implements BookingRepo {
         return holiday;
     }
 
+    //Felix
     @Override
     public List<Holiday> getHolidays() {
         String sql = "SELECT * FROM Holiday";
@@ -178,6 +185,7 @@ public class BookingRepoImpl implements BookingRepo {
         });
     }
 
+    //Felix
     @Override
     public Opening findOpening(int openingId) {
         String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening WHERE openingId = ?";
@@ -189,6 +197,7 @@ public class BookingRepoImpl implements BookingRepo {
         return opening;
     }
 
+    //Felix
     @Override
     public Opening[] getOpenings() {
         String sql = "SELECT openingId, openingDay, DATE_FORMAT(openingTime, '%H:%i') AS openingTime, DATE_FORMAT(openingClose, '%H:%i') AS openingClose FROM Opening";
@@ -216,6 +225,7 @@ public class BookingRepoImpl implements BookingRepo {
         });
     }
 
+    //Gustav
     @Override
     public Booking saveBooking(Booking booking) {
 
@@ -236,7 +246,7 @@ public class BookingRepoImpl implements BookingRepo {
 
     }
 
-
+    //Gustav
     @Override
     public Staff getStaffMember(int staffId){
         String sql = "SELECT * FROM Staff WHERE staffId = ?";
@@ -247,6 +257,7 @@ public class BookingRepoImpl implements BookingRepo {
         return staff;
     }
 
+    //Gustav
     @Override
     public List<Staff> getStaff(){
 
