@@ -8,7 +8,7 @@ public class Booking {
     private String bookingEmail;
     private int bookingPhone;
     private String bookingComment;
-    private String bookingMassage;
+    private String bookingMessage;
     private String bookingToken;
     private int staffId;
 
@@ -25,6 +25,12 @@ public class Booking {
         this.bookingName = bookingName;
     }
 
+    public Booking(int bookingId, String bookingTime, String bookingName) {
+        this.bookingId = bookingId;
+        this.bookingTime = bookingTime;
+        this.bookingName = bookingName;
+    }
+
     public Booking(String bookingTime, String bookingDate, String bookingName, String bookingEmail, int bookingPhone, String bookingComment, int staffId) {
         this.bookingTime = bookingTime;
         this.bookingDate = bookingDate;
@@ -35,14 +41,14 @@ public class Booking {
         this.staffId = staffId;
     }
 
-    public Booking(String bookingTime, String bookingDate, String bookingName, String bookingEmail, int bookingPhone, String bookingComment, String bookingMassage, int staffId) {
+    public Booking(String bookingTime, String bookingDate, String bookingName, String bookingEmail, int bookingPhone, String bookingComment, String bookingMessage, int staffId) {
         this.bookingTime = bookingTime;
         this.bookingDate = bookingDate;
         this.bookingName = bookingName;
         this.bookingEmail = bookingEmail;
         this.bookingPhone = bookingPhone;
         this.bookingComment = bookingComment;
-        this.bookingMassage = bookingMassage;
+        this.bookingMessage = bookingMessage;
         this.staffId = staffId;
     }
 
@@ -55,6 +61,31 @@ public class Booking {
         this.bookingEmail = bookingEmail;
         this.bookingPhone = bookingPhone;
         this.bookingComment = bookingComment;
+        this.staffId = staffId;
+    }
+
+    public Booking(int bookingId, String bookingTime, String bookingDate, String bookingName, String bookingEmail, int bookingPhone, String bookingComment, String bookingToken, int staffId) {
+        this.bookingId = bookingId;
+        this.bookingTime = bookingTime;
+        this.bookingDate = bookingDate;
+        this.bookingName = bookingName;
+        this.bookingEmail = bookingEmail;
+        this.bookingPhone = bookingPhone;
+        this.bookingComment = bookingComment;
+        this.bookingToken = bookingToken;
+        this.staffId = staffId;
+    }
+
+    public Booking(int bookingId, String bookingTime, String bookingDate, String bookingName, String bookingEmail, int bookingPhone, String bookingComment, String bookingMessage, String bookingToken, int staffId) {
+        this.bookingId = bookingId;
+        this.bookingTime = bookingTime;
+        this.bookingDate = bookingDate;
+        this.bookingName = bookingName;
+        this.bookingEmail = bookingEmail;
+        this.bookingPhone = bookingPhone;
+        this.bookingComment = bookingComment;
+        this.bookingMessage = bookingMessage;
+        this.bookingToken = bookingToken;
         this.staffId = staffId;
     }
 
@@ -114,16 +145,16 @@ public class Booking {
         this.bookingComment = bookingComment;
     }
 
-    public String getBookingMassage() {
-        return bookingMassage;
+    public String getBookingMessage() {
+        return bookingMessage;
     }
 
-    public void setBookingMassage(String bookingMassage) {
-        this.bookingMassage = bookingMassage;
+    public void setBookingMessage(String bookingMessage) {
+        this.bookingMessage = bookingMessage;
     }
 
-    public void clearBookingMassage() {
-        this.bookingMassage = null;
+    public void clearBookingMessage() {
+        this.bookingMessage = null;
     }
 
     public String getBookingToken() {

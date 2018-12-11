@@ -8,6 +8,10 @@ import java.util.List;
 @Repository
 public interface AdminRepo {
     //Booking
+    Booking findBooking(int bookingId);
+    List<Booking> getBookings();
+    Booking updateBooking(Booking booking);
+    void deleteBooking(int bookingId);
     List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd);
     List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd);
     Booking createBooking(Booking booking);

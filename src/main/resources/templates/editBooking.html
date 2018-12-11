@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+
+</head>
+<body>
+<div class="container">
+    <header th:include="fragments/header :: adminNavbar"></header>
+
+    <h1>Rediger bookning</h1>
+    <h2>Udfyld venligst dine informationer</h2>
+    <br>
+    <form th:method="put" th:action="@{/editBooking}" th:object ="${booking}">
+
+        <input type="hidden" th:field = "${booking.bookingId}" required/>
+
+        <label>Fulde navn:</label>
+        <input type = "text" class ="form-control mr-sm-2" th:field="${booking.bookingName}" placeholder="obligatorisk" required/>
+
+        <label>Telefon nummer:</label>
+        <input type = "number" class="form-control mr-sm-2" th:field="${booking.bookingPhone}" placeholder ="obligatorisk" required/>
+
+        <label>Email Adresse:</label>
+        <input type = "email" class = "form-control mr-sm-2" th:field = "${booking.bookingEmail}" placeholder = "obligatorisk" required/>
+
+        <input type="hidden" th:field = "${booking.bookingTime}" required/>
+        <input type="hidden" th:field = "${booking.bookingDate}" required/>
+
+
+        <label>Vælg Frisør:</label>
+        <select th:field = "${booking.staffId}" class="form-control">
+            <option th:each="staff : ${staffs}" th:value="${staff.staffId}" th:text="${staff.staffName}"></option>
+        </select>
+
+        <label>Kommentar til frisør:</label>
+        <textarea class="form-control" rows ="6" cols = "50" th:field = "${booking.bookingComment}" placeholder = "Valgfri"></textarea>
+
+        <label>Besked til kunde:</label>
+        <textarea class="form-control" rows ="6" cols = "50" th:field = "${booking.bookingMessage}" placeholder = "Valgfri"></textarea>
+        <br>
+
+        <button class = "btn btn-primary" type ="submit">Opdater tid</button>
+
+        <footer th:include="fragments/footer :: footer"></footer>
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+
+</body>
+</html>

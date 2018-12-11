@@ -39,7 +39,9 @@ public class AdminController {
     private final String BOOKINGADMIN = "bookingAdmin";
     private final String TIMESELECTADMIN = "timeSelectAdmin";
     private final String CREATEBOOKING = "createBooking";
+    private final String EDITBOOKING = "editBooking";
     private final String TIMENOTAVAILABLE = "timeNotAvailable";
+    private final String SENDMESSAGE = "sendMessage";
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
@@ -356,29 +358,67 @@ public class AdminController {
     }
 
     @PostMapping("/createBooking")
-    public String createBooking(@ModelAttribute Booking booking,
-                              @RequestParam("g-recaptcha-response") String captchaResponse){
+    public String createBooking(@ModelAttribute Booking booking){
 
         log.info("createBooking postmapping called...");
 
-        String url = "https://www.google.com/recaptcha/api/siteverify";
-        String params = "?secret=6LeWE30UAAAAAMUpo7seu91Da6DXig-DQxN8YKEQ&response="+captchaResponse;
+        booking.setBookingToken(adminService.generateRandomString());
+        log.info("Token: " + booking.getBookingToken());
+        adminService.createBooking(booking);
+        adminService.createBookingMail(booking);
+        return REDIRECT+BOOKINGADMIN;
 
-        ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
+    }
 
-        if(reCaptchaResponse.isSuccess()) {
+    @GetMapping("/editBooking/{bookingId}")
+    public String createBooking(@PathVariable("bookingId") int bookingId, Model model){
 
-            booking.setBookingToken(adminService.generateRandomString());
-            log.info("Token: " + booking.getBookingToken());
-            adminService.createBookingMail(booking);
-            booking.clearBookingMassage();
-            adminService.createBooking(booking);
-            return REDIRECT+BOOKINGADMIN;
+        log.info("editBooking getmapping called...");
+
+        if(bookingId == 0) {
+            model.addAttribute("pageTitle", "Denne tid ikke tilgængelig");
+
+            return TIMENOTAVAILABLE;
         } else {
+            model.addAttribute("staffs", adminService.getStaff());
+            model.addAttribute("booking", adminService.findBooking(bookingId));
+            model.addAttribute("pageTitle", "Rediger bookning");
 
-            log.info("Save booking failed!");
-            return REDIRECT + CREATEBOOKING + "/" + booking.getBookingTime() + "/" + booking.getBookingDate();
+            return EDITBOOKING;
         }
+    }
 
+    @PutMapping("/editBooking")
+    public String editStaff(@ModelAttribute Booking booking, Model model){
+
+        log.info("editBooking putmapping called..." + booking.getBookingId());
+        adminService.updateBooking(booking);
+        adminService.editBookingMail(booking);
+        model.addAttribute("", adminService.getBookings());
+
+        return REDIRECT + BOOKINGADMIN;
+    }
+
+    @GetMapping("/sendMessage/{bookingId}")
+    public String sendMessage(@PathVariable("bookingId") int bookingId, Model model){
+
+        model.addAttribute("id", bookingId);
+        model.addAttribute("name", adminService.findBooking(bookingId).getBookingName());
+        model.addAttribute("pageTitle", "Send besked");
+
+        return SENDMESSAGE;
+    }
+
+    @PostMapping("/sendMessage")
+    public String sendMessage(@RequestParam("bookingId")int bookingId, @RequestParam("bookingMessage")String bookingMessage, Model model) {
+        log.info("sendMessage PostMapping called...");
+
+        Booking booking = adminService.findBooking(bookingId);
+        booking.setBookingMessage(bookingMessage);
+
+        adminService.sendMessageMail(booking);
+
+
+        return REDIRECT + BOOKINGADMIN;
     }
 }

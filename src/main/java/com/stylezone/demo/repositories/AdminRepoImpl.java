@@ -25,6 +25,66 @@ public class AdminRepoImpl implements AdminRepo {
     Logger log = Logger.getLogger(AdminRepoImpl.class.getName());
 
     @Override
+    public Booking findBooking(int bookingId) {
+        String sql = "SELECT bookingId, DATE_FORMAT(bookingTime, '%H:%i') AS bookingTime, DATE_FORMAT(bookingDate, '%d-%m-%Y') AS bookingDate, bookingName, bookingEmail, bookingPhone, bookingComment, bookingToken, fk_staffId AS staffId FROM stylezone.Booking WHERE BookingId = ?";
+        RowMapper<Booking> rowMapper = new BeanPropertyRowMapper<>(Booking.class);
+
+        Booking booking = template.queryForObject(sql, rowMapper, bookingId);
+
+
+        return booking;
+    }
+
+    @Override
+    public List<Booking> getBookings() {
+        String sql = "SELECT bookingId, DATE_FORMAT(bookingTime, '%H:%i') AS bookingTime, DATE_FORMAT(bookingDate, '%d-%m-%Y') AS bookingDate, bookingName, bookingEmail, bookingPhone, bookingComment, bookingToken, fk_staffId AS staffId FROM stylezone.Booking";
+        return this.template.query(sql, new ResultSetExtractor<List<Booking>>() {
+
+            @Override
+            public List<Booking> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                int bookingId, bookingPhone, staffId;
+                String bookingTime, bookingDate, bookingName, bookingComment, bookingEmail, bookingToken;
+                ArrayList<Booking> bookings = new ArrayList<>();
+
+                while (rs.next()) {
+                    bookingId = rs.getInt("bookingId");
+                    bookingPhone = rs.getInt("bookingPhone");
+                    staffId = rs.getInt("staffId");
+                    bookingTime = rs.getString("bookingTime");
+                    bookingDate = rs.getString("bookingDate");
+                    bookingName = rs.getString("bookingName");
+                    bookingEmail = rs.getString("bookingEmail");
+                    bookingComment = rs.getString("bookingComment");
+                    bookingToken = rs.getString("bookingToken");
+
+                    bookings.add(new Booking(bookingId, bookingTime, bookingDate, bookingName, bookingEmail, bookingPhone, bookingComment, bookingToken, staffId));
+                }
+                return bookings;
+            }
+        });
+    }
+
+    @Override
+    public Booking updateBooking(Booking booking) {
+        String sql = "UPDATE stylezone.Booking SET bookingName=?, bookingEmail=?, bookingPhone=?, bookingComment=?, fk_staffId=? WHERE bookingId = ?";
+        String bookingName = booking.getBookingName();
+        String bookingEmail = booking.getBookingEmail();
+        int bookingPhone = booking.getBookingPhone();
+        String bookingComment = booking.getBookingComment();
+        int staffId = booking.getStaffId();
+
+        int bookingId = booking.getBookingId();
+        this.template.update(sql, bookingName, bookingEmail, bookingPhone, bookingComment, staffId, bookingId);
+
+        return booking;
+    }
+
+    @Override
+    public void deleteBooking(int bookingId) {
+
+    }
+
+    @Override
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
         log.info("BookingRepo.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
 
