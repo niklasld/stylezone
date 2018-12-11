@@ -26,10 +26,10 @@
 
                 <td th:if="${booking.bookingName} == ''"><a class="btn btn-success btn-sm" th:href="${'/createBooking/' + booking.bookingTime + '/' + date}"><span class="fas fa-plus"></span> Opret booking</a></td>
                 <td th:if="${booking.bookingName} != ''">
-                    <a class="btn btn-outline-dark btn-sm" th:href="${'/saveBooking/' + booking.bookingTime + '/' + date}"><i class="fas fa-info-circle"></i> Vis info</a><!--See booking-->
+                    <a class="btn btn-outline-dark btn-sm" href="#"><i class="fas fa-info-circle"></i> Vis info</a><!--See booking-->
                     <a class="btn btn-outline-dark btn-sm" th:href="${'/editBooking/' + booking.bookingId}"><span class="fas fa-pen"></span> Rediger</a><!--Edit booking-->
                     <a class="btn btn-outline-primary btn-sm" th:href="${'/sendMessage/' + booking.bookingId}"><i class="fas fa-comment-alt"></i> Send besked</a><!--Send message-->
-                    <a class="btn btn-danger btn-sm" th:href="${'/saveBooking/' + booking.bookingTime + '/' + date}"><span class="fas fa-trash-alt"></span> Slet</a><!--Delete booking-->
+                    <a class="btn btn-danger btn-sm" href="#"><span class="fas fa-trash-alt"></span> Slet</a><!--Delete booking-->
                 </td>
             </tr>
         </tbody>
