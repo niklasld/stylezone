@@ -1,7 +1,5 @@
 package com.stylezone.demo.models;
 
-import java.util.Date;
-
 public class Offer {
     private int offerId;
     private String offerName;
@@ -78,8 +76,8 @@ public class Offer {
                 "offerId=" + offerId +
                 ", offerName='" + offerName + '\'' +
                 ", offerContent='" + offerContent + '\'' +
-                ", offerStart=" + offerStart +
-                ", offerEnd=" + offerEnd +
+                ", offerStart='" + offerStart + '\'' +
+                ", offerEnd='" + offerEnd + '\'' +
                 '}';
     }
 }

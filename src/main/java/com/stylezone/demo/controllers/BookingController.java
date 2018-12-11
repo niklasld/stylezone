@@ -31,10 +31,14 @@ public class BookingController {
 
     private final String REDIRECT = "redirect:/";
     private final String SAVEBOOKING = "saveBooking";
+    private final String TIMENOTAVAILABLE = "timeNotAvailable";
     private final String BOOKING = "booking";
     private final String TIMESELECT = "timeSelect";
     private final String INDEX = "index";
     private final String OMOS = "omOs";
+    private final String ABOUTUS = "aboutUs";
+
+    private final boolean DEVELOPER_MODE = false;
 
     Logger log = Logger.getLogger(BookingController.class.getName());
 
@@ -58,30 +62,28 @@ public class BookingController {
         List<BookingGroup> bookingGroups;
         String[] dates = bookingService.getDatesOfWeek();
         Opening[] openings = bookingService.getOpenings();
+        String holiday;
 
-        bookingGroups = bookingService.getBookingGroups(dates[0], openings[0].getOpeningTime(), openings[0].getOpeningClose());
-        model.addAttribute("mondayBookings", bookingGroups);
-        model.addAttribute("monday", dates[0]);
-        bookingGroups = bookingService.getBookingGroups(dates[1], openings[1].getOpeningTime(), openings[1].getOpeningClose());
-        model.addAttribute("tuesdayBookings", bookingGroups);
-        model.addAttribute("tuesday", dates[1]);
-        bookingGroups = bookingService.getBookingGroups(dates[2], openings[2].getOpeningTime(), openings[2].getOpeningClose());
-        model.addAttribute("wednesdayBookings", bookingGroups);
-        model.addAttribute("wednesday", dates[2]);
-        bookingGroups = bookingService.getBookingGroups(dates[3], openings[3].getOpeningTime(), openings[3].getOpeningClose());
-        model.addAttribute("thursdayBookings", bookingGroups);
-        model.addAttribute("thursday", dates[3]);
-        bookingGroups = bookingService.getBookingGroups(dates[4], openings[4].getOpeningTime(), openings[4].getOpeningClose());
-        model.addAttribute("fridayBookings", bookingGroups);
-        model.addAttribute("friday", dates[4]);
-        bookingGroups = bookingService.getBookingGroups(dates[5], openings[5].getOpeningTime(), openings[5].getOpeningClose());
-        model.addAttribute("saturdayBookings", bookingGroups);
-        model.addAttribute("saturday", dates[5]);
+        String[] weekdays = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+
+
+        for(int i = 0; i < 6; i++) {
+            bookingGroups = bookingService.getBookingGroups(dates[i], openings[i].getOpeningTime(), openings[i].getOpeningClose());
+            model.addAttribute(weekdays[i] + "Bookings", bookingGroups);
+            model.addAttribute(weekdays[i], dates[i]);
+            model.addAttribute("isHoliday_" + weekdays[i], bookingService.isHolidayByDate(dates[i]));
+            if (bookingService.isHolidayByDate(dates[i]) == true) {
+                holiday = bookingService.findHolidayByDate(dates[i]).getHolidayName();
+            } else {
+                holiday = "";
+            }
+            model.addAttribute("holiday_" + weekdays[i], holiday);
+        }
 
         model.addAttribute("sunday", dates[6]);
-        model.addAttribute("nextWeek",bookingService.nextWeek());
-        model.addAttribute("prevWeek",bookingService.prevWeek());
-        model.addAttribute("weekNumber",weekNumber);
+        model.addAttribute("nextWeek", bookingService.nextWeek());
+        model.addAttribute("prevWeek", bookingService.prevWeek());
+        model.addAttribute("weekNumber", weekNumber);
         model.addAttribute("pageTitle", "Book tid");
 
         //log.info(bookingService.getDateToday());
@@ -92,6 +94,7 @@ public class BookingController {
     //Felix
     @PostMapping("/goToDate")
     public String goToDate(@RequestParam("date")String date, Model model) {
+        log.info("goToDate called...");
 
         //log.info("Go to date: "+date);
 
@@ -116,26 +119,23 @@ public class BookingController {
         List<BookingGroup> bookingGroups;
         String[] dates = bookingService.getDatesOfSelectedWeek(day, month, year);
         Opening[] openings = bookingService.getOpenings();
+        String holiday;
+
+        String[] weekdays = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
 
 
-        bookingGroups = bookingService.getBookingGroups(dates[0], openings[0].getOpeningTime(), openings[0].getOpeningClose());
-        model.addAttribute("mondayBookings", bookingGroups);
-        model.addAttribute("monday", dates[0]);
-        bookingGroups = bookingService.getBookingGroups(dates[1], openings[1].getOpeningTime(), openings[1].getOpeningClose());
-        model.addAttribute("tuesdayBookings", bookingGroups);
-        model.addAttribute("tuesday", dates[1]);
-        bookingGroups = bookingService.getBookingGroups(dates[2], openings[2].getOpeningTime(), openings[2].getOpeningClose());
-        model.addAttribute("wednesdayBookings", bookingGroups);
-        model.addAttribute("wednesday", dates[2]);
-        bookingGroups = bookingService.getBookingGroups(dates[3], openings[3].getOpeningTime(), openings[3].getOpeningClose());
-        model.addAttribute("thursdayBookings", bookingGroups);
-        model.addAttribute("thursday", dates[3]);
-        bookingGroups = bookingService.getBookingGroups(dates[4], openings[4].getOpeningTime(), openings[4].getOpeningClose());
-        model.addAttribute("fridayBookings", bookingGroups);
-        model.addAttribute("friday", dates[4]);
-        bookingGroups = bookingService.getBookingGroups(dates[5], openings[5].getOpeningTime(), openings[5].getOpeningClose());
-        model.addAttribute("saturdayBookings", bookingGroups);
-        model.addAttribute("saturday", dates[5]);
+        for(int i = 0; i < 6; i++) {
+            bookingGroups = bookingService.getBookingGroups(dates[i], openings[i].getOpeningTime(), openings[i].getOpeningClose());
+            model.addAttribute(weekdays[i] + "Bookings", bookingGroups);
+            model.addAttribute(weekdays[i], dates[i]);
+            model.addAttribute("isHoliday_" + weekdays[i], bookingService.isHolidayByDate(dates[i]));
+            if (bookingService.isHolidayByDate(dates[i]) == true) {
+                holiday = bookingService.findHolidayByDate(dates[i]).getHolidayName();
+            } else {
+                holiday = "";
+            }
+            model.addAttribute("holiday_" + weekdays[i], holiday);
+        }
 
         model.addAttribute("sunday", dates[6]);
         model.addAttribute("nextWeek",bookingService.nextWeekFromDate(day, month, year));
@@ -175,13 +175,24 @@ public class BookingController {
 
         log.info("saveBooking getmapping called...");
 
-        model.addAttribute("booking", new Booking());
+        if(bookingService.isHolidayByDate(bookingDate) == true || bookingService.isBooked(bookingDate, bookingTime) == true ) {
+            model.addAttribute("pageTitle", "Denne tid ikke tilgængelig");
 
-        model.addAttribute("time", bookingTime);
-        model.addAttribute("date", bookingDate);
+            return TIMENOTAVAILABLE;
+        } else if (bookingDate.length() < 10 || bookingTime.length() < 5) {
+            model.addAttribute("pageTitle", "Denne tid ikke tilgængelig");
 
+            return TIMENOTAVAILABLE;
+        } else {
+            model.addAttribute("staffs", bookingService.getStaff());
+            model.addAttribute("booking", new Booking());
+            model.addAttribute("pageTitle", "Opret ny bookning");
 
-        return SAVEBOOKING;
+            model.addAttribute("time", bookingTime);
+            model.addAttribute("date", bookingDate);
+
+            return SAVEBOOKING;
+        }
     }
 
     //Gustav
@@ -198,21 +209,33 @@ public class BookingController {
 
         if(reCaptchaResponse.isSuccess()) {
 
+            booking.setBookingToken(bookingService.generateRandomString());
+            log.info("Token: " + booking.getBookingToken());
             bookingService.saveBooking(booking);
             bookingService.sendEmail(booking);
             return REDIRECT+BOOKING;
+        } else {
+
+            log.info("Save booking failed!");
+            return REDIRECT + SAVEBOOKING + "/" + booking.getBookingTime() + "/" + booking.getBookingDate();
         }
-
-
-        return SAVEBOOKING;
 
     }
 
     //Gustav
     @GetMapping("/omOs")
     public String omOs(Model model) {
+        log.info("omOs called...");
+
+        model.addAttribute("pageTitle", "Om os");
+        model.addAttribute("isAbout", true);
 
         return OMOS;
+    }
+
+    @GetMapping("/tilbud")
+    public String tilbud(){
+        return null;
     }
 
 }

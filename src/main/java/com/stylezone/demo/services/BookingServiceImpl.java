@@ -1,3 +1,5 @@
+
+
 package com.stylezone.demo.services;
 
 import com.stylezone.demo.models.*;
@@ -10,6 +12,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
@@ -23,6 +26,8 @@ import java.time.format.DateTimeFormatter;
 public class BookingServiceImpl implements BookingService {
     Logger log = Logger.getLogger(BookingRepoImpl.class.getName());
 
+    private final boolean DEVELOPER_MODE = false;
+
 
     @Autowired
     BookingRepo bookingRepo;
@@ -35,6 +40,33 @@ public class BookingServiceImpl implements BookingService {
     }
 
     //Felix
+    @Override
+    public Booking findBookingByDateTime(String bookingDate, String bookingTime){
+        Booking booking = bookingRepo.findBookingByDateTime(bookingDate, bookingTime);
+        return booking;
+    }
+
+    @Override
+    public Boolean isBooked(String bookingDate, String bookingTime) {
+        Booking booking = bookingRepo.isBooked(bookingDate, bookingTime);
+        if(booking.getBookingId() == 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String generateRandomString(){
+        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+
+        StringBuilder sb = new StringBuilder( 20 );
+        for( int i = 0; i < 20; i++ )
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        return sb.toString();
+    }
+
     @Override
     public List<Booking> getBookings() {
         List<Booking> bookings = bookingRepo.getBookings();
@@ -60,12 +92,17 @@ public class BookingServiceImpl implements BookingService {
     }
 
     //Felix
+    @Override
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
-        log.info("BookingService.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
+        if(DEVELOPER_MODE) {
+            log.info("BookingService.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
+        }
 
         List<Booking> temp = bookingRepo.getSelectedBookings(date, timeStart, timeEnd);
 
-        log.info("temp length: " + temp.size());
+        if(DEVELOPER_MODE) {
+            log.info("temp length: " + temp.size());
+        }
 
         int bookingId, bookingPhone, staffId;
         String bookingTime, bookingDate, bookingName, bookingComment;
@@ -81,7 +118,9 @@ public class BookingServiceImpl implements BookingService {
             end = end - 10;
         }
 
-        log.info("start:" + start + ", end:" + end);
+        if(DEVELOPER_MODE) {
+            log.info("start:" + start + ", end:" + end);
+        }
 
         assert start < end;
 
@@ -100,8 +139,10 @@ public class BookingServiceImpl implements BookingService {
                 }
             }
 
-            log.info("start:" + start + ", end:" + end + ", i:" + i);
-            log.info("bookingTime:" + bookingTime + ", bookingName:" + bookingName);
+            if(DEVELOPER_MODE) {
+                log.info("start:" + start + ", end:" + end + ", i:" + i);
+                log.info("bookingTime:" + bookingTime + ", bookingName:" + bookingName);
+            }
 
             bookings.add(new Booking(bookingTime, bookingName));
         }
@@ -112,9 +153,13 @@ public class BookingServiceImpl implements BookingService {
     //Felix
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
-        log.info("BookingService.getBookingGroups(" + date + ", " + timeStart + ", " + timeEnd + ")");
+        if(DEVELOPER_MODE) {
+            log.info("BookingService.getBookingGroups(" + date + ", " + timeStart + ", " + timeEnd + ")");
+        }
         List<BookingGroup> temp = bookingRepo.getBookingGroups(date, timeStart, timeEnd);
-        log.info("bookingGroups length" + temp.size());
+        if(DEVELOPER_MODE) {
+            log.info("bookingGroups length" + temp.size());
+        }
 
         int bookingGroupId, boookingGroupBooked, boookingGroupTotal;
         String bookingGroupStart, bookingGroupEnd, bookingGroupDate;
@@ -226,12 +271,28 @@ public class BookingServiceImpl implements BookingService {
 
     //Felix
     @Override
-    public Holiday findHoliday(int holidayId) {
-        Holiday holiday = bookingRepo.findHoliday(holidayId);
+    public Holiday findHolidayById(int holidayId) {
+        Holiday holiday = bookingRepo.findHolidayById(holidayId);
+        return holiday;
+    }
+
+    @Override
+    public Holiday findHolidayByDate(String holidayDate) {
+        Holiday holiday = bookingRepo.findHolidayByDate(holidayDate);
         return holiday;
     }
 
     //Felix
+    @Override
+    public Boolean isHolidayByDate(String holidayDate) {
+        Holiday holiday = bookingRepo.isHolidayByDate(holidayDate);
+        if(holiday.getHolidayId() == 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public List<Holiday> getHolidays() {
         List<Holiday> holidays = bookingRepo.getHolidays();

@@ -10,6 +10,8 @@ import java.util.List;
 public interface BookingRepo {
     //Booking
     Booking findBooking(int bookingId);
+    Booking findBookingByDateTime(String bookingDate, String bookingTime);
+    Booking isBooked(String bookingDate, String bookingTime);
     List<Booking> getBookings();
     Booking saveBooking(Booking booking);
     List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd);
@@ -18,7 +20,9 @@ public interface BookingRepo {
     void deleteBooking(int bookingId);
 
     //Holiday
-    Holiday findHoliday(int holidayId);
+    Holiday findHolidayById(int holidayId);
+    Holiday findHolidayByDate(String holidayDate);
+    Holiday isHolidayByDate(String holidayDate);
     List<Holiday> getHolidays();
     /*Holiday createHoliday(Holiday holiday);
     Holiday updateHoliday(Holiday holiday);

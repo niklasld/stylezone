@@ -11,22 +11,21 @@ import java.util.List;
 public interface BookingService {
     //Booking
     Booking findBooking(int bookingId);
-
+    Booking findBookingByDateTime(String bookingDate, String bookingTime);
+    Boolean isBooked(String bookingDate, String bookingTime);
     List<Booking> getBookings();
-
     Booking saveBooking(Booking booking);
-
     List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd);
-
     List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd);
-
     Booking updateBooking(Booking booking);
-
     void deleteBooking(int bookingId);
 
-    //Holiday
-    Holiday findHoliday(int holidayId);
+    String generateRandomString();
 
+    //Holiday
+    Holiday findHolidayById(int holidayId);
+    Holiday findHolidayByDate(String holidayDate);
+    Boolean isHolidayByDate(String holidayDate);
     List<Holiday> getHolidays();
     /*Holiday createHoliday(Holiday holiday);
     Holiday updateHoliday(Holiday holiday);

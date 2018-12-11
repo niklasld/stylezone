@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:href="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles"></head>
+<body>
+    <div class="container">
+        <header th:include="fragments/header :: adminNavbar"></header>
+
+        <h1>Booking administration</h1>
+
+        <form class="form-inline" method="Post" th:action="@{/goToDate}" id="goToDate">
+            <label>Gå tll dato: </label>
+            <input type="date" th:name="date" class="form-control" required>
+            <button type="submit" class="btn btn-primary">Gå</button>
+
+            <a href="/bookingAdmin" class="btn btn-primary">Gå til idag</a>
+
+            <a href="/bookingAdmin" class="btn btn-primary">Alle bookede tider idag</a>
+        </form>
+
+        <div id="bookingSelector">
+            <div id="weekSelector">
+                <ul>
+                    <li class="prev"><a th:href="${'/bookingAdmin/' + prevWeek}">&#10094;</a></li>
+                    <li class="next"><a th:href="${'/bookingAdmin/' + nextWeek}">&#10095;</a></li>
+                    <li>Uge <span th:text="${weekNumber}"></span><br><span style="font-size:18px" th:text="${#strings.replace(monday, '-', '/') + ' - ' + #strings.replace(sunday, '-', '/')}"></span></li>
+                </ul>
+            </div>
+
+            <ul id="bookingTimes">
+                <li>Mandag<br><span style="font-size:12px" th:text="${#strings.replace(monday, '-', '/')}"></span>
+                    <ul th:each="mondayBooking : ${mondayBookings}" th:if="${isHoliday_monday} == false">
+                        <li>
+                        <span th:switch="${mondayBooking.bookingGroupFree}">
+                            <a th:case="6" th:href="${'/timeSelectAdmin/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="5" th:href="${'/timeSelectAdmin/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="4" th:href="${'/timeSelectAdmin/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="3" th:href="${'/timeSelectAdmin/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="2" th:href="${'/timeSelectAdmin/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="1" th:href="${'/timeSelectAdmin/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                            <a th:case="0" th:href="${'/timeSelectAdmin/' + mondayBooking.bookingGroupDate + '/' + mondayBooking.bookingGroupStart + '/' + mondayBooking.bookingGroupEnd}" class="btn btn-danger btn-sm" th:text="${mondayBooking.bookingGroupStart + ' - ' + mondayBooking.bookingGroupEnd}"></a>
+                        </span>
+                            <br><span style="font-size:10px" th:text="${mondayBooking.bookingGroupFree + ' ledige tider'}"></span>
+                        </li>
+                    </ul>
+                    <ul th:if="${isHoliday_monday} == true">
+                        <li th:text="${holiday_monday}"></li>
+                    </ul>
+                </li>
+                <li>Tirsdag<br><span style="font-size:12px" th:text="${#strings.replace(tuesday, '-', '/')}"></span>
+                    <ul th:each="tuesdayBooking : ${tuesdayBookings}" th:if="${isHoliday_tuesday} == false">
+                        <li>
+                        <span th:switch="${tuesdayBooking.bookingGroupFree}">
+                            <a th:case="6" th:href="${'/timeSelectAdmin/' + tuesdayBooking.bookingGroupDate + '/' + tuesdayBooking.bookingGroupStart + '/' + tuesdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${tuesdayBooking.bookingGroupStart + ' - ' + tuesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="5" th:href="${'/timeSelectAdmin/' + tuesdayBooking.bookingGroupDate + '/' + tuesdayBooking.bookingGroupStart + '/' + tuesdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${tuesdayBooking.bookingGroupStart + ' - ' + tuesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="4" th:href="${'/timeSelectAdmin/' + tuesdayBooking.bookingGroupDate + '/' + tuesdayBooking.bookingGroupStart + '/' + tuesdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${tuesdayBooking.bookingGroupStart + ' - ' + tuesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="3" th:href="${'/timeSelectAdmin/' + tuesdayBooking.bookingGroupDate + '/' + tuesdayBooking.bookingGroupStart + '/' + tuesdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${tuesdayBooking.bookingGroupStart + ' - ' + tuesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="2" th:href="${'/timeSelectAdmin/' + tuesdayBooking.bookingGroupDate + '/' + tuesdayBooking.bookingGroupStart + '/' + tuesdayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${tuesdayBooking.bookingGroupStart + ' - ' + tuesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="1" th:href="${'/timeSelectAdmin/' + tuesdayBooking.bookingGroupDate + '/' + tuesdayBooking.bookingGroupStart + '/' + tuesdayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${tuesdayBooking.bookingGroupStart + ' - ' + tuesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="0" th:href="${'/timeSelectAdmin/' + tuesdayBooking.bookingGroupDate + '/' + tuesdayBooking.bookingGroupStart + '/' + tuesdayBooking.bookingGroupEnd}" class="btn btn-danger btn-sm" th:text="${tuesdayBooking.bookingGroupStart + ' - ' + tuesdayBooking.bookingGroupEnd}"></a>
+                        </span>
+                            <br><span style="font-size:10px" th:text="${tuesdayBooking.bookingGroupFree + ' ledige tider'}"></span>
+                        </li>
+                    </ul>
+                    <ul th:if="${isHoliday_tuesday} == true">
+                        <li th:text="${holiday_tuesday}"></li>
+                    </ul>
+                </li>
+                <li>Onsdag<br><span style="font-size:12px" th:text="${#strings.replace(wednesday, '-', '/')}"></span>
+                    <ul th:each="wednesdayBooking : ${wednesdayBookings}" th:if="${isHoliday_wednesday} == false">
+                        <li>
+                        <span th:switch="${wednesdayBooking.bookingGroupFree}">
+                            <a th:case="6" th:href="${'/timeSelectAdmin/' + wednesdayBooking.bookingGroupDate + '/' + wednesdayBooking.bookingGroupStart + '/' + wednesdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${wednesdayBooking.bookingGroupStart + ' - ' + wednesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="5" th:href="${'/timeSelectAdmin/' + wednesdayBooking.bookingGroupDate + '/' + wednesdayBooking.bookingGroupStart + '/' + wednesdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${wednesdayBooking.bookingGroupStart + ' - ' + wednesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="4" th:href="${'/timeSelectAdmin/' + wednesdayBooking.bookingGroupDate + '/' + wednesdayBooking.bookingGroupStart + '/' + wednesdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${wednesdayBooking.bookingGroupStart + ' - ' + wednesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="3" th:href="${'/timeSelectAdmin/' + wednesdayBooking.bookingGroupDate + '/' + wednesdayBooking.bookingGroupStart + '/' + wednesdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${wednesdayBooking.bookingGroupStart + ' - ' + wednesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="2" th:href="${'/timeSelectAdmin/' + wednesdayBooking.bookingGroupDate + '/' + wednesdayBooking.bookingGroupStart + '/' + wednesdayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${wednesdayBooking.bookingGroupStart + ' - ' + wednesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="1" th:href="${'/timeSelectAdmin/' + wednesdayBooking.bookingGroupDate + '/' + wednesdayBooking.bookingGroupStart + '/' + wednesdayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${wednesdayBooking.bookingGroupStart + ' - ' + wednesdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="0" th:href="${'/timeSelectAdmin/' + wednesdayBooking.bookingGroupDate + '/' + wednesdayBooking.bookingGroupStart + '/' + wednesdayBooking.bookingGroupEnd}" class="btn btn-danger btn-sm" th:text="${wednesdayBooking.bookingGroupStart + ' - ' + wednesdayBooking.bookingGroupEnd}"></a>
+                        </span>
+                            <br><span style="font-size:10px" th:text="${wednesdayBooking.bookingGroupFree + ' ledige tider'}"></span>
+                        </li>
+                    </ul>
+                    <ul th:if="${isHoliday_wednesday} == true">
+                        <li th:text="${holiday_wednesday}"></li>
+                    </ul>
+                </li>
+                <li>Torsdag<br><span style="font-size:12px" th:text="${#strings.replace(thursday, '-', '/')}"></span>
+                    <ul th:each="thursdayBooking : ${thursdayBookings}" th:if="${isHoliday_thursday} == false">
+                        <li>
+                        <span th:switch="${thursdayBooking.bookingGroupFree}">
+                            <a th:case="6" th:href="${'/timeSelectAdmin/' + thursdayBooking.bookingGroupDate + '/' + thursdayBooking.bookingGroupStart + '/' + thursdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${thursdayBooking.bookingGroupStart + ' - ' + thursdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="5" th:href="${'/timeSelectAdmin/' + thursdayBooking.bookingGroupDate + '/' + thursdayBooking.bookingGroupStart + '/' + thursdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${thursdayBooking.bookingGroupStart + ' - ' + thursdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="4" th:href="${'/timeSelectAdmin/' + thursdayBooking.bookingGroupDate + '/' + thursdayBooking.bookingGroupStart + '/' + thursdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${thursdayBooking.bookingGroupStart + ' - ' + thursdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="3" th:href="${'/timeSelectAdmin/' + thursdayBooking.bookingGroupDate + '/' + thursdayBooking.bookingGroupStart + '/' + thursdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${thursdayBooking.bookingGroupStart + ' - ' + thursdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="2" th:href="${'/timeSelectAdmin/' + thursdayBooking.bookingGroupDate + '/' + thursdayBooking.bookingGroupStart + '/' + thursdayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${thursdayBooking.bookingGroupStart + ' - ' + thursdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="1" th:href="${'/timeSelectAdmin/' + thursdayBooking.bookingGroupDate + '/' + thursdayBooking.bookingGroupStart + '/' + thursdayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${thursdayBooking.bookingGroupStart + ' - ' + thursdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="0" th:href="${'/timeSelectAdmin/' + thursdayBooking.bookingGroupDate + '/' + thursdayBooking.bookingGroupStart + '/' + thursdayBooking.bookingGroupEnd}" class="btn btn-danger btn-sm" th:text="${thursdayBooking.bookingGroupStart + ' - ' + thursdayBooking.bookingGroupEnd}"></a>
+                        </span>
+                            <br><span style="font-size:10px" th:text="${thursdayBooking.bookingGroupFree + ' ledige tider'}"></span>
+                        </li>
+                    </ul>
+                    <ul th:if="${isHoliday_thursday} == true">
+                        <li th:text="${holiday_thursday}"></li>
+                    </ul>
+                </li>
+                <li>Fredag<br><span style="font-size:12px" th:text="${#strings.replace(friday, '-', '/')}"></span>
+                    <ul th:each="fridayBooking : ${fridayBookings}" th:if="${isHoliday_friday} == false">
+                        <li>
+                        <span th:switch="${fridayBooking.bookingGroupFree}">
+                            <a th:case="6" th:href="${'/timeSelectAdmin/' + fridayBooking.bookingGroupDate + '/' + fridayBooking.bookingGroupStart + '/' + fridayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${fridayBooking.bookingGroupStart + ' - ' + fridayBooking.bookingGroupEnd}"></a>
+                            <a th:case="5" th:href="${'/timeSelectAdmin/' + fridayBooking.bookingGroupDate + '/' + fridayBooking.bookingGroupStart + '/' + fridayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${fridayBooking.bookingGroupStart + ' - ' + fridayBooking.bookingGroupEnd}"></a>
+                            <a th:case="4" th:href="${'/timeSelectAdmin/' + fridayBooking.bookingGroupDate + '/' + fridayBooking.bookingGroupStart + '/' + fridayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${fridayBooking.bookingGroupStart + ' - ' + fridayBooking.bookingGroupEnd}"></a>
+                            <a th:case="3" th:href="${'/timeSelectAdmin/' + fridayBooking.bookingGroupDate + '/' + fridayBooking.bookingGroupStart + '/' + fridayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${fridayBooking.bookingGroupStart + ' - ' + fridayBooking.bookingGroupEnd}"></a>
+                            <a th:case="2" th:href="${'/timeSelectAdmin/' + fridayBooking.bookingGroupDate + '/' + fridayBooking.bookingGroupStart + '/' + fridayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${fridayBooking.bookingGroupStart + ' - ' + fridayBooking.bookingGroupEnd}"></a>
+                            <a th:case="1" th:href="${'/timeSelectAdmin/' + fridayBooking.bookingGroupDate + '/' + fridayBooking.bookingGroupStart + '/' + fridayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${fridayBooking.bookingGroupStart + ' - ' + fridayBooking.bookingGroupEnd}"></a>
+                            <a th:case="0" th:href="${'/timeSelectAdmin/' + fridayBooking.bookingGroupDate + '/' + fridayBooking.bookingGroupStart + '/' + fridayBooking.bookingGroupEnd}" class="btn btn-danger btn-sm" th:text="${fridayBooking.bookingGroupStart + ' - ' + fridayBooking.bookingGroupEnd}"></a>
+                        </span>
+                            <br><span style="font-size:10px" th:text="${fridayBooking.bookingGroupFree + ' ledige tider'}"></span>
+                        </li>
+                    </ul>
+                    <ul th:if="${isHoliday_friday} == true">
+                        <li th:text="${holiday_friday}"></li>
+                    </ul>
+                </li>
+                <li>Lørdag<br><span style="font-size:12px" th:text="${#strings.replace(saturday, '-', '/')}"></span>
+                    <ul th:each="saturdayBooking : ${saturdayBookings}" th:if="${isHoliday_saturday} == false">
+                        <li>
+                        <span th:switch="${saturdayBooking.bookingGroupFree}">
+                            <a th:case="6" th:href="${'/timeSelectAdmin/' + saturdayBooking.bookingGroupDate + '/' + saturdayBooking.bookingGroupStart + '/' + saturdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${saturdayBooking.bookingGroupStart + ' - ' + saturdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="5" th:href="${'/timeSelectAdmin/' + saturdayBooking.bookingGroupDate + '/' + saturdayBooking.bookingGroupStart + '/' + saturdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${saturdayBooking.bookingGroupStart + ' - ' + saturdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="4" th:href="${'/timeSelectAdmin/' + saturdayBooking.bookingGroupDate + '/' + saturdayBooking.bookingGroupStart + '/' + saturdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${saturdayBooking.bookingGroupStart + ' - ' + saturdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="3" th:href="${'/timeSelectAdmin/' + saturdayBooking.bookingGroupDate + '/' + saturdayBooking.bookingGroupStart + '/' + saturdayBooking.bookingGroupEnd}" class="btn btn-success btn-sm" th:text="${saturdayBooking.bookingGroupStart + ' - ' + saturdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="2" th:href="${'/timeSelectAdmin/' + saturdayBooking.bookingGroupDate + '/' + saturdayBooking.bookingGroupStart + '/' + saturdayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${saturdayBooking.bookingGroupStart + ' - ' + saturdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="1" th:href="${'/timeSelectAdmin/' + saturdayBooking.bookingGroupDate + '/' + saturdayBooking.bookingGroupStart + '/' + saturdayBooking.bookingGroupEnd}" class="btn btn-warning btn-sm" th:text="${saturdayBooking.bookingGroupStart + ' - ' + saturdayBooking.bookingGroupEnd}"></a>
+                            <a th:case="0" th:href="${'/timeSelectAdmin/' + saturdayBooking.bookingGroupDate + '/' + saturdayBooking.bookingGroupStart + '/' + saturdayBooking.bookingGroupEnd}" class="btn btn-danger btn-sm" th:text="${saturdayBooking.bookingGroupStart + ' - ' + saturdayBooking.bookingGroupEnd}"></a>
+                        </span>
+                            <br><span style="font-size:10px" th:text="${saturdayBooking.bookingGroupFree + ' ledige tider'}"></span>
+                        </li>
+                    </ul>
+                    <ul th:if="${isHoliday_saturday} == true">
+                        <li th:text="${holiday_saturday}"></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        <footer th:include="fragments/footer :: footer"></footer>
+    </div>
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+</body>
+</html>

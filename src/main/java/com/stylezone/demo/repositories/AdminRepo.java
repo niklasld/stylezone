@@ -6,13 +6,31 @@ import com.stylezone.demo.models.Offer;
 import com.stylezone.demo.models.Picture;
 import com.stylezone.demo.models.Opening;
 import com.stylezone.demo.models.Staff;
+import com.stylezone.demo.models.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface AdminRepo {
+    //Booking
+    Booking findBooking(int bookingId);
+    List<Booking> getBookings();
+    Booking updateBooking(Booking booking);
+    void deleteBooking(int bookingId);
+    List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd);
+    List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd);
+    Booking createBooking(Booking booking);
+    Booking isBooked(String bookingDate, String bookingTime);
+
+    //Holiday
+    Holiday findHolidayById(int holidayId);
+    Holiday findHolidayByDate(String holidayDate);
+    Holiday isHolidayByDate(String holidayDate);
+    List<Holiday> getHolidays();
+
     //Admin
+    Admin checkPassword(Admin admin);
     Admin searchUser(Admin admin);
 
     //Staff

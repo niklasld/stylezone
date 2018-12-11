@@ -31,7 +31,7 @@ public class BookingRepoImpl implements BookingRepo {
     //Felix
     @Override
     public Booking findBooking(int bookingId) {
-        String sql = "SELECT * FROM booking WHERE BookingId = ?";
+        String sql = "SELECT * FROM stylezone.Booking WHERE BookingId = ?";
         RowMapper<Booking> rowMapper = new BeanPropertyRowMapper<>(Booking.class);
 
         Booking booking = template.queryForObject(sql, rowMapper, bookingId);
@@ -41,6 +41,25 @@ public class BookingRepoImpl implements BookingRepo {
     }
 
     //Felix
+    @Override
+    public Booking findBookingByDateTime(String bookingDate, String bookingTime) {
+        String sql = "SELECT * FROM stylezone.Booking WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y') AND bookingTime = ?";
+        RowMapper<Booking> rowMapper = new BeanPropertyRowMapper<>(Booking.class);
+
+        Booking booking = template.queryForObject(sql, rowMapper, bookingDate, bookingTime);
+
+        return booking;
+    }
+
+    @Override
+    public Booking isBooked(String bookingDate, String bookingTime) {
+        String sql = "SELECT COUNT(bookingId) AS bookingId FROM stylezone.Booking WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y') AND bookingTime = ?";
+        RowMapper<Booking> rowMapper = new BeanPropertyRowMapper<>(Booking.class);
+
+        Booking booking = template.queryForObject(sql, rowMapper, bookingDate, bookingTime);
+
+        return booking;
+    }
     @Override
     public List<Booking> getBookings() {
         String sql = "SELECT * FROM Booking";
@@ -150,8 +169,8 @@ public class BookingRepoImpl implements BookingRepo {
 
     //Felix
     @Override
-    public Holiday findHoliday(int holidayId) {
-        String sql = "SELECT * FROM holiday WHERE holidayId = ?";
+    public Holiday findHolidayById(int holidayId) {
+        String sql = "SELECT * FROM stylezone.Holiday WHERE holidayId = ?";
         RowMapper<Holiday> rowMapper = new BeanPropertyRowMapper<>(Holiday.class);
 
         Holiday holiday = template.queryForObject(sql, rowMapper, holidayId);
@@ -161,6 +180,27 @@ public class BookingRepoImpl implements BookingRepo {
     }
 
     //Felix
+    @Override
+    public Holiday findHolidayByDate(String holidayDate) {
+        String sql = "SELECT * FROM stylezone.Holiday WHERE holidayDate = STR_TO_DATE(?, '%d-%m-%Y')";
+        RowMapper<Holiday> rowMapper = new BeanPropertyRowMapper<>(Holiday.class);
+
+        Holiday holiday = template.queryForObject(sql, rowMapper, holidayDate);
+
+
+        return holiday;
+    }
+
+    @Override
+    public Holiday isHolidayByDate(String holidayDate) {
+        String sql = "SELECT COUNT(holidayId) AS holidayId FROM stylezone.Holiday WHERE holidayDate = STR_TO_DATE(?, '%d-%m-%Y')";
+        RowMapper<Holiday> rowMapper = new BeanPropertyRowMapper<>(Holiday.class);
+
+        Holiday holiday = template.queryForObject(sql, rowMapper, holidayDate);
+
+        return holiday;
+    }
+
     @Override
     public List<Holiday> getHolidays() {
         String sql = "SELECT * FROM Holiday";
@@ -230,17 +270,18 @@ public class BookingRepoImpl implements BookingRepo {
     public Booking saveBooking(Booking booking) {
 
 
-        String sql = "INSERT INTO stylezone.Booking VALUES(default,?,STR_TO_DATE(?,'%d-%m-%Y'),?,?,?,?,?)";
+        String sql = "INSERT INTO stylezone.Booking VALUES(default,?,STR_TO_DATE(?,'%d-%m-%Y'),?,?,?,?,?,?)";
         String bookingTime = booking.getBookingTime();
         String bookingDate = booking.getBookingDate();
         String bookingName = booking.getBookingName();
         String bookingEmail = booking.getBookingEmail();
         String bookingComment = booking.getBookingComment();
+        String bookingToken = booking.getBookingToken();
 
         int bookingPhone = booking.getBookingPhone();
         int fk_staffId = booking.getStaffId();
 
-        this.template.update(sql, bookingTime, bookingDate, bookingName, bookingEmail, bookingPhone, bookingComment, fk_staffId);
+        this.template.update(sql, bookingTime, bookingDate, bookingName, bookingEmail, bookingPhone, bookingComment, bookingToken, fk_staffId);
 
         return booking;
 

@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <header th:include="fragments/header :: navbar"></header>
+    <header th:include="fragments/header :: adminNavbar"></header>
 
     <h1>Personale</h1>
 
@@ -17,18 +17,21 @@
     <br>
 
     <table class="table table-striped table-bordered table-hover">
-        <tbody>
+        <thead class="thead-dark">
             <tr>
                 <th>Personalets fulde navn</th>
+                <th></th>
             </tr>
+        </thead>
+        <tbody>
             <tr class = "active" th:each="staff : ${staffs}">
                 <td th:text="${staff.staffName}"></td>
 
                 <td>
-                    <a th:href="${'/editStaff/'+ staff.staffId}" class ="btn btn-light btn-sm">
-                        <span class="fas fa-pen"></span> Edit</a>
+                    <a th:href="${'/editStaff/'+ staff.staffId}" class ="btn btn-outline-dark btn-sm">
+                        <span class="fas fa-pen"></span> Rediger</a>
                     <a th:href="${'deleteStaff/' + staff.staffId}" class="btn btn-danger btn-sm">
-                        <span class="fas fa-trash-alt"></span> Delete
+                        <span class="fas fa-trash-alt"></span> Slet
                     </a>
 
                 </td>
@@ -38,7 +41,7 @@
     </table>
 
     <a href="/createStaffMember" class="btn btn-success">
-        <span class="fas fa-plus"></span> Create new Staff Member
+        <span class="fas fa-plus"></span> Opret personale
     </a>
 
 </div>

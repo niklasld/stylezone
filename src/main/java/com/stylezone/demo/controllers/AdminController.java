@@ -38,8 +38,10 @@ public class AdminController {
     @Autowired
     RestTemplate restTemplate;
 
-    private final String ADMINLOGIN = "adminLogin";
     private final String REDIRECT = "redirect:/";
+
+    private final String ADMINLOGIN = "adminLogin";
+    private final String SUCCESS = "success";
     private final String EDITSTAFF = "editStaff";
     private final String STAFF = "staff";
     private final String DELETESTAFF = "deleteStaff";
@@ -54,14 +56,26 @@ public class AdminController {
     private final String DELETEOFFER = "deleteOffer";
     private final String OFFERPAGE = "offerPage";
     private final String EDITOPENINGHOURS = "editOpeningHours";
+    private final String BOOKINGADMIN = "bookingAdmin";
+    private final String TIMESELECTADMIN = "timeSelectAdmin";
+    private final String CREATEBOOKING = "createBooking";
+    private final String EDITBOOKING = "editBooking";
+    private final String TIMENOTAVAILABLE = "timeNotAvailable";
+    private final String SENDMESSAGE = "sendMessage";
 
     Logger log = Logger.getLogger(AdminController.class.getName());
+
+    @GetMapping("/admin")
+    public String admin(){
+        return REDIRECT + ADMINLOGIN;
+    }
 
     //Niklas
     @GetMapping("/adminLogin")
     public String adminLogin(Model model) {
         log.info("adminLogin GetMapping called...");
 
+        model.addAttribute("pageTitle", "Admin login");
         model.addAttribute("admin", new Admin());
 
         return ADMINLOGIN;
@@ -103,6 +117,7 @@ public class AdminController {
         Staff staff = adminService.getStaffMember(staffId);
 
         model.addAttribute("staff", staff);
+        model.addAttribute("pageTitle", "Rediger personale");
 
         return EDITSTAFF;
 
@@ -124,8 +139,10 @@ public class AdminController {
     public String staff(Model model) {
         log.info("staff called...");
 
+        model.addAttribute("pageTitle", "Personale");
         List<Staff> staffs = adminService.getStaff();
         model.addAttribute("staffs", staffs);
+        model.addAttribute("isStaff", true);
 
         return STAFF;
 
@@ -136,6 +153,7 @@ public class AdminController {
     public String staff(@ModelAttribute Staff staff, Model model) {
         log.info("Staff called...");
 
+        model.addAttribute("pageTitle", "Personale");
         model.addAttribute("staffs", adminService.getStaff());
 
         return STAFF;
@@ -202,6 +220,7 @@ public class AdminController {
         List<Offer> offers = adminService.getOffers();
         model.addAttribute("offers", offers);
         model.addAttribute("pageTitle", "offer");
+        model.addAttribute("isOffer", true);
 
         return OFFER;
     }
@@ -361,12 +380,218 @@ public class AdminController {
 
     //Niklas
     @PutMapping("/editOpeningHours")
-    public String editOpeningHours (@ModelAttribute Opening opening){
+    public String editOpeningHours (@ModelAttribute Opening opening) {
         log.info("Edit opening hours putmapping called... openingId=" + opening.getOpeningId());
 
         adminService.saveOpeningHours(opening);
 
         return REDIRECT + EDITOPENINGHOURS;
+    }
+
+    @GetMapping("/bookingAdmin")
+    public String bookingAdmin(Model model) {
+        log.info("booking called...");
+
+        String date = adminService.getDateToday();
+        int weekNumber = adminService.getWeekToday();
+        List<BookingGroup> bookingGroups;
+        String[] dates = adminService.getDatesOfWeek();
+        Opening[] openings = adminService.getOpenings();
+        String holiday;
+
+        String[] weekdays = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+
+
+        for(int i = 0; i < 6; i++) {
+            bookingGroups = adminService.getBookingGroups(dates[i], openings[i].getOpeningTime(), openings[i].getOpeningClose());
+            model.addAttribute(weekdays[i] + "Bookings", bookingGroups);
+            model.addAttribute(weekdays[i], dates[i]);
+            model.addAttribute("isHoliday_" + weekdays[i], adminService.isHolidayByDate(dates[i]));
+            if (adminService.isHolidayByDate(dates[i]) == true) {
+                holiday = adminService.findHolidayByDate(dates[i]).getHolidayName();
+            } else {
+                holiday = "";
+            }
+            model.addAttribute("holiday_" + weekdays[i], holiday);
+        }
+
+        model.addAttribute("sunday", dates[6]);
+        model.addAttribute("nextWeek", adminService.nextWeek());
+        model.addAttribute("prevWeek", adminService.prevWeek());
+        model.addAttribute("weekNumber", weekNumber);
+        model.addAttribute("pageTitle", "Booking administration");
+        model.addAttribute("isBookingAdmin", true);
+
+        //log.info(bookingService.getDateToday());
+
+        return BOOKINGADMIN;
+    }
+
+    @PostMapping("/goToDateAdmin")
+    public String goToDateAdmin(@RequestParam("date")String date, Model model) {
+        log.info("goToDate called...");
+
+        //log.info("Go to date: "+date);
+
+        String year = date.substring(0,4);
+        String month = date.substring(5,7);
+        String day = date.substring(8,10);
+
+        date = day + "-" + month + "-" + year;
+
+        //log.info("Go to date formatted: " + date);
+
+        return REDIRECT + BOOKINGADMIN + "/" + date;
+    }
+
+
+    @GetMapping("/bookingAdmin/{day}-{month}-{year}")
+    public String bookingAdminDate(@PathVariable("day") int day, @PathVariable("month") int month, @PathVariable("year") int year, Model model) {
+        log.info("booking called...");
+
+        String date = day + "-" + month + "-" + year;
+        int weekNumber = adminService.getWeekFromDate(day, month, year);
+        List<BookingGroup> bookingGroups;
+        String[] dates = adminService.getDatesOfSelectedWeek(day, month, year);
+        Opening[] openings = adminService.getOpenings();
+        String holiday;
+
+        String[] weekdays = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+
+
+        for(int i = 0; i < 6; i++) {
+            bookingGroups = adminService.getBookingGroups(dates[i], openings[i].getOpeningTime(), openings[i].getOpeningClose());
+            model.addAttribute(weekdays[i] + "Bookings", bookingGroups);
+            model.addAttribute(weekdays[i], dates[i]);
+            model.addAttribute("isHoliday_" + weekdays[i], adminService.isHolidayByDate(dates[i]));
+            if (adminService.isHolidayByDate(dates[i]) == true) {
+                holiday = adminService.findHolidayByDate(dates[i]).getHolidayName();
+            } else {
+                holiday = "";
+            }
+            model.addAttribute("holiday_" + weekdays[i], holiday);
+        }
+
+        model.addAttribute("sunday", dates[6]);
+        model.addAttribute("nextWeek",adminService.nextWeekFromDate(day, month, year));
+        model.addAttribute("prevWeek",adminService.prevWeekFromDate(day, month, year));
+        model.addAttribute("weekNumber",weekNumber);
+        model.addAttribute("pageTitle", "Booking administration");
+        model.addAttribute("isBookingAdmin", true);
+
+        //log.info(bookingService.getDateToday());
+
+        return BOOKINGADMIN;
+    }
+
+    @GetMapping("/timeSelectAdmin/{date}/{start}/{end}")
+    public String timeSelect(@PathVariable String date, @PathVariable String start, @PathVariable String end, Model model) {
+        log.info("timeSelect called...");
+
+        if(start.length() == 4){
+            start = "0" + start;
+        }
+
+        if(end.length() == 4){
+            end = "0" + end;
+        }
+
+        List<Booking> bookings = adminService.getSelectedBookings(date, start, end);
+        model.addAttribute("bookings", bookings);
+        model.addAttribute("date", date);
+        model.addAttribute("pageTitle", "Tider for " + date + ", mellem kl." + start + " - " + end);
+
+        return TIMESELECTADMIN;
+    }
+
+    @GetMapping("/createBooking/{bookingTime}/{bookingDate}")
+    public String createBooking(@PathVariable("bookingTime") String bookingTime, @PathVariable("bookingDate") String bookingDate, Model model){
+
+        log.info("createBooking getmapping called...");
+
+        if(adminService.isHolidayByDate(bookingDate) == true || adminService.isBooked(bookingDate, bookingTime) == true ) {
+            model.addAttribute("pageTitle", "Denne tid ikke tilgængelig");
+
+            return TIMENOTAVAILABLE;
+        } else if (bookingDate.length() < 10 || bookingTime.length() < 5) {
+            model.addAttribute("pageTitle", "Denne tid ikke tilgængelig");
+
+            return TIMENOTAVAILABLE;
+        } else {
+            model.addAttribute("staffs", adminService.getStaff());
+            model.addAttribute("booking", new Booking());
+            model.addAttribute("pageTitle", "Opret ny bookning");
+
+            model.addAttribute("time", bookingTime);
+            model.addAttribute("date", bookingDate);
+
+            return CREATEBOOKING;
+        }
+    }
+
+    @PostMapping("/createBooking")
+    public String createBooking(@ModelAttribute Booking booking){
+
+        log.info("createBooking postmapping called...");
+
+        booking.setBookingToken(adminService.generateRandomString());
+        log.info("Token: " + booking.getBookingToken());
+        adminService.createBooking(booking);
+        adminService.createBookingMail(booking);
+        return REDIRECT+BOOKINGADMIN;
+
+    }
+
+    @GetMapping("/editBooking/{bookingId}")
+    public String createBooking(@PathVariable("bookingId") int bookingId, Model model){
+
+        log.info("editBooking getmapping called...");
+
+        if(bookingId == 0) {
+            model.addAttribute("pageTitle", "Denne tid ikke tilgængelig");
+
+            return TIMENOTAVAILABLE;
+        } else {
+            model.addAttribute("staffs", adminService.getStaff());
+            model.addAttribute("booking", adminService.findBooking(bookingId));
+            model.addAttribute("pageTitle", "Rediger bookning");
+
+            return EDITBOOKING;
+        }
+    }
+
+    @PutMapping("/editBooking")
+    public String editStaff(@ModelAttribute Booking booking, Model model){
+
+        log.info("editBooking putmapping called..." + booking.getBookingId());
+        adminService.updateBooking(booking);
+        adminService.editBookingMail(booking);
+        model.addAttribute("", adminService.getBookings());
+
+        return REDIRECT + BOOKINGADMIN;
+    }
+
+    @GetMapping("/sendMessage/{bookingId}")
+    public String sendMessage(@PathVariable("bookingId") int bookingId, Model model){
+
+        model.addAttribute("id", bookingId);
+        model.addAttribute("name", adminService.findBooking(bookingId).getBookingName());
+        model.addAttribute("pageTitle", "Send besked");
+
+        return SENDMESSAGE;
+    }
+
+    @PostMapping("/sendMessage")
+    public String sendMessage(@RequestParam("bookingId")int bookingId, @RequestParam("bookingMessage")String bookingMessage, Model model) {
+        log.info("sendMessage PostMapping called...");
+
+        Booking booking = adminService.findBooking(bookingId);
+        booking.setBookingMessage(bookingMessage);
+
+        adminService.sendMessageMail(booking);
+
+
+        return REDIRECT + BOOKINGADMIN;
     }
 }
 

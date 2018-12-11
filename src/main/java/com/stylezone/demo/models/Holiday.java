@@ -8,6 +8,10 @@ public class Holiday {
     public Holiday() {
     }
 
+    public Holiday(int holidayId) {
+        this.holidayId = holidayId;
+    }
+
     public Holiday(int holidayId, String holidayDate, String holidayName) {
         this.holidayId = holidayId;
         this.holidayDate = holidayDate;

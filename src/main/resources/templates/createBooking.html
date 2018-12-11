@@ -1,5 +1,3 @@
-<!-- Gustav -->
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:include="fragments/head :: styles">
@@ -7,12 +5,12 @@
 </head>
 <body>
 <div class="container">
-    <header th:include="fragments/header :: navbar"></header>
+    <header th:include="fragments/header :: adminNavbar"></header>
 
     <h1>Opret ny bookning</h1>
     <h2>Udfyld venligst dine informationer</h2>
     <br>
-    <form method="Post" th:action="@{/saveBooking}" th:object ="${booking}">
+    <form method="Post" th:action="@{/createBooking}" th:object ="${booking}">
 
         <label>Fulde navn:</label>
         <input type = "text" class ="form-control mr-sm-2" th:name="bookingName" placeholder="obligatorisk" required/>
@@ -32,13 +30,12 @@
             <option th:each="staff : ${staffs}" th:value="${staff.staffId}" th:text="${staff.staffName}"></option>
         </select>
 
-        <label>Kommentar:</label>
+        <label>Kommentar til frisør:</label>
         <textarea class="form-control" rows ="6" cols = "50" th:name = "bookingComment" placeholder = "Valgfri"></textarea>
+
+        <label>Besked til kunde:</label>
+        <textarea class="form-control" rows ="6" cols = "50" th:name = "bookingMessage" placeholder = "Valgfri"></textarea>
         <br>
-
-
-        <!-- reCaptcha html><-->
-        <div class="g-recaptcha" data-sitekey="6LeWE30UAAAAAL8uXaRigoZ4ZSzufWzm0QnpgGLg"></div>
 
         <button class = "btn btn-primary" type ="submit">Book tid</button>
 
@@ -46,7 +43,6 @@
     </form>
 </div>
 <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
-<script src='https://www.google.com/recaptcha/api.js'></script>
 
 </body>
 </html>
