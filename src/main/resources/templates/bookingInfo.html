@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+
+</head>
+<body>
+<div class="container">
+    <header th:include="fragments/header :: adminNavbar"></header>
+
+    <h1>Booking info</h1>
+    <br>
+
+    <p><b>Fulde navn:</b> <span th:text="${booking.bookingName}"></span></p>
+
+
+    <p><b>Telefon nummer:</b> <span th:text="${booking.bookingPhone}"></span></p>
+
+
+    <p><b>Email Adresse:</b> <span th:text = "${booking.bookingEmail}"></span></p>
+
+
+    <p><b>Tidspunkt:</b> <span th:text = "${booking.bookingTime}"></span></p>
+
+
+    <p><b>Dato:</b> <span th:text = "${booking.bookingDate}"></span></p>
+
+
+    <p><b>Frisør:</b> <span th:text = "${staff}"></span></p>
+
+
+    <p><b>Kommentar til frisør:</b><br><span th:text = "${booking.bookingComment}"></span></p>
+
+
+    <footer th:include="fragments/footer :: footer"></footer>
+</div>
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+
+</body>
+</html>

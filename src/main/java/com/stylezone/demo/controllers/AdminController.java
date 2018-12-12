@@ -53,9 +53,11 @@ public class AdminController {
     private final String TILBUD = "tilbud";
     private final String EDITOPENINGHOURS = "editOpeningHours";
     private final String BOOKINGADMIN = "bookingAdmin";
+    private final String BOOKINGINFO = "bookingInfo";
     private final String TIMESELECTADMIN = "timeSelectAdmin";
     private final String CREATEBOOKING = "createBooking";
     private final String EDITBOOKING = "editBooking";
+    private final String DELETEBOOKING = "deleteBooking";
     private final String TIMENOTAVAILABLE = "timeNotAvailable";
     private final String SENDMESSAGE = "sendMessage";
 
@@ -568,6 +570,20 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/bookingInfo/{bookingId}")
+    public String bookingInfo(@PathVariable("bookingId") int bookingId, Model model){
+
+        log.info("bookingInfo getmapping called...");
+
+        Booking booking = adminService.findBooking(bookingId);
+
+        model.addAttribute("staff", adminService.getStaffMember(booking.getStaffId()).getStaffName());
+        model.addAttribute("booking", booking);
+        model.addAttribute("pageTitle", "Booking info");
+
+        return BOOKINGINFO;
+    }
+
     @PutMapping("/editBooking")
     public String editStaff(@ModelAttribute Booking booking, Model model){
 
@@ -598,6 +614,29 @@ public class AdminController {
 
         adminService.sendMessageMail(booking);
 
+
+        return REDIRECT + BOOKINGADMIN;
+    }
+
+    @GetMapping("/deleteBooking/{bookingId}")
+    public String deleteBooking(@PathVariable("bookingId") int bookingId, Model model){
+        log.info("deleteBooking GetMapping called...");
+
+        Booking booking = adminService.findBooking(bookingId);
+        model.addAttribute("booking", booking);
+        model.addAttribute("pageTitle", "Slet booking for " + booking.getBookingName());
+
+        return DELETEBOOKING;
+    }
+
+    @DeleteMapping("/deleteBooking")
+    public String deleteBooking(@ModelAttribute Booking booking, Model model){
+        log.info("deleteBooking DeleteMapping called...");
+
+        Booking booking_ = adminService.findBooking(booking.getBookingId());
+        booking_.setBookingMessage(booking.getBookingMessage());
+        adminService.deleteBookingMail(booking_);
+        adminService.deleteBooking(booking.getBookingId());
 
         return REDIRECT + BOOKINGADMIN;
     }

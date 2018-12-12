@@ -64,6 +64,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public void deleteBooking(int bookingId){
+        adminRepo.deleteBooking(bookingId);
+    }
+
+    @Override
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
         if(DEVELOPER_MODE) {
             log.info("BookingService.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
@@ -692,6 +697,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void sendMessageMail(Booking booking){
+        log.info("sendMessageMail called...");
 
         String subject = "Vi har en besked til dig angående din tid hos StyleZone den " + booking.getBookingDate() + " kl. " + booking.getBookingTime();
         String mailTo = booking.getBookingEmail();
@@ -709,6 +715,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void editBookingMail(Booking booking){
+        log.info("editBookingMail called...");
 
         String subject = "Vi har lavet nogle ændringer i din tid hos StyleZone den " + booking.getBookingDate() + " kl. " + booking.getBookingTime() + " for dig.";
         String mailTo = booking.getBookingEmail();
@@ -720,7 +727,7 @@ public class AdminServiceImpl implements AdminService {
         mailText += "Tid: " + booking.getBookingTime() + "\n";
         mailText += "Dato: " + booking.getBookingDate() + "\n";
         mailText += "Dit tlf nr: +45" + booking.getBookingPhone() + "\n";
-        mailText += "Din frisør: " + getStaffMember(booking.getStaffId()) + "\n";
+        mailText += "Din frisør: " + getStaffMember(booking.getStaffId()).getStaffName() + "\n";
         mailText += "Kommentar til frisøren:\n" + booking.getBookingComment() + "\n\n";
         mailText += "Besked til dig:\n" + booking.getBookingMessage() + "\n\n";
         mailText += "Er der nogle af informationerne der skal ændres eller skal bestillingen skal aflyses, kan StyleZone kontaktes på telefon nummer: +45 2989 7596.\n\n";
@@ -731,7 +738,32 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public void deleteBookingMail(Booking booking){
+        log.info("deleteBookingMail called...");
+
+        String subject = "Vi har annulleret din booking hos StyleZone den " + booking.getBookingDate() + " kl. " + booking.getBookingTime() + " for dig.";
+        String mailTo = booking.getBookingEmail();
+        String mailText;
+
+        mailText = "Hej " + booking.getBookingName() + "\n\n";
+        mailText += "Vi har annulleret din booking hos StyleZone for dig.\n\n";
+        mailText += "Du kan se oplysningerne for din annulleret booking nedenfor\n\n";
+        mailText += "Tid: " + booking.getBookingTime() + "\n";
+        mailText += "Dato: " + booking.getBookingDate() + "\n";
+        mailText += "Dit tlf nr: +45" + booking.getBookingPhone() + "\n";
+        mailText += "Din frisør: " + getStaffMember(booking.getStaffId()).getStaffName() + "\n";
+        mailText += "Kommentar til frisøren:\n" + booking.getBookingComment() + "\n\n";
+        mailText += "Besked til dig:\n" + booking.getBookingMessage() + "\n\n";
+        mailText += "Hvis du har nogle spørgsmål, kan StyleZone kontaktes på telefon nummer: +45 2989 7596.\n\n";
+        mailText += "Med venlig hilsen.\n";
+        mailText += "StyleZone";
+
+        sendEmail(mailText, subject, mailTo);
+    }
+
+    @Override
     public void createBookingMail(Booking booking){
+        log.info("createBookingMail called...");
 
         String subject = "Vi har reserveret en tid hos StyleZone den " + booking.getBookingDate() + " kl. " + booking.getBookingTime() + " for dig.";
         String mailTo = booking.getBookingEmail();
@@ -743,7 +775,7 @@ public class AdminServiceImpl implements AdminService {
         mailText += "Tid: " + booking.getBookingTime() + "\n";
         mailText += "Dato: " + booking.getBookingDate() + "\n";
         mailText += "Dit tlf nr: +45" + booking.getBookingPhone() + "\n";
-        mailText += "Din frisør: " + getStaffMember(booking.getStaffId()) + "\n";
+        mailText += "Din frisør: " + getStaffMember(booking.getStaffId()).getStaffName() + "\n";
         mailText += "Kommentar til frisøren:\n" + booking.getBookingComment() + "\n\n";
         mailText += "Besked til dig:\n" + booking.getBookingMessage() + "\n\n";
         mailText += "Er der nogle af informationerne der skal ændres eller skal bestillingen skal aflyses, kan StyleZone kontaktes på telefon nummer: +45 2989 7596.\n\n";

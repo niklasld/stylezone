@@ -89,7 +89,9 @@ public class AdminRepoImpl implements AdminRepo {
 
     @Override
     public void deleteBooking(int bookingId) {
+        String sql = "DELETE FROM stylezone.Booking WHERE bookingId = ?";
 
+        this.template.update(sql, bookingId);
     }
 
     //Felix

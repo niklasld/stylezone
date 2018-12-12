@@ -1,0 +1,29 @@
+<!-- Felix -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/head :: styles">
+</head>
+<body>
+<div class="container">
+    <header th:include="fragments/header :: adminNavbar"></header>
+    <h1 class="text-danger"><span class="fas fa-exclamation-triangle"></span>Advarsel</h1>
+
+    <form th:method="Delete" th:action="@{/deleteBooking}" th:object="${booking}">
+        <input type="hidden" th:field="${booking.bookingId}" required/>
+        <h3 th:text="${'Er du sikker på at du vil slette denne booking for ' + booking.bookingName + '?'}"></h3>
+        <p th:text="${'For den. ' + booking.bookingDate + ' kl. ' + booking.bookingTime + '?'}"></p>
+
+        <label>Besked til kunde:</label>
+        <textarea class="form-control" rows ="6" cols = "50" th:name="bookingMessage" placeholder="valgfri" required></textarea>
+        <br>
+
+        <input class="btn btn-light" type="button" value="Annuller" onclick="location.href='/bookingAdmin';"/>
+
+        <input class="btn btn-danger" type="submit" value="Slet"/>
+    </form>
+
+    <footer th:include="fragments/footer :: footer"></footer>
+</div>
+</body>
+</html>
