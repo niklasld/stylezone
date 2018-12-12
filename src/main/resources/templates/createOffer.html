@@ -6,36 +6,32 @@
 <div class="container">
     <header th:include="fragments/header :: adminNavbar"></header>
 
-    <h1>Create Offer</h1>
+    <h1>Opret tilbud</h1>
 
     <form method="Post" th:action="@{/createOffer}" th:object="${offer}">
 
         <label>Tilbud Name:</label>
-        <input type="text" class="form-control mr-sm-2"  th:name="offerName" placeholder="jule offer"/>
+        <input type="text" class="form-control mr-sm-2"  th:name="offerName" placeholder="jule offer" required/>
 
         <label>Tilbud Beskrivelse:</label>
         <br>
-        <textarea rows ="3" cols = "60" th:name = "offerContent" placeholder = "Skriv din aktuelle offer her"></textarea>
+        <textarea class="form-control mr-sm-2" rows ="3" cols = "60" th:name = "offerContent" placeholder = "Skriv din aktuelle offer her" required></textarea>
 
         <br>
         <label>Starts Dato:</label>
         <br>
-        <input type="date" rows ="2" cols = "30" th:name = "offerStart" placeholder = "Skriv din aktuelle offer her">
+        <input type="date" class="form-control mr-sm-2" rows ="2" cols = "30" th:name = "offerStart" placeholder = "Skriv din aktuelle offer her" required>
 
         <br>
         <label>Sluts Dato:</label>
         <br>
-        <input type="date" rows ="2" cols = "30" th:name = "offerEnd" placeholder = "Skriv din aktuelle offer her">
+        <input type="date" class="form-control mr-sm-2" rows ="2" cols = "30" th:name = "offerEnd" placeholder = "Skriv din aktuelle offer her" required>
 
         <br>
-<!--
-        <label>Billede link:</label>
-        <input type="text" class="form-control mr-sm-2"  th:name="moviePosterLink" placeholder="styleZone.dk"/>
--->
 
-        <input class="btn btn-light" type="button" value="Anullere" onclick="location.href='/';"/>
+        <input class="btn btn-light" type="button" value="Anuller" onclick="location.href='/offer';"/>
 
-        <button class="btn btn-primary" type="submit" value="Create Offer">Opret</button>
+        <button class="btn btn-primary" type="submit">Opret</button>
 
     </form>
 </div>

@@ -8,17 +8,19 @@
 <div class="container">
     <header th:include="fragments/header :: adminNavbar"></header>
 
-    <h1>Create staff member</h1>
+    <h1>Opret personale</h1>
 
     <form method="Post" th:action="@{/createStaffMember}" th:object="${staff}">
 
-        <label>Staff Members full name:</label>
-        <input type="text" class="form-control mr-sm-2"  th:name="staffName"/>
+        <label>Personalets fulde navn:</label>
+        <input type="text" class="form-control mr-sm-2"  th:name="staffName" required/>
 
 
-        <input class="btn btn-light" type="button" value="Cancel" onclick="location.href='/';"/>
+        <input class="btn btn-light" type="button" value="Annuller" onclick="location.href='/staff';"/>
 
-        <button class="btn btn-primary" type="submit">Create</button>
+        <br>
+
+        <button class="btn btn-primary" type="submit">Opret</button>
 
     </form>
 </div>

@@ -4,18 +4,18 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:include="fragments/head :: styles"></head>
 <body>
-<header th:include="fragments/header :: navbar"></header>
+<div class="container">
+    <header th:include="fragments/header :: adminNavbar"></header>
 
-    <meta charset="UTF-8">
-    <title>upload billede</title>
+    <h1>Upload billede</h1>
 
 
-<form method="POST" action="/upload" enctype="multipart/form-data">
-    <input type="file" name="file" /><br/><br/>
-    <input type="submit" value="Submit" />
-</form>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="file" class="form-control mr-sm-2"   /><br/><br/>
+        <input type="submit" value="Upload" class="btn btn-primary" />
+    </form>
 
-<footer th:include="fragments/footer :: footer"></footer>
-
+    <footer th:include="fragments/footer :: footer"></footer>
+</div>
 </body>
 </html>

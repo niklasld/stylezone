@@ -233,11 +233,6 @@ public class BookingController {
         return OMOS;
     }
 
-    @GetMapping("/tilbud")
-    public String tilbud(){
-        return null;
-    }
-
 }
 
 

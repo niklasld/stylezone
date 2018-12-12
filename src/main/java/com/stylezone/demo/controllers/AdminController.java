@@ -1,9 +1,5 @@
 package com.stylezone.demo.controllers;
 
-import com.stylezone.demo.models.Admin;
-import com.stylezone.demo.models.Offer;
-import com.stylezone.demo.models.Picture;
-import com.stylezone.demo.models.Staff;
 import com.stylezone.demo.models.*;
 import com.stylezone.demo.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +44,13 @@ public class AdminController {
     private final String CREATESTAFFMEMBER = "createStaffMember";
     private final String OFFER = "offer";
     private final String CREATEOFFER = "createOffer";
-    private final String BILLEDEGALLERI = "billedeGalleri";
+    private final String PORTFOLIO = "portfolio";
     private final String UPLOADLIST = "uploadlist";
     private final String UPLOAD = "upload";
     private final String ADMINDASHBOARD = "adminDashBoard";
     private final String EDITOFFER = "editOffer";
     private final String DELETEOFFER = "deleteOffer";
-    private final String OFFERPAGE = "offerPage";
+    private final String TILBUD = "tilbud";
     private final String EDITOPENINGHOURS = "editOpeningHours";
     private final String BOOKINGADMIN = "bookingAdmin";
     private final String TIMESELECTADMIN = "timeSelectAdmin";
@@ -63,10 +59,18 @@ public class AdminController {
     private final String TIMENOTAVAILABLE = "timeNotAvailable";
     private final String SENDMESSAGE = "sendMessage";
 
+    //HttpSession session;
+
+
+
+
     Logger log = Logger.getLogger(AdminController.class.getName());
 
     @GetMapping("/admin")
     public String admin(){
+
+        //log.info(""+session.getAttribute("loggedIn"));
+
         return REDIRECT + ADMINLOGIN;
     }
 
@@ -85,9 +89,12 @@ public class AdminController {
     @PostMapping("/adminLogin")
     public String adminLogin(@ModelAttribute Admin admin,
                              @RequestParam("g-recaptcha-response") String captchaResponse,
-                             HttpSession session) {
+                             HttpSession session,
+                             Model model) {
 
         log.info("adminLogin PostMapping called...");
+
+        model.addAttribute("pageTitle", "Admin login");
 
         String url = "https://www.google.com/recaptcha/api/siteverify";
         String params = "?secret=6LeWE30UAAAAAMUpo7seu91Da6DXig-DQxN8YKEQ&response=" + captchaResponse;
@@ -102,11 +109,12 @@ public class AdminController {
         if (adminCheck.getAdminPassword().equals(admin.getAdminPassword()) && adminCheck.getAdminUsername().equals(admin.getAdminUsername()) && reCaptchaResponse.isSuccess()) {
             log.info("Login is a success");
             session.setAttribute("loggedin", adminCheck);
-            return REDIRECT + STAFF;
+            //session.setAttribute("loggedIn", true);
+            return REDIRECT + ADMINDASHBOARD;
         }
 
         log.info("Login failed.");
-        return REDIRECT;
+        return REDIRECT + ADMINLOGIN;
     }
 
     //Gustav
@@ -149,24 +157,13 @@ public class AdminController {
     }
 
     //Gustav
-    @PostMapping("/staff")
-    public String staff(@ModelAttribute Staff staff, Model model) {
-        log.info("Staff called...");
-
-        model.addAttribute("pageTitle", "Personale");
-        model.addAttribute("staffs", adminService.getStaff());
-
-        return STAFF;
-    }
-
-    //Gustav
     @GetMapping("/deleteStaff/{staffId}")
     public String deleteStaff(@PathVariable("staffId") int staffId, Model model) {
         log.info("deleteStaff with called with id :" + staffId);
 
         model.addAttribute("staff", adminService.getStaffMember(staffId));
         String staffName = adminService.getStaffMember(staffId).getStaffName();
-        model.addAttribute("pageTitle", "Delete staff (" + staffName + ")");
+        model.addAttribute("pageTitle", "Slet personale (" + staffName + ")");
 
         return DELETESTAFF;
 
@@ -181,7 +178,6 @@ public class AdminController {
         adminService.deleteStaffMember(id);
 
         model.addAttribute("staffs", adminService.getStaff());
-        model.addAttribute("pageTitle", "Delete staffMember");
 
         return REDIRECT + STAFF;
 
@@ -193,7 +189,7 @@ public class AdminController {
         log.info("CreateStaffMember alled..");
 
         model.addAttribute("staff", new Staff());
-        model.addAttribute("pageTitle", "Create new Staff Member");
+        model.addAttribute("pageTitle", "Opret personale");
 
         return CREATESTAFFMEMBER;
     }
@@ -206,7 +202,6 @@ public class AdminController {
         adminService.createStaffMember(staff);
 
         model.addAttribute("staff", adminService.getStaff());
-        model.addAttribute("pageTitle", "Create staff");
 
         return REDIRECT + STAFF;
 
@@ -219,7 +214,7 @@ public class AdminController {
 
         List<Offer> offers = adminService.getOffers();
         model.addAttribute("offers", offers);
-        model.addAttribute("pageTitle", "offer");
+        model.addAttribute("pageTitle", "Tilbuds admin");
         model.addAttribute("isOffer", true);
 
         return OFFER;
@@ -231,7 +226,7 @@ public class AdminController {
         log.info("createOffer getmapping is been called...");
 
         model.addAttribute("offer", new Offer());
-        model.addAttribute("pageTitle", "Create offer");
+        model.addAttribute("pageTitle", "Opret tilbud");
 
         return CREATEOFFER;
     }
@@ -245,15 +240,18 @@ public class AdminController {
 
         adminService.createOffer(offer);
         model.addAttribute("Offers", adminService.getOffers());
-        model.addAttribute("pageTitle", "Create offer");
 
-        return REDIRECT;
+        return REDIRECT + OFFER;
     }
 
     //Gustav
     @GetMapping("/upload")
     public String upload(Model model) {
         log.info("upload getmapping is called...");
+
+        model.addAttribute("pageTitle", "Upload billede");
+        model.addAttribute("isUpload", true);
+
         return UPLOAD;
     }
 
@@ -276,27 +274,35 @@ public class AdminController {
 
     //Gustav
     @GetMapping("/uploadlist")
-    public String uploadlist() {
+    public String uploadlist(Model model) {
         log.info("uploadlist getmapping is called...");
+
+
+        model.addAttribute("pageTitle", "Upload liste");
+
         return UPLOADLIST;
     }
 
     // Gustav & Hasan
-    @GetMapping("/billedeGalleri")
-    public String billedGalleri(Model model) {
+    @GetMapping("/portfolio")
+    public String portfolio(Model model) {
         log.info("billedegalleri getmapping is called...");
         List<Picture> test = adminService.getPictures();
         log.info("billedeGalleri called...");
         log.info("" + test.get(0).getPictureName());
         model.addAttribute("pictures", adminService.getPictures());
+        model.addAttribute("pageTitle", "Portfolio");
 
-        return BILLEDEGALLERI;
+        return PORTFOLIO;
     }
 
     //Gustav
     @GetMapping("adminDashBoard")
-    public String adminDashBoard() {
+    public String adminDashBoard(Model model) {
         log.info("adminDashboard getmapping is called...");
+
+        model.addAttribute("pageTitle", "Admin dashboard");
+
         return ADMINDASHBOARD;
     }
 
@@ -308,7 +314,7 @@ public class AdminController {
         model.addAttribute("offer", adminService.findOffer(id));
 
         String offerName = adminService.findOffer(id).getOfferName();
-        model.addAttribute("pageTitle", "Edit offer (" + offerName + ")");
+        model.addAttribute("pageTitle", "Rediger tilbud (" + offerName + ")");
         model.addAttribute("offerName", offerName);
 
         return EDITOFFER;
@@ -322,7 +328,6 @@ public class AdminController {
         adminService.updateOffer(offer);
 
         model.addAttribute("offers", adminService.getOffers());
-        model.addAttribute("pageTitle", "Edit offer");
 
         return REDIRECT + OFFER;
     }
@@ -334,7 +339,7 @@ public class AdminController {
 
         model.addAttribute("offer", adminService.findOffer(id));
         String offerName = adminService.findOffer(id).getOfferName();
-        model.addAttribute("pageTitle", "Delete offer (" + offerName + ")");
+        model.addAttribute("pageTitle", "Slet tilbud (" + offerName + ")");
 
         return DELETEOFFER;
     }
@@ -348,18 +353,18 @@ public class AdminController {
         adminService.deleteOffer(id);
 
         model.addAttribute("offers", adminService.getOffers());
-        model.addAttribute("pageTitle", "Delete offer");
 
         return REDIRECT + OFFER;
     }
 
     //Hasan
-    @GetMapping("/offerPage")
-    public String offerPage (Model model){
+    @GetMapping("/tilbud")
+    public String tilbud (Model model){
         log.info("offerPage is called");
         model.addAttribute("offers", adminService.showOffers());
+        model.addAttribute("pageTitle", "Tilbud");
 
-        return OFFERPAGE;
+        return TILBUD;
     }
 
     //Niklas
@@ -370,6 +375,9 @@ public class AdminController {
         Opening[] opening = adminService.convertOpenings();
         ArrayList<Integer> hours = adminService.getHours();
         ArrayList<Integer> min = adminService.getMin();
+
+        model.addAttribute("pageTitle", "Rediger openings tider");
+        model.addAttribute("isOpening", true);
 
         model.addAttribute("openings", opening);
         model.addAttribute("hours", hours);

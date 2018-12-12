@@ -12,7 +12,7 @@
                 <a class="nav-link" href="/">Forside</a>
             </li>
             <li class="nav-item" th:classappend="${isPortfolio} ? 'active' : ''">
-                <a class="nav-link" href="/billedeGalleri">Portfolio</a>
+                <a class="nav-link" href="/portfolio">Portfolio</a>
             </li>
             <li class="nav-item" th:classappend="${isTilbud} ? 'active' : ''">
                 <a class="nav-link" href="/tilbud">Tilbud</a>
@@ -34,15 +34,12 @@
 <div th:fragment="adminNavbar">
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <!-- Brand/logo -->
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="/adminDashBoard">
             <span id="logo">Stylezone Admin</span>
         </a>
 
         <!-- Links -->
         <ul class="navbar-nav">
-            <li class="nav-item" th:classappend="${isDashboard} ? 'active' : ''">
-                <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            </li>
             <li class="nav-item" th:classappend="${isBookingAdmin} ? 'active' : ''">
                 <a class="nav-link" href="/bookingAdmin"><i class="fas fa-calendar-alt"></i> Booking</a>
             </li>
@@ -52,8 +49,11 @@
             <li class="nav-item" th:classappend="${isOffer} ? 'active' : ''">
                 <a class="nav-link" href="/offer"><i class="fas fa-tag"></i> Tilbud</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-clock"></i> Åbningstider</a>
+            <li class="nav-item" th:classappend="${isOpening} ? 'active' : ''">
+                <a class="nav-link" href="/editOpeningHours"><i class="fas fa-clock"></i> Åbningstider</a>
+            </li>
+            <li class="nav-item" th:classappend="${isUpload} ? 'active' : ''">
+                <a class="nav-link" href="/upload"><i class="fas fa-cloud-upload-alt"></i> Upload</a>
             </li>
         </ul>
 

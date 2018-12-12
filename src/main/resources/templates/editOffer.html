@@ -7,35 +7,35 @@
 <div class="container">
     <header th:include="fragments/header :: adminNavbar"></header>
 
-    <h1 th:text="${'Edit offer (' + offerName + ')'}"></h1>
+    <h1 th:text="${'Rediger tilbud (' + offerName + ')'}"></h1>
 
     <form th:method="put" th:action="@{/editOffer}" th:object="${offer}">
 
         <input type="hidden" th:field="${offer.offerId}">
 
         <label>Tilbud Navn:</label>
-        <input type="text" class="form-control mr-sm-2"  th:field="${offer.offerName}">
+        <input type="text" class="form-control mr-sm-2"  th:field="${offer.offerName}" required>
 
         <br>
 
         <label>Informationer om tilbuddet:</label>
 
-        <textarea rows ="3" cols = "60" th:name = "offerContent" placeholder = "Skriv din aktuelle offer her" th:field="${offer.offerContent}" class="form-control mr-sm-2"></textarea>
+        <textarea rows ="3" cols = "60" th:name = "offerContent" placeholder = "Skriv din aktuelle offer her" th:field="${offer.offerContent}" class="form-control mr-sm-2" required></textarea>
         <br>
 
         <label>Starts dato:</label>
-        <input type="date" class="form-control mr-sm-2"  th:field="${offer.offerStart}"/>
+        <input type="date" class="form-control mr-sm-2"  th:field="${offer.offerStart}" required/>
         <br>
 
         <label>Sluts dato:</label>
-        <input type="date" class="form-control mr-sm-2"  th:field="${offer.offerEnd}"/>
+        <input type="date" class="form-control mr-sm-2"  th:field="${offer.offerEnd}" required/>
 
 
         <br>
 
-        <input class="btn btn-light" type="button" value="Cancel" onclick="location.href='/';"/>
+        <input class="btn btn-light" type="button" value="Annuller" onclick="location.href='/offer';"/>
 
-        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-primary" type="submit">Gem</button>
 
     </form>
 

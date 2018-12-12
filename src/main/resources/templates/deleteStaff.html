@@ -7,15 +7,15 @@
 <body>
 <div class="container">
     <header th:include="fragments/header :: adminNavbar"></header>
-    <h1 class="text-danger"><span class="fas fa-exclamation-triangle"></span>Warning</h1>
+    <h1 class="text-danger"><span class="fas fa-exclamation-triangle"></span>Advarsel</h1>
 
     <form th:method="Put" th:action="@{/deleteStaff}" th:object="${staff}">
         <input type="hidden" th:field="${staff.staffId}"/>
-        <h3 th:text="${'Are you sure you want to delete ' + staff.staffName + '?'}"></h3>
+        <h3 th:text="${'Er du sikker på at du vil slette ' + staff.staffName + '?'}"></h3>
 
-        <input class="btn btn-light" type="button" value="Cancel" onclick="location.href='/';"/>
+        <input class="btn btn-light" type="button" value="Annuller" onclick="location.href='/staff';"/>
 
-        <input class="btn btn-danger" type="submit" value="Delete"/>
+        <input class="btn btn-danger" type="submit" value="Slet"/>
     </form>
 </div>
 </body>

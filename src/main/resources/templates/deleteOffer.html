@@ -6,17 +6,17 @@
 </head>
 <body>
 <div class="container">
-    <header th:include="fragments/header :: navbar"></header>
-    <h1 class="text-danger"><span class="fas fa-exclamation-triangle"></span>Warning</h1>
+    <header th:include="fragments/header :: adminNavbar"></header>
+    <h1 class="text-danger"><span class="fas fa-exclamation-triangle"></span>Advarsel</h1>
 
     <form th:method="Put" th:action="@{/deleteOffer}" th:object="${offer}">
         <input type="hidden" th:field="${offer.offerId}"/>
         <br>
-        <h3 th:text="${'Er du sikker på at du vil delete ' + offer.offerName + '?'}"></h3>
+        <h3 th:text="${'Er du sikker på at du vil Slette ' + offer.offerName + '?'}"></h3>
 
-        <input class="btn btn-light" type="button" value="Cancel" onclick="location.href='/';"/>
+        <input class="btn btn-light" type="button" value="Annuller" onclick="location.href='/offer';"/>
 
-        <input class="btn btn-danger" type="submit" value="Delete"/>
+        <input class="btn btn-danger" type="submit" value="Slet"/>
     </form>
 </div>
 </body>

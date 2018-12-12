@@ -3,23 +3,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:include="fragments/head :: styles"></head>
-    <!--<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>-->
+
 </head>
 <body>
 <div class="container">
 
     <header th:include="fragments/header :: adminNavbar"></header>
 
-    <h1 th:text="${'redigere personale'}"></h1>
+    <h1 th:text="${'Rediger personale'}"></h1>
 
     <form th:method="Put" th:action="@{/editStaff}" th:object="${staff}">
 
         <input type="hidden" name="staffId" th:field="${staff.staffId}"/>
 
-        <label>Full Name:</label>
-        <input type="text" class="form-control mr-sm-2"  name="staffName" th:field="${staff.staffName}"/>
-        <br><br>
-        <button class="btn btn-primary" type="submit">Save</button>
+        <label>Personalets fulde navn:</label>
+        <input type="text" class="form-control mr-sm-2"  name="staffName" th:field="${staff.staffName}" required/>
+        <br>
+        <button class="btn btn-primary" type="submit">Gem</button>
 
     </form>
 
