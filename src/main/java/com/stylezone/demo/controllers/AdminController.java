@@ -294,6 +294,7 @@ public class AdminController {
         log.info("" + test.get(0).getPictureName());
         model.addAttribute("pictures", adminService.getPictures());
         model.addAttribute("pageTitle", "Portfolio");
+        model.addAttribute("isPortfolio", true);
 
         return PORTFOLIO;
     }
@@ -365,6 +366,8 @@ public class AdminController {
         log.info("offerPage is called");
         model.addAttribute("offers", adminService.showOffers());
         model.addAttribute("pageTitle", "Tilbud");
+
+        model.addAttribute("isTilbud", true);
 
         return TILBUD;
     }
