@@ -51,6 +51,7 @@ public class BookingRepoImpl implements BookingRepo {
         return booking;
     }
 
+    //Felix
     @Override
     public Booking isBooked(String bookingDate, String bookingTime) {
         String sql = "SELECT COUNT(bookingId) AS bookingId FROM stylezone.Booking WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y') AND bookingTime = ?";
@@ -60,6 +61,8 @@ public class BookingRepoImpl implements BookingRepo {
 
         return booking;
     }
+
+    //Felix
     @Override
     public List<Booking> getBookings() {
         String sql = "SELECT * FROM Booking";
@@ -131,7 +134,7 @@ public class BookingRepoImpl implements BookingRepo {
 
         String sql = "SELECT HOUR(bookingTime) AS startTime, COUNT(bookingId) AS booked FROM Booking\n" +
                 "WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y')\n" +
-                "AND bookingTime > ?\n" +
+                "AND bookingTime >= ?\n" +
                 "AND bookingTime < ?\n" +
                 "GROUP BY HOUR(bookingTime)";
 

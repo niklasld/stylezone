@@ -43,31 +43,37 @@ public class AdminServiceImpl implements AdminService {
 
     private static String UPLOADED_FOLDER = "src//main//resources//static//image//upload//";
 
+    //Felix
     private final boolean DEVELOPER_MODE = false;
 
+    //Felix
     @Override
     public Booking findBooking(int bookingId) {
         Booking booking = adminRepo.findBooking(bookingId);
         return booking;
     }
 
+    //Felix
     @Override
     public List<Booking> getBookings(){
         List<Booking> bookings = adminRepo.getBookings();
         return bookings;
     }
 
+    //Felix
     @Override
     public Booking updateBooking(Booking booking){
         booking = adminRepo.updateBooking(booking);
         return booking;
     }
 
+    //Felix
     @Override
     public void deleteBooking(int bookingId){
         adminRepo.deleteBooking(bookingId);
     }
 
+    //Felix
     @Override
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
         if(DEVELOPER_MODE) {
@@ -128,6 +134,7 @@ public class AdminServiceImpl implements AdminService {
         return bookings;
     }
 
+    //Felix
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
         if(DEVELOPER_MODE) {
@@ -233,6 +240,7 @@ public class AdminServiceImpl implements AdminService {
         return bookingGroups;
     }
 
+    //Felix
     @Override
     public Booking createBooking(Booking booking) {
 
@@ -250,6 +258,7 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
+    //Felix
     @Override
     public Boolean isBooked(String bookingDate, String bookingTime) {
         Booking booking = adminRepo.isBooked(bookingDate, bookingTime);
@@ -260,6 +269,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    //Felix
     @Override
     public String generateRandomString(){
         final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -271,18 +281,21 @@ public class AdminServiceImpl implements AdminService {
         return sb.toString();
     }
 
+    //Felix
     @Override
     public Holiday findHolidayById(int holidayId) {
         Holiday holiday = adminRepo.findHolidayById(holidayId);
         return holiday;
     }
 
+    //Felix
     @Override
     public Holiday findHolidayByDate(String holidayDate) {
         Holiday holiday = adminRepo.findHolidayByDate(holidayDate);
         return holiday;
     }
 
+    //Felix
     @Override
     public Boolean isHolidayByDate(String holidayDate) {
         Holiday holiday = adminRepo.isHolidayByDate(holidayDate);
@@ -293,6 +306,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    //Felix
     @Override
     public List<Holiday> getHolidays() {
         List<Holiday> holidays = adminRepo.getHolidays();
@@ -565,6 +579,7 @@ public class AdminServiceImpl implements AdminService {
         return fullOpening;
     }
 
+    //Felix
     public int getWeekToday() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar calendar = new GregorianCalendar();
@@ -574,6 +589,7 @@ public class AdminServiceImpl implements AdminService {
         return weekOfYear;
     }
 
+    //Felix
     @Override
     public int getWeekFromDate(int day, int month, int year) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -588,6 +604,7 @@ public class AdminServiceImpl implements AdminService {
         return weekOfYear;
     }
 
+    //Felix
     @Override
     public String getDateToday() {
         LocalDate date = LocalDate.now();
@@ -597,6 +614,7 @@ public class AdminServiceImpl implements AdminService {
         return today;
     }
 
+    //Felix
     @Override
     public String nextWeek() {
         LocalDate date = LocalDate.now();
@@ -609,6 +627,7 @@ public class AdminServiceImpl implements AdminService {
         return next;
     }
 
+    //Felix
     @Override
     public String nextWeekFromDate(int day, int month, int year) {
         LocalDate date = LocalDate.of(year, month, day);
@@ -621,6 +640,7 @@ public class AdminServiceImpl implements AdminService {
         return next;
     }
 
+    //Felix
     @Override
     public String prevWeek() {
         LocalDate date = LocalDate.now();
@@ -633,6 +653,7 @@ public class AdminServiceImpl implements AdminService {
         return prev;
     }
 
+    //Felix
     @Override
     public String prevWeekFromDate(int day, int month, int year) {
         LocalDate date = LocalDate.of(year, month, day);
@@ -645,6 +666,7 @@ public class AdminServiceImpl implements AdminService {
         return prev;
     }
 
+    //Felix
     @Override
     public String[] getDatesOfWeek() {
         String[] dates = new String[7];
@@ -668,6 +690,7 @@ public class AdminServiceImpl implements AdminService {
         return dates;
     }
 
+    //Felix
     public String[] getDatesOfSelectedWeek(int day, int month, int year) {
         String[] dates = new String[7];
 
@@ -695,6 +718,7 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    //Felix
     @Override
     public void sendMessageMail(Booking booking){
         log.info("sendMessageMail called...");
@@ -713,6 +737,7 @@ public class AdminServiceImpl implements AdminService {
         sendEmail(mailText, subject, mailTo);
     }
 
+    //Felix
     @Override
     public void editBookingMail(Booking booking){
         log.info("editBookingMail called...");
@@ -737,6 +762,7 @@ public class AdminServiceImpl implements AdminService {
         sendEmail(mailText, subject, mailTo);
     }
 
+    //Felix
     @Override
     public void deleteBookingMail(Booking booking){
         log.info("deleteBookingMail called...");
@@ -761,6 +787,7 @@ public class AdminServiceImpl implements AdminService {
         sendEmail(mailText, subject, mailTo);
     }
 
+    //Felix
     @Override
     public void createBookingMail(Booking booking){
         log.info("createBookingMail called...");
@@ -785,6 +812,7 @@ public class AdminServiceImpl implements AdminService {
         sendEmail(mailText, subject, mailTo);
     }
 
+    //Felix
     @Override
     public void sendEmail(String mailText, String subject, String mailTo) {
         //Setting up configurations for the email connection to the Google SMTP server using TLS

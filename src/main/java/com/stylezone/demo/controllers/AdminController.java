@@ -68,6 +68,7 @@ public class AdminController {
 
     Logger log = Logger.getLogger(AdminController.class.getName());
 
+    //Felix
     @GetMapping("/admin")
     public String admin(){
 
@@ -401,6 +402,7 @@ public class AdminController {
         return REDIRECT + EDITOPENINGHOURS;
     }
 
+    //Felix
     @GetMapping("/bookingAdmin")
     public String bookingAdmin(Model model) {
         log.info("booking called...");
@@ -440,6 +442,7 @@ public class AdminController {
         return BOOKINGADMIN;
     }
 
+    //Felix
     @PostMapping("/goToDateAdmin")
     public String goToDateAdmin(@RequestParam("date")String date, Model model) {
         log.info("goToDate called...");
@@ -457,7 +460,7 @@ public class AdminController {
         return REDIRECT + BOOKINGADMIN + "/" + date;
     }
 
-
+    //Felix
     @GetMapping("/bookingAdmin/{day}-{month}-{year}")
     public String bookingAdminDate(@PathVariable("day") int day, @PathVariable("month") int month, @PathVariable("year") int year, Model model) {
         log.info("booking called...");
@@ -497,6 +500,7 @@ public class AdminController {
         return BOOKINGADMIN;
     }
 
+    //Felix
     @GetMapping("/timeSelectAdmin/{date}/{start}/{end}")
     public String timeSelect(@PathVariable String date, @PathVariable String start, @PathVariable String end, Model model) {
         log.info("timeSelect called...");
@@ -517,6 +521,7 @@ public class AdminController {
         return TIMESELECTADMIN;
     }
 
+    //Felix
     @GetMapping("/createBooking/{bookingTime}/{bookingDate}")
     public String createBooking(@PathVariable("bookingTime") String bookingTime, @PathVariable("bookingDate") String bookingDate, Model model){
 
@@ -542,6 +547,7 @@ public class AdminController {
         }
     }
 
+    //Felix
     @PostMapping("/createBooking")
     public String createBooking(@ModelAttribute Booking booking){
 
@@ -555,6 +561,7 @@ public class AdminController {
 
     }
 
+    //Felix
     @GetMapping("/editBooking/{bookingId}")
     public String createBooking(@PathVariable("bookingId") int bookingId, Model model){
 
@@ -573,6 +580,7 @@ public class AdminController {
         }
     }
 
+    //Felix
     @GetMapping("/bookingInfo/{bookingId}")
     public String bookingInfo(@PathVariable("bookingId") int bookingId, Model model){
 
@@ -587,6 +595,7 @@ public class AdminController {
         return BOOKINGINFO;
     }
 
+    //Felix
     @PutMapping("/editBooking")
     public String editStaff(@ModelAttribute Booking booking, Model model){
 
@@ -608,6 +617,7 @@ public class AdminController {
         return SENDMESSAGE;
     }
 
+    //Felix
     @PostMapping("/sendMessage")
     public String sendMessage(@RequestParam("bookingId")int bookingId, @RequestParam("bookingMessage")String bookingMessage, Model model) {
         log.info("sendMessage PostMapping called...");
@@ -621,6 +631,7 @@ public class AdminController {
         return REDIRECT + BOOKINGADMIN;
     }
 
+    //Felix
     @GetMapping("/deleteBooking/{bookingId}")
     public String deleteBooking(@PathVariable("bookingId") int bookingId, Model model){
         log.info("deleteBooking GetMapping called...");
@@ -632,6 +643,7 @@ public class AdminController {
         return DELETEBOOKING;
     }
 
+    //Felix
     @DeleteMapping("/deleteBooking")
     public String deleteBooking(@ModelAttribute Booking booking, Model model){
         log.info("deleteBooking DeleteMapping called...");

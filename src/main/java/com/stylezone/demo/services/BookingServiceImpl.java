@@ -26,7 +26,8 @@ import java.time.format.DateTimeFormatter;
 public class BookingServiceImpl implements BookingService {
     Logger log = Logger.getLogger(BookingRepoImpl.class.getName());
 
-    private final boolean DEVELOPER_MODE = false;
+    //Felix
+    private final boolean DEVELOPER_MODE = true;
 
 
     @Autowired
@@ -46,6 +47,7 @@ public class BookingServiceImpl implements BookingService {
         return booking;
     }
 
+    //Felix
     @Override
     public Boolean isBooked(String bookingDate, String bookingTime) {
         Booking booking = bookingRepo.isBooked(bookingDate, bookingTime);
@@ -56,6 +58,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    //Felix
     @Override
     public String generateRandomString(){
         final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -67,6 +70,7 @@ public class BookingServiceImpl implements BookingService {
         return sb.toString();
     }
 
+    //Felix
     @Override
     public List<Booking> getBookings() {
         List<Booking> bookings = bookingRepo.getBookings();
@@ -245,7 +249,7 @@ public class BookingServiceImpl implements BookingService {
 
             assert boookingGroupBooked <= boookingGroupTotal;
 
-            //log.info("bookingGroupStart:" + bookingGroupStart + ", bookingGroupEnd;" + bookingGroupEnd + ", bookingGroupEnd;" + bookingGroupDate + ", boookingGroupBooked:" + boookingGroupBooked + ", boookingGroupTotal" + boookingGroupTotal);
+            log.info("bookingGroupStart:" + bookingGroupStart + ", bookingGroupEnd;" + bookingGroupEnd + ", bookingGroupEnd;" + bookingGroupDate + ", boookingGroupBooked:" + boookingGroupBooked + ", boookingGroupTotal" + boookingGroupTotal);
 
             if (boookingGroupTotal > 0) {
                 bookingGroups.add(new BookingGroup(bookingGroupStart, bookingGroupEnd, bookingGroupDate, boookingGroupBooked, boookingGroupTotal));
@@ -276,6 +280,7 @@ public class BookingServiceImpl implements BookingService {
         return holiday;
     }
 
+    //Felix
     @Override
     public Holiday findHolidayByDate(String holidayDate) {
         Holiday holiday = bookingRepo.findHolidayByDate(holidayDate);
@@ -293,6 +298,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    //Felix
     @Override
     public List<Holiday> getHolidays() {
         List<Holiday> holidays = bookingRepo.getHolidays();
@@ -478,6 +484,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     //Felix
+    @Override
     public String[] getDatesOfSelectedWeek(int day, int month, int year) {
         String[] dates = new String[7];
 
