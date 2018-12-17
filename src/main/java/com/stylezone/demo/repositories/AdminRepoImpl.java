@@ -87,6 +87,7 @@ public class AdminRepoImpl implements AdminRepo {
         return booking;
     }
 
+    //Felix
     @Override
     public void deleteBooking(int bookingId) {
         String sql = "DELETE FROM stylezone.Booking WHERE bookingId = ?";
@@ -137,7 +138,7 @@ public class AdminRepoImpl implements AdminRepo {
 
         String sql = "SELECT HOUR(bookingTime) AS startTime, COUNT(bookingId) AS booked FROM Booking\n" +
                 "WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y')\n" +
-                "AND bookingTime > ?\n" +
+                "AND bookingTime >= ?\n" +
                 "AND bookingTime < ?\n" +
                 "GROUP BY HOUR(bookingTime)";
 
@@ -161,6 +162,7 @@ public class AdminRepoImpl implements AdminRepo {
         }, date, timeStart, timeEnd);
     }
 
+    //Felix
     @Override
     public Booking createBooking(Booking booking) {
 
@@ -181,6 +183,7 @@ public class AdminRepoImpl implements AdminRepo {
 
     }
 
+    //Felix
     @Override
     public Booking isBooked(String bookingDate, String bookingTime) {
         String sql = "SELECT COUNT(bookingId) AS bookingId FROM stylezone.Booking WHERE bookingDate = STR_TO_DATE(?, '%d-%m-%Y') AND bookingTime = ?";
@@ -191,6 +194,7 @@ public class AdminRepoImpl implements AdminRepo {
         return booking;
     }
 
+    //Felix
     @Override
     public Holiday findHolidayById(int holidayId) {
         String sql = "SELECT * FROM stylezone.Holiday WHERE holidayId = ?";
@@ -202,6 +206,7 @@ public class AdminRepoImpl implements AdminRepo {
         return holiday;
     }
 
+    //Felix
     @Override
     public Holiday findHolidayByDate(String holidayDate) {
         String sql = "SELECT * FROM stylezone.Holiday WHERE holidayDate = STR_TO_DATE(?, '%d-%m-%Y')";
@@ -213,6 +218,7 @@ public class AdminRepoImpl implements AdminRepo {
         return holiday;
     }
 
+    //Felix
     @Override
     public Holiday isHolidayByDate(String holidayDate) {
         String sql = "SELECT COUNT(holidayId) AS holidayId FROM stylezone.Holiday WHERE holidayDate = STR_TO_DATE(?, '%d-%m-%Y')";
@@ -223,6 +229,7 @@ public class AdminRepoImpl implements AdminRepo {
         return holiday;
     }
 
+    //Felix
     @Override
     public List<Holiday> getHolidays() {
         String sql = "SELECT * FROM Holiday";
@@ -246,6 +253,7 @@ public class AdminRepoImpl implements AdminRepo {
             }
         });
     }
+
 
     @Override
     public Admin checkPassword(Admin admin) {
