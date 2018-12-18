@@ -508,11 +508,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     //Gustav
+    //Skriver bytes til fil og specificerer hvor filen åbnes fra og gemt, og retunerer filens originale navn
     public String fileUpload(MultipartFile file) {
 
 
         try {
+            //gemmer filen som et objekt som typen byte
             byte[] bytes = file.getBytes();
+            //Her definerer vi hvor filen skal gemmes
             Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
             Files.write(path, bytes);
 

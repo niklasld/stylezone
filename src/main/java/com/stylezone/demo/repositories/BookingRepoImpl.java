@@ -92,6 +92,7 @@ public class BookingRepoImpl implements BookingRepo {
     }
 
     //Felix
+    //Her henter vi alle bookninger fra et enklet time interval i databasen
     @Override
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
         log.info("BookingRepo.getSelectedBookings(" + date + ", " + timeStart + ", " + timeEnd + ")");
@@ -127,6 +128,7 @@ public class BookingRepoImpl implements BookingRepo {
     }
 
     //Felix
+    //Her henter vi alle bookninger for enkel dag inden for et bestemt tidsinterval, grupperet i time intervaler.
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
 

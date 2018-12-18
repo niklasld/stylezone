@@ -28,16 +28,17 @@ public class AdminController {
 
     }
 
+    //Her autowire vi adminService og restTemplate
     @Autowired
     AdminService adminService;
 
+    //restTemplate bruger vi, når vi skal bruge noget fra en ekstern service
     @Autowired
     RestTemplate restTemplate;
 
     private final String REDIRECT = "redirect:/";
 
     private final String ADMINLOGIN = "adminLogin";
-    private final String SUCCESS = "success";
     private final String EDITSTAFF = "editStaff";
     private final String STAFF = "staff";
     private final String DELETESTAFF = "deleteStaff";
@@ -61,8 +62,6 @@ public class AdminController {
     private final String TIMENOTAVAILABLE = "timeNotAvailable";
     private final String SENDMESSAGE = "sendMessage";
 
-    //HttpSession session;
-
 
 
 
@@ -71,8 +70,6 @@ public class AdminController {
     //Felix
     @GetMapping("/admin")
     public String admin(){
-
-        //log.info(""+session.getAttribute("loggedIn"));
 
         return REDIRECT + ADMINLOGIN;
     }
@@ -97,13 +94,17 @@ public class AdminController {
 
         log.info("adminLogin PostMapping called...");
 
+        //Her sætter vi hvad titlen efter "stylezone - " på den enkelte side
         model.addAttribute("pageTitle", "Admin login");
 
+        //Her sætter vi vores hemmelige nøgle til google reCaptcha API
         String url = "https://www.google.com/recaptcha/api/siteverify";
         String params = "?secret=6LdRxYIUAAAAAJOYs1-rC1md7a8ADQpwKSLoNE0S&response=" + captchaResponse;
 
+        //Her sender vi nøglen til godkendelse hos google, og får så en retur hvis den er godkendt
         ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url + params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
 
+        //Her hasher vi adgangskoden
         int adminPW = adminService.hashPassword(admin.getAdminPassword());
 
         admin.setAdminPassword("" + adminPW);
@@ -262,6 +263,7 @@ public class AdminController {
     @PostMapping("/upload")
     public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Model model, Picture picture) {
         log.info("upload postmapping is called...");
+        //hvis der er valgt en fil kan man uploade den til hjemmesiden
         if (file.isEmpty()) {
 
             redirectAttributes.addFlashAttribute("message", "vælg et billede som du vil uploade til billede galleri siden");
@@ -501,6 +503,7 @@ public class AdminController {
     }
 
     //Felix
+    //Denne her side indeholder oversigt over alle bookinger for et time interval
     @GetMapping("/timeSelectAdmin/{date}/{start}/{end}")
     public String timeSelect(@PathVariable String date, @PathVariable String start, @PathVariable String end, Model model) {
         log.info("timeSelect called...");

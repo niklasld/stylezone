@@ -96,6 +96,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     //Felix
+    //Denne metode henter alle ledige og bookede tider for et enkelt time interval
     @Override
     public List<Booking> getSelectedBookings(String date, String timeStart, String timeEnd) {
         if(DEVELOPER_MODE) {
@@ -155,6 +156,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     //Felix
+    //Denne metode henter bookede og ledige tider i grupperede format
     @Override
     public List<BookingGroup> getBookingGroups(String date, String timeStart, String timeEnd) {
         if(DEVELOPER_MODE) {
@@ -320,9 +322,10 @@ public class BookingServiceImpl implements BookingService {
     }
 
     //Niklas
+    //Denne metode sender en email afsted
     @Override
     public void sendEmail(Booking booking) {
-        //Setting up configurations for the email connection to the Google SMTP server using TLS
+
         Properties props = new Properties();
         props.put("mail.smtp.host", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -330,21 +333,19 @@ public class BookingServiceImpl implements BookingService {
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
 
-        //Establishing a session with required user details
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("stylezone.bestilling@gmail.com", "springboot");
             }
         });
         try {
-            //Creating a Message object to set the email content
+
             MimeMessage msg = new MimeMessage(session);
-            //Storing the comma seperated values to email addresses
+
             String to = "stylezone.bestilling@gmail.com, " + booking.getBookingEmail();
-            /*Parsing the String with defualt delimiter as a comma by marking the boolean as true and storing the email
-            addresses in an array of InternetAddress objects*/
+
             InternetAddress[] address = InternetAddress.parse(to, true);
-            //Setting the recepients from the address variable
+
             msg.setRecipients(Message.RecipientType.TO, address);
             msg.setSubject("Din tidsbestilling hos StyleZone den " + booking.getBookingDate() + " kl. " + booking.getBookingTime());
             msg.setSentDate(new Date());
@@ -484,6 +485,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     //Felix
+    //Henter datoer for en udvalgt uge udvalgt ud fra en dato
     @Override
     public String[] getDatesOfSelectedWeek(int day, int month, int year) {
         String[] dates = new String[7];
