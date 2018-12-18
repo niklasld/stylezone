@@ -36,9 +36,7 @@ public class BookingController {
     private final String TIMESELECT = "timeSelect";
     private final String INDEX = "index";
     private final String OMOS = "omOs";
-    private final String ABOUTUS = "aboutUs";
-
-    private final boolean DEVELOPER_MODE = false;
+    private final String PRISER = "priser";
 
     Logger log = Logger.getLogger(BookingController.class.getName());
 
@@ -231,6 +229,17 @@ public class BookingController {
         model.addAttribute("isAbout", true);
 
         return OMOS;
+    }
+
+    //Gustav
+    @GetMapping("/priser")
+    public String priser(Model model) {
+        log.info("priser called...");
+
+        model.addAttribute("pageTitle", "priser");
+        model.addAttribute("isPriser", true);
+
+        return PRISER;
     }
 
 }
