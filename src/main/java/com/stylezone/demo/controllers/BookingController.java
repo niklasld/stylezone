@@ -203,7 +203,7 @@ public class BookingController {
         log.info("saveBooking postmapping called...");
 
         String url = "https://www.google.com/recaptcha/api/siteverify";
-        String params = "?secret=6LeWE30UAAAAAMUpo7seu91Da6DXig-DQxN8YKEQ&response="+captchaResponse;
+        String params = "?secret=6LdRxYIUAAAAAJOYs1-rC1md7a8ADQpwKSLoNE0S&response="+captchaResponse;
 
         ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
 
