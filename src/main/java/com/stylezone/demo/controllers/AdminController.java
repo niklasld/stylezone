@@ -15,10 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 
 @Controller
@@ -439,25 +435,19 @@ public class AdminController {
         model.addAttribute("pageTitle", "Booking administration");
         model.addAttribute("isBookingAdmin", true);
 
-        //log.info(bookingService.getDateToday());
-
         return BOOKINGADMIN;
     }
 
     //Felix
     @PostMapping("/goToDateAdmin")
-    public String goToDateAdmin(@RequestParam("date")String date, Model model) {
+    public String goToDateAdmin(@RequestParam("date")String date) {
         log.info("goToDate called...");
-
-        //log.info("Go to date: "+date);
 
         String year = date.substring(0,4);
         String month = date.substring(5,7);
         String day = date.substring(8,10);
 
         date = day + "-" + month + "-" + year;
-
-        //log.info("Go to date formatted: " + date);
 
         return REDIRECT + BOOKINGADMIN + "/" + date;
     }
@@ -496,8 +486,6 @@ public class AdminController {
         model.addAttribute("weekNumber",weekNumber);
         model.addAttribute("pageTitle", "Booking administration");
         model.addAttribute("isBookingAdmin", true);
-
-        //log.info(bookingService.getDateToday());
 
         return BOOKINGADMIN;
     }

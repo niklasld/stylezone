@@ -86,8 +86,8 @@ public class AdminServiceImpl implements AdminService {
             log.info("temp length: " + temp.size());
         }
 
-        int bookingId, bookingPhone, staffId;
-        String bookingTime, bookingDate, bookingName, bookingComment;
+        int bookingId;
+        String bookingTime, bookingName;
         List<Booking> bookings = new ArrayList<>();
 
         int hour = Integer.parseInt(timeStart.substring(0, 2));
@@ -145,7 +145,7 @@ public class AdminServiceImpl implements AdminService {
             log.info("bookingGroups length" + temp.size());
         }
 
-        int bookingGroupId, boookingGroupBooked, boookingGroupTotal;
+        int boookingGroupBooked, boookingGroupTotal;
         String bookingGroupStart, bookingGroupEnd, bookingGroupDate;
         List<BookingGroup> bookingGroups = new ArrayList<>();
 
@@ -229,7 +229,7 @@ public class AdminServiceImpl implements AdminService {
 
             assert boookingGroupBooked <= boookingGroupTotal;
 
-            //log.info("bookingGroupStart:" + bookingGroupStart + ", bookingGroupEnd;" + bookingGroupEnd + ", bookingGroupEnd;" + bookingGroupDate + ", boookingGroupBooked:" + boookingGroupBooked + ", boookingGroupTotal" + boookingGroupTotal);
+
 
             if (boookingGroupTotal > 0) {
                 bookingGroups.add(new BookingGroup(bookingGroupStart, bookingGroupEnd, bookingGroupDate, boookingGroupBooked, boookingGroupTotal));

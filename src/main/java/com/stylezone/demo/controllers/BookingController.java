@@ -1,7 +1,6 @@
 package com.stylezone.demo.controllers;
 
 import com.stylezone.demo.models.Booking;
-import com.stylezone.demo.models.Offer;
 import com.stylezone.demo.models.Opening;
 import com.stylezone.demo.models.ReCaptchaResponse;
 import com.stylezone.demo.models.BookingGroup;
@@ -84,25 +83,19 @@ public class BookingController {
         model.addAttribute("weekNumber", weekNumber);
         model.addAttribute("pageTitle", "Book tid");
 
-        //log.info(bookingService.getDateToday());
-
         return BOOKING;
     }
 
     //Felix
     @PostMapping("/goToDate")
-    public String goToDate(@RequestParam("date")String date, Model model) {
+    public String goToDate(@RequestParam("date")String date) {
         log.info("goToDate called...");
-
-        //log.info("Go to date: "+date);
 
         String year = date.substring(0,4);
         String month = date.substring(5,7);
         String day = date.substring(8,10);
 
         date = day + "-" + month + "-" + year;
-
-        //log.info("Go to date formatted: " + date);
 
         return REDIRECT + BOOKING + "/" + date;
     }
@@ -140,8 +133,6 @@ public class BookingController {
         model.addAttribute("prevWeek",bookingService.prevWeekFromDate(day, month, year));
         model.addAttribute("weekNumber",weekNumber);
         model.addAttribute("pageTitle", "Book tid");
-
-        //log.info(bookingService.getDateToday());
 
         return BOOKING;
     }

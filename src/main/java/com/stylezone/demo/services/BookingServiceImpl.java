@@ -14,7 +14,6 @@ import javax.mail.internet.MimeMessage;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -109,8 +108,7 @@ public class BookingServiceImpl implements BookingService {
             log.info("temp length: " + temp.size());
         }
 
-        int bookingId, bookingPhone, staffId;
-        String bookingTime, bookingDate, bookingName, bookingComment;
+        String bookingTime, bookingName;
         List<Booking> bookings = new ArrayList<>();
 
         int hour = Integer.parseInt(timeStart.substring(0, 2));
@@ -167,7 +165,7 @@ public class BookingServiceImpl implements BookingService {
             log.info("bookingGroups length" + temp.size());
         }
 
-        int bookingGroupId, boookingGroupBooked, boookingGroupTotal;
+        int boookingGroupBooked, boookingGroupTotal;
         String bookingGroupStart, bookingGroupEnd, bookingGroupDate;
         List<BookingGroup> bookingGroups = new ArrayList<>();
 

@@ -144,8 +144,8 @@ public class BookingRepoImpl implements BookingRepo {
 
             @Override
             public List<BookingGroup> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                int bookingGroupId, boookingGroupBooked, boookingGroupTotal;
-                String bookingGroupStart, bookingGroupEnd, bookingGroupDate;
+                int boookingGroupBooked;
+                String bookingGroupStart;
                 List<BookingGroup> bookingGroups = new ArrayList<>();
 
                 while (rs.next()) {
