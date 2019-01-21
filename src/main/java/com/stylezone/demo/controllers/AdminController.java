@@ -257,7 +257,7 @@ public class AdminController {
 
     //Gustav
     @PostMapping("/upload")
-    public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Model model, Picture picture) {
+    public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         log.info("upload postmapping is called...");
         //hvis der er valgt en fil kan man uploade den til hjemmesiden
         if (file.isEmpty()) {
